@@ -11,13 +11,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
+//import static java.lang.System.in;
 import javax.swing.*;
 
 /**
  *
  * @author Sistemas
  */
-public class Insert extends JPanel implements ActionListener {
+public class admin extends JPanel implements ActionListener {
 
     ConxDB db;
     int idOper = 1;
@@ -43,7 +44,7 @@ public class Insert extends JPanel implements ActionListener {
     JTextField tId = new JTextField(10);
     JTextField alert = new JTextField(10);
 
-    public Insert(JFrame window, ConxDB db) {
+    public admin(JFrame window, ConxDB db) {
         this.db = db;
         JMenuBar mBarOption = new JMenuBar();
         JMenuBar mBarTipeJob = new JMenuBar();
@@ -91,6 +92,7 @@ public class Insert extends JPanel implements ActionListener {
         bDelete.addActionListener(this);
         mOption.setPreferredSize(new Dimension(330, 30));
         mTipeJob.setPreferredSize(new Dimension(330, 30));
+        lId.setPreferredSize(new Dimension(60, 30));
 
         JPanel pAlert = new JPanel(new GridLayout(1, 1));
         JPanel pOption = new JPanel(new GridLayout(1, 1));
@@ -98,6 +100,7 @@ public class Insert extends JPanel implements ActionListener {
         mOption.setHorizontalTextPosition(JTextField.CENTER);
         mTipeJob.setHorizontalTextPosition(JTextField.CENTER);
         alert.setHorizontalAlignment(JTextField.CENTER);
+        lId.setHorizontalAlignment(JTextField.RIGHT);
 
         pOption.add(mBarOption);
         window.add(pOption, BorderLayout.NORTH);
@@ -125,63 +128,118 @@ public class Insert extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         System.out.println("Insert/ActionPerformed$ Event: " + e.getActionCommand());
         if (e.getSource().getClass().getSimpleName().equals("JButton")) {
-            switch (mTipeJob.getText()) {
-                case "Ambulancia":
-                    break;
-                case "Operador":
-                    if (tName.getText().equals("") || tLastName.getText().equals("") || tLastName2.getText().equals("")) {
-                        alert.setText("Deben llenarse todos los campos");
-                        alert.setBackground(Color.RED);
-                    } else {
-                        resultDB = db.insertOper(idOper, tName.getText(), tLastName.getText(), tLastName2.getText());
-                        if (resultDB.equals("successfully completed")) {
-                            alert.setText("El operador con id:" + idOper + " ha sido guardado exitosamente");
-                            idOper++;
-                            tName.setText(null);
-                            tLastName.setText(null);
-                            tLastName2.setText(null);
-                            alert.setBackground(Color.GREEN);
-                        } else {
-                            System.out.println(resultDB);
-                            alert.setBackground(Color.RED);
-                        }
+            switch (mOption.getText()) {
+                case "Agregar":
+                    switch (mTipeJob.getText()) {
+                        case "Ambulancia":
+                            if (tNumAmbulance.getText().equals("") || tKmAmbulance.getText().equals("")) {
+                                alert.setText("Deben llenarse todos los campos");
+                                alert.setBackground(Color.RED);
+                            }else{
+                                resultDB=db.insertAmbulance(idOper, Integer.parseInt(tNumAmbulance.getText()), Integer.parseInt(tKmAmbulance.getText()));
+                                if (resultDB.equals("successfully completed")) {
+                                    alert.setText("La ambulancia con id:" + idOper + " ha sido agregada exitosamente");
+                                    idOper++;
+                                    tNumAmbulance.setText(null);
+                                    tKmAmbulance.setText(null);
+                                    alert.setBackground(Color.GREEN);
+                                } else {
+                                    alert.setText(resultDB);
+                                    alert.setBackground(Color.RED);
+                                }
+                            }
+                            break;
+                        case "Operador":
+                            if (tName.getText().equals("") || tLastName.getText().equals("") || tLastName2.getText().equals("")) {
+                                alert.setText("Deben llenarse todos los campos");
+                                alert.setBackground(Color.RED);
+                            } else {
+                                resultDB = db.insertOper(idOper, tName.getText(), tLastName.getText(), tLastName2.getText());
+                                if (resultDB.equals("successfully completed")) {
+                                    alert.setText("El operador con id:" + idOper + " ha sido agregado exitosamente");
+                                    idOper++;
+                                    tName.setText(null);
+                                    tLastName.setText(null);
+                                    tLastName2.setText(null);
+                                    alert.setBackground(Color.GREEN);
+                                } else {
+                                    alert.setText(resultDB);
+                                    alert.setBackground(Color.RED);
+                                }
+                            }
+                            break;
+                        case "Paramedico":
+                            if (tName.getText().equals("") || tLastName.getText().equals("") || tLastName2.getText().equals("")) {
+                                alert.setText("Deben llenarse todos los campos");
+                                alert.setBackground(Color.RED);
+                            } else {
+                                resultDB = db.insertParamedic(idParamedic, tName.getText(), tLastName.getText(), tLastName2.getText());
+                                if (resultDB.equals("successfully completed")) {
+                                    alert.setText("El paramedico con id:" + idParamedic + " ha sido agregado exitosamente");
+                                    idParamedic++;
+                                    tName.setText(null);
+                                    tLastName.setText(null);
+                                    tLastName2.setText(null);
+                                    alert.setBackground(Color.GREEN);
+                                } else {
+                                    alert.setText(resultDB);
+                                    alert.setBackground(Color.RED);
+                                }
+                            }
+                            break;
+                        case "Radio Operador":
+                            if (tName.getText().equals("") || tLastName.getText().equals("") || tLastName2.getText().equals("")) {
+                                alert.setText("Deben llenarse todos los campos");
+                                alert.setBackground(Color.RED);
+                            } else {
+                                resultDB = db.insertRadioOper(idRadioOper, tName.getText(), tLastName.getText(), tLastName2.getText());
+                                if (resultDB.equals("successfully completed")) {
+                                    alert.setText("El paramedico con id:" + idRadioOper + " ha sido agregado exitosamente");
+                                    idRadioOper++;
+                                    tName.setText(null);
+                                    tLastName.setText(null);
+                                    tLastName2.setText(null);
+                                    alert.setBackground(Color.GREEN);
+                                } else {
+                                    alert.setText(resultDB);
+                                    alert.setBackground(Color.RED);
+                                }
+                            }
+                            break;
                     }
                     break;
-                case "Paramedico":
-                    if (tName.getText().equals("") || tLastName.getText().equals("") || tLastName2.getText().equals("")) {
-                        alert.setText("Deben llenarse todos los campos");
+                case "Eliminar":
+                    if (tId.getText().equals("")) {
+                        alert.setText("Deben ingresar el ID");
                         alert.setBackground(Color.RED);
                     } else {
-                        resultDB = db.insertParamedic(idParamedic, tName.getText(), tLastName.getText(), tLastName2.getText());
-                        if (resultDB.equals("successfully completed")) {
-                            alert.setText("El paramedico con id:" + idParamedic + " ha sido guardado exitosamente");
-                            idParamedic++;
-                            tName.setText(null);
-                            tLastName.setText(null);
-                            tLastName2.setText(null);
-                            alert.setBackground(Color.GREEN);
-                        } else {
-                            System.out.println(resultDB);
-                            alert.setBackground(Color.RED);
+                        switch (mTipeJob.getText()) {
+                            case "Ambulancia":
+                                break;
+                            case "Operador":
+                                    resultDB = db.deleteOper(Integer.parseInt(tId.getText()));
+                                break;
+                            case "Paramedico":
+                                    resultDB = db.deleteParamedic(Integer.parseInt(tId.getText()));
+                                break;
+                            case "Radio Operador":
+                                resultDB = db.deleteRadioOper(Integer.parseInt(tId.getText()));
+                                break;
                         }
-                    }
-                    break;
-                case "Radio Operador":
-                    if (tName.getText().equals("") || tLastName.getText().equals("") || tLastName2.getText().equals("")) {
-                        alert.setText("Deben llenarse todos los campos");
-                        alert.setBackground(Color.RED);
-                    } else {
-                        resultDB = db.insertRadioOper(idRadioOper, tName.getText(), tLastName.getText(), tLastName2.getText());
-                        if (resultDB.equals("successfully completed")) {
-                            alert.setText("El paramedico con id:" + idRadioOper + " ha sido guardado exitosamente");
-                            idRadioOper++;
-                            tName.setText(null);
-                            tLastName.setText(null);
-                            tLastName2.setText(null);
-                            alert.setBackground(Color.GREEN);
-                        } else {
-                            System.out.println(resultDB);
-                            alert.setBackground(Color.RED);
+                        switch (resultDB) {
+                            case "successfully completed":
+                                alert.setText("El " + mTipeJob.getText() + " con ID:" + tId.getText() + " a sido eliminado exitosamente");
+                                tId.setText(null);
+                                alert.setBackground(Color.GREEN);
+                                break;
+                            case "not found":
+                                alert.setText("El " + mTipeJob.getText() + " con ID:" + tId.getText() + " no fue encontrado");
+                                alert.setBackground(Color.RED);
+                                break;
+                            default:
+                                alert.setText(resultDB);
+                                alert.setBackground(Color.RED);
+                                break;
                         }
                     }
                     break;

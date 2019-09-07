@@ -66,13 +66,13 @@ public class Interface extends JFrame implements ActionListener {
         JLabel lApplicant = new JLabel("Solicitante");
         JButton bEmergency = new JButton("Emergencia");
         JButton bReport = new JButton("Reporte");
-        JButton bInsert = new JButton("Admin");
+        JButton bAdmin = new JButton("Admin");
         tTime.setEditable(false);
         tTime.setHorizontalAlignment(JTextField.CENTER);
 
         bEmergency.addActionListener(this);
         bReport.addActionListener(this);
-        bInsert.addActionListener(this);
+        bAdmin.addActionListener(this);
         mainPanel.add(lAmbulance);
         mainPanel.add(tAmbulance);
         mainPanel.add(lKmAmbulance);
@@ -89,7 +89,7 @@ public class Interface extends JFrame implements ActionListener {
         mainPanel.add(tApplicant);
         mainPanel.add(bEmergency);
         mainPanel.add(bReport);
-        mainPanel.add(bInsert);
+        mainPanel.add(bAdmin);
         pTime.add(tTime);
         this.add(mainPanel);
         this.add(pTime, BorderLayout.SOUTH);
@@ -140,8 +140,8 @@ public class Interface extends JFrame implements ActionListener {
                         (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
                 ConxDB db = new ConxDB(admin);
                 //db = new ConxDB();
-                Insert ins = new Insert(admin, db);
-                admin.add(ins);
+                //admin ins = new admin(admin, db);
+                admin.add(new admin(admin, db));
                 break;
             case "Reporte":
                 System.out.println("report");
