@@ -24,10 +24,12 @@ import java.sql.*;
  */
 public class Interface extends JFrame implements ActionListener {
 
+    //ConxDB db;
     SimpleDateFormat date, time;
     ctrData cD;
     int n = 0;
     JFrame emergency;
+    JFrame admin;
     JTextField tAmbulance = new JTextField(30);
     JTextField tKmAmbulance = new JTextField(30);
     JTextField tOperVoluntary = new JTextField(30);
@@ -47,7 +49,6 @@ public class Interface extends JFrame implements ActionListener {
         this.setVisible(true);
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-        this.setVisible(true);
         this.setTitle("Sistemas de Control de Ambulancias");
 
         RealTime rt = new RealTime();
@@ -65,10 +66,13 @@ public class Interface extends JFrame implements ActionListener {
         JLabel lApplicant = new JLabel("Solicitante");
         JButton bEmergency = new JButton("Emergencia");
         JButton bReport = new JButton("Reporte");
+        JButton bInsert = new JButton("Admin");
+        tTime.setEditable(false);
         tTime.setHorizontalAlignment(JTextField.CENTER);
 
         bEmergency.addActionListener(this);
         bReport.addActionListener(this);
+        bInsert.addActionListener(this);
         mainPanel.add(lAmbulance);
         mainPanel.add(tAmbulance);
         mainPanel.add(lKmAmbulance);
@@ -85,6 +89,7 @@ public class Interface extends JFrame implements ActionListener {
         mainPanel.add(tApplicant);
         mainPanel.add(bEmergency);
         mainPanel.add(bReport);
+        mainPanel.add(bInsert);
         pTime.add(tTime);
         this.add(mainPanel);
         this.add(pTime, BorderLayout.SOUTH);
@@ -102,31 +107,45 @@ public class Interface extends JFrame implements ActionListener {
      }*/
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("event"+e.getActionCommand());
-        if (e.getActionCommand().equals("Emergencia")) {
-            folio++;
-            String[] data = {String.valueOf(folio), tAmbulance.getText(), tKmAmbulance.getText(), tOperVoluntary.getText(), 
-                tParamedicVoluntary.getText(), tOper.getText(), tParamedic.getText(), tApplicant.getText()};
-            //System.out.println("Interface/ActionPerformed$data:\t" + data[0] + "\t" + data[1] + "\t" + data[2] + "\t" + data[3] + "\t" + data[4]);
-            emergency = new JFrame("Emergencia Folio:" + data[0]);
-            emergency.setSize(1600, 500);
-            emergency.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - emergency.getWidth() / 2,
-                    (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - emergency.getHeight() / 2);
-            emergency.setFocusable(true);
-            emergency.setExtendedState(MAXIMIZED_BOTH);
-            emergency.setVisible(true);
-            emergency.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
-            time = new SimpleDateFormat("hh:mm:ss");
-            Calendar calendario = new GregorianCalendar();
-            ctrTime cT = new ctrTime(time.format(calendario.getTime()), data[0]);
-            tabData tab = new tabData();
-            cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, data, tab);
-            emergency.setLayout(new BorderLayout());
-            emergency.add(tab, BorderLayout.NORTH);
-            emergency.add(cD, BorderLayout.CENTER);
-            emergency.add(cT, BorderLayout.SOUTH);
-        }else if(e.getActionCommand().equals("Reporte")){
-            System.out.println("report");
+        System.out.println("event " + e.getActionCommand());
+        switch (e.getActionCommand()) {
+            case "Emergencia":
+                folio++;
+                String[] data = {String.valueOf(folio), tAmbulance.getText(), tKmAmbulance.getText(), tOperVoluntary.getText(),
+                    tParamedicVoluntary.getText(), tOper.getText(), tParamedic.getText(), tApplicant.getText()};
+                //System.out.println("Interface/ActionPerformed$data:\t" + data[0] + "\t" + data[1] + "\t" + data[2] + "\t" + data[3] + "\t" + data[4]);
+                emergency = new JFrame("Emergencia Folio:" + data[0]);
+                emergency.setSize(1600, 500);
+                emergency.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - emergency.getWidth() / 2,
+                        (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - emergency.getHeight() / 2);
+                emergency.setFocusable(true);
+                emergency.setExtendedState(MAXIMIZED_BOTH);
+                emergency.setVisible(true);
+                emergency.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
+                time = new SimpleDateFormat("hh:mm:ss");
+                Calendar calendario = new GregorianCalendar();
+                ctrTime cT = new ctrTime(time.format(calendario.getTime()), data[0]);
+                tabData tab = new tabData();
+                cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, data, tab);
+                emergency.setLayout(new BorderLayout());
+                emergency.add(tab, BorderLayout.NORTH);
+                emergency.add(cD, BorderLayout.CENTER);
+                emergency.add(cT, BorderLayout.SOUTH);
+                break;
+            case "Admin":
+                admin = new JFrame("Administrador");
+                admin.setSize(400, 500);
+                admin.setVisible(true);
+                admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
+                        (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
+                ConxDB db = new ConxDB(admin);
+                //db = new ConxDB();
+                Insert ins = new Insert(admin, db);
+                admin.add(ins);
+                break;
+            case "Reporte":
+                System.out.println("report");
+                break;
         }
     }
 }
