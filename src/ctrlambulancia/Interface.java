@@ -81,7 +81,7 @@ public class Interface extends JFrame implements ActionListener {
                 a++;
             }
         }
-        JMenuItem iOper[]=new JMenuItem[10];
+        /*JMenuItem iOper[]=new JMenuItem[10];//----------------------------------------------------------------------------------------------------
         String word = "";
         a=0;
         for (int i = 0; i < opers.length(); i++) {
@@ -92,7 +92,7 @@ public class Interface extends JFrame implements ActionListener {
             } else {
                 word += cadena[i];
             }
-        }
+        }*/
         mBarOper.add(mOper);
         mOper.setPreferredSize(new Dimension(150, 30));
         System.out.println("done");
