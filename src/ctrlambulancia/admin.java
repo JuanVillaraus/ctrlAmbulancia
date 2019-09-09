@@ -20,12 +20,14 @@ import javax.swing.*;
  */
 public class admin extends JPanel implements ActionListener {
 
+    JFrame window;
     ConxDB db;
     int idOper = 1;
     int idRadioOper = 1;
     int idParamedic = 1;
     JButton bInsert = new JButton("Agregar");
     JButton bDelete = new JButton("Eliminar");
+    JButton bConsult = new JButton("Consultar");
     String resultDB = null;
     JMenu mTipeJob = new JMenu("Opción");
     JMenu mOption = new JMenu("Opción");
@@ -43,8 +45,13 @@ public class admin extends JPanel implements ActionListener {
     JTextField tKmAmbulance = new JTextField(30);
     JTextField tId = new JTextField(10);
     JTextField alert = new JTextField(10);
+    JTextArea aConsult = new JTextArea("bla bla bla \n bla bla \n bla");
+    //JTable tConsult = new JTable(10,4);
+    //JScrollPane sConsult = new JScrollPane(tConsult, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+    JScrollPane sConsult = new JScrollPane(aConsult);
 
     public admin(JFrame window, ConxDB db) {
+        this.window = window;
         this.db = db;
         JMenuBar mBarOption = new JMenuBar();
         JMenuBar mBarTipeJob = new JMenuBar();
@@ -55,7 +62,6 @@ public class admin extends JPanel implements ActionListener {
         JMenuItem iParamedic = new JMenuItem("Paramedico");
         JMenuItem iRadioOper = new JMenuItem("Radio Operador");
         JMenuItem iAmbulance = new JMenuItem("Ambulancia");
-
         mOption.add(iInsert);
         mOption.add(iDelete);
         mOption.add(iConsult);
@@ -78,8 +84,10 @@ public class admin extends JPanel implements ActionListener {
         tKmAmbulance.setVisible(false);
         lId.setVisible(false);
         tId.setVisible(false);
+        sConsult.setVisible(false);
         bInsert.setVisible(false);
         bDelete.setVisible(false);
+        bConsult.setVisible(false);
         alert.setEditable(false);
         iInsert.addActionListener(this);
         iDelete.addActionListener(this);
@@ -93,6 +101,9 @@ public class admin extends JPanel implements ActionListener {
         mOption.setPreferredSize(new Dimension(330, 30));
         mTipeJob.setPreferredSize(new Dimension(330, 30));
         lId.setPreferredSize(new Dimension(60, 30));
+        aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+        //sc.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        //sc.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         JPanel pAlert = new JPanel(new GridLayout(1, 1));
         JPanel pOption = new JPanel(new GridLayout(1, 1));
@@ -120,13 +131,16 @@ public class admin extends JPanel implements ActionListener {
         this.add(lId);
         this.add(tId);
         this.add(bDelete);
+        //this.add(aConsult);
+        this.add(sConsult, BorderLayout.CENTER);
+        //this.add(bConsult);
         pAlert.add(alert);
         window.add(pAlert, BorderLayout.SOUTH);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Insert/ActionPerformed$ Event: " + e.getActionCommand());
+        //System.out.println("Admin/ActionPerformed$ Event: " + e.getActionCommand());
         if (e.getSource().getClass().getSimpleName().equals("JButton")) {
             switch (mOption.getText()) {
                 case "Agregar":
@@ -135,8 +149,8 @@ public class admin extends JPanel implements ActionListener {
                             if (tNumAmbulance.getText().equals("") || tKmAmbulance.getText().equals("")) {
                                 alert.setText("Deben llenarse todos los campos");
                                 alert.setBackground(Color.RED);
-                            }else{
-                                resultDB=db.insertAmbulance(idOper, Integer.parseInt(tNumAmbulance.getText()), Integer.parseInt(tKmAmbulance.getText()));
+                            } else {
+                                resultDB = db.insertAmbulance(idOper, Integer.parseInt(tNumAmbulance.getText()), Integer.parseInt(tKmAmbulance.getText()));
                                 if (resultDB.equals("successfully completed")) {
                                     alert.setText("La ambulancia con id:" + idOper + " ha sido agregada exitosamente");
                                     idOper++;
@@ -213,28 +227,50 @@ public class admin extends JPanel implements ActionListener {
                         alert.setText("Deben ingresar el ID");
                         alert.setBackground(Color.RED);
                     } else {
+                        resultDB = "";
                         switch (mTipeJob.getText()) {
                             case "Ambulancia":
+                                if (0 == JOptionPane.showConfirmDialog(null, "¿Esta seguro de eliminar a "
+                                        + db.consultAmbulance(Integer.valueOf(tId.getText())) + "?", "Alerta!",
+                                        JOptionPane.YES_NO_OPTION)) {
+                                    resultDB = db.deleteAmbulance(Integer.parseInt(tId.getText()));
+                                }
                                 break;
                             case "Operador":
+                                if (0 == JOptionPane.showConfirmDialog(null, "¿Esta seguro de eliminar a "
+                                        + db.consultOper(Integer.valueOf(tId.getText())) + "?", "Alerta!",
+                                        JOptionPane.YES_NO_OPTION)) {
                                     resultDB = db.deleteOper(Integer.parseInt(tId.getText()));
+                                }
                                 break;
                             case "Paramedico":
+                                if (0 == JOptionPane.showConfirmDialog(null, "¿Esta seguro de eliminar a "
+                                        + db.consultParamedic(Integer.valueOf(tId.getText())) + "?", "Alerta!",
+                                        JOptionPane.YES_NO_OPTION)) {
                                     resultDB = db.deleteParamedic(Integer.parseInt(tId.getText()));
+                                }
                                 break;
                             case "Radio Operador":
-                                resultDB = db.deleteRadioOper(Integer.parseInt(tId.getText()));
+                                if (0 == JOptionPane.showConfirmDialog(null, "¿Esta seguro de eliminar a "
+                                        + db.consultRadioOper(Integer.valueOf(tId.getText())) + "?", "Alerta!",
+                                        JOptionPane.YES_NO_OPTION)) {
+                                    resultDB = db.deleteRadioOper(Integer.parseInt(tId.getText()));
+                                }
                                 break;
                         }
                         switch (resultDB) {
                             case "successfully completed":
-                                alert.setText("El " + mTipeJob.getText() + " con ID:" + tId.getText() + " a sido eliminado exitosamente");
+                                alert.setText("El " + mTipeJob.getText() + " con ID:" + tId.getText()
+                                        + " a sido eliminado exitosamente");
                                 tId.setText(null);
                                 alert.setBackground(Color.GREEN);
                                 break;
                             case "not found":
-                                alert.setText("El " + mTipeJob.getText() + " con ID:" + tId.getText() + " no fue encontrado");
+                                alert.setText("El " + mTipeJob.getText() + " con ID:" + tId.getText()
+                                        + " no fue encontrado");
                                 alert.setBackground(Color.RED);
+                                break;
+                            case "":
                                 break;
                             default:
                                 alert.setText(resultDB);
@@ -265,6 +301,8 @@ public class admin extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     bDelete.setVisible(false);
+                    sConsult.setVisible(false);
+                    bConsult.setVisible(false);
                     break;
                 case "Eliminar":
                     mOption.setText(e.getActionCommand());
@@ -284,10 +322,13 @@ public class admin extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     bDelete.setVisible(false);
+                    sConsult.setVisible(false);
+                    bConsult.setVisible(false);
                     break;
                 case "Consultar":
                     mOption.setText(e.getActionCommand());
-                    mTipeJob.setVisible(false);
+                    mTipeJob.setText("Opición");
+                    mTipeJob.setVisible(true);
                     lName.setVisible(false);
                     tName.setVisible(false);
                     lLastName.setVisible(false);
@@ -302,6 +343,8 @@ public class admin extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     bDelete.setVisible(false);
+                    sConsult.setVisible(false);
+                    bConsult.setVisible(false);
                     break;
                 case "Ambulancia":
                     switch (mOption.getText()) {
@@ -320,6 +363,8 @@ public class admin extends JPanel implements ActionListener {
                             lId.setVisible(false);
                             tId.setVisible(false);
                             bDelete.setVisible(false);
+                            sConsult.setVisible(false);
+                            bConsult.setVisible(false);
                             break;
                         case "Eliminar":
                             lName.setVisible(false);
@@ -336,6 +381,29 @@ public class admin extends JPanel implements ActionListener {
                             lId.setVisible(true);
                             tId.setVisible(true);
                             bDelete.setVisible(true);
+                            sConsult.setVisible(false);
+                            bConsult.setVisible(false);
+                            break;
+                        case "Consultar":
+                            lName.setVisible(false);
+                            tName.setVisible(false);
+                            lLastName.setVisible(false);
+                            tLastName.setVisible(false);
+                            lLastName2.setVisible(false);
+                            tLastName2.setVisible(false);
+                            lNumAmbulance.setVisible(false);
+                            tNumAmbulance.setVisible(false);
+                            lKmAmbulance.setVisible(false);
+                            tKmAmbulance.setVisible(false);
+                            bInsert.setVisible(false);
+                            lId.setVisible(false);
+                            tId.setVisible(false);
+                            bDelete.setVisible(false);
+                            sConsult.setVisible(true);
+                            bConsult.setVisible(false);
+                            aConsult.setText("Ambulancia:\n"+db.consultAmbulance());
+                            aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+                            //sc.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                             break;
                     }
                     break;
@@ -358,6 +426,8 @@ public class admin extends JPanel implements ActionListener {
                             lId.setVisible(false);
                             tId.setVisible(false);
                             bDelete.setVisible(false);
+                            sConsult.setVisible(false);
+                            bConsult.setVisible(false);
                             break;
                         case "Eliminar":
                             lName.setVisible(false);
@@ -374,6 +444,27 @@ public class admin extends JPanel implements ActionListener {
                             lId.setVisible(true);
                             tId.setVisible(true);
                             bDelete.setVisible(true);
+                            sConsult.setVisible(false);
+                            bConsult.setVisible(false);
+                            break;
+                        case "Consultar":
+                            switch (e.getActionCommand()) {
+                                case "Operador":
+                                    sConsult.setVisible(true);
+                                    aConsult.setText("Operador:\n"+db.consultOper());
+                                    aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+                                    break;
+                                case "Paramedico":
+                                    sConsult.setVisible(true);
+                                    aConsult.setText("Paramedico:\n"+db.consultParamedic());
+                                    aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+                                    break;
+                                case "Radio Operador":
+                                    sConsult.setVisible(true);
+                                    aConsult.setText("Radio Operador:\n"+db.consultRadioOper());
+                                    aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+                                    break;
+                            }
                             break;
                     }
                     break;

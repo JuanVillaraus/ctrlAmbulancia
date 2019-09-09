@@ -38,7 +38,9 @@ public class Interface extends JFrame implements ActionListener {
     JTextField tParamedic = new JTextField(30);
     JTextField tApplicant = new JTextField(30);
     JTextField tTime = new JTextField(10);
+    JMenu mOper = new JMenu("Operador");
     int folio = 0;
+    ConxDB db = new ConxDB();
     //String[] data;
 
     public Interface() {
@@ -69,6 +71,31 @@ public class Interface extends JFrame implements ActionListener {
         JButton bAdmin = new JButton("Admin");
         tTime.setEditable(false);
         tTime.setHorizontalAlignment(JTextField.CENTER);
+        JMenuBar mBarOper = new JMenuBar();
+        String opers = db.consultOper();
+        int a = 0;
+        char[] cadena;
+        cadena = opers.toCharArray();
+        for (int i = 0; i < opers.length(); i++) {
+            if (cadena[i] == '\n') {
+                a++;
+            }
+        }
+        JMenuItem iOper[]=new JMenuItem[10];
+        String word = "";
+        a=0;
+        for (int i = 0; i < opers.length(); i++) {
+            if (cadena[i] == '\n') {
+                mOper.add(iOper[1]);
+                iOper[a].addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+        mBarOper.add(mOper);
+        mOper.setPreferredSize(new Dimension(150, 30));
+        System.out.println("done");
 
         bEmergency.addActionListener(this);
         bReport.addActionListener(this);
@@ -83,6 +110,7 @@ public class Interface extends JFrame implements ActionListener {
         mainPanel.add(tParamedicVoluntary);
         mainPanel.add(lOper);
         mainPanel.add(tOper);
+        mainPanel.add(mBarOper);
         mainPanel.add(lParamedic);
         mainPanel.add(tParamedic);
         mainPanel.add(lApplicant);
