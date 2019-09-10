@@ -135,7 +135,7 @@ public class ConxDB {
                 String num = rs.getString("NUMERO_AMBULANCIA");
                 String kmAmbulance = rs.getString("KM_AMBULANCIA");
 
-                resp += ("ID #" + id + "\tnumero de la ambulancia:" + num + "\tKm de la ambulancia:" + kmAmbulance + "\n");
+                resp += ("AB#" + id + " Numero:" + num + "  con " + kmAmbulance + "km recorridos\n");
             }
 
             rs.close();
@@ -145,6 +145,51 @@ public class ConxDB {
             System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
             return e.getMessage();
         }
+    }
+
+    public String consultAmbulanceNum() {
+        String resp = "";
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"AMBULANCIA\" "
+                    + "ORDER BY \"PK_ID_AMBULANCIA\" ASC;");
+            System.out.println("");
+            while (rs.next()) {
+                int id = rs.getInt("PK_ID_AMBULANCIA");
+                String num = rs.getString("NUMERO_AMBULANCIA");
+
+                resp += ("AB#" + id + " Numero:" + num + "\n");
+            }
+
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
+    public int consultAmbulanceKm(int id) {
+        int kmAmbulance = 0;
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"AMBULANCIA\" "
+                    + "WHERE \"PK_ID_AMBULANCIA\"= '" + id + "';");
+            System.out.println("");
+            while (rs.next()) {
+                kmAmbulance = rs.getInt("KM_AMBULANCIA");
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+        }
+        return kmAmbulance;
     }
 
     public String consultOper() {
@@ -162,7 +207,7 @@ public class ConxDB {
                 String lastName = rs.getString("APELLIDO_PATERNO_OPERADOR");
                 String lastName2 = rs.getString("APELLIDO_MATERNO_OPERADOR");
 
-                resp += ("#" + id + " " + nom + " " + lastName + " " + lastName2 + "\n");
+                resp += ("OP#" + id + " " + nom + " " + lastName + " " + lastName2 + "\n");
             }
 
             rs.close();
@@ -189,7 +234,7 @@ public class ConxDB {
                 String lastName = rs.getString("APELLIDO_PATERNO_RADIO_OPERADOR");
                 String lastName2 = rs.getString("APELLIDO_MATERNO_RADIO_OPERADOR");
 
-                resp += ("#" + id + " " + nom + " " + lastName + " " + lastName2 + "\n");
+                resp += ("RO#" + id + " " + nom + " " + lastName + " " + lastName2 + "\n");
             }
 
             rs.close();
@@ -216,7 +261,7 @@ public class ConxDB {
                 String lastName = rs.getString("APELLIDO_PATERNO_PARAMEDICO");
                 String lastName2 = rs.getString("APELLIDO_MATERNO_PARAMEDICO");
 
-                resp += ("#" + id + " " + nom + " " + lastName + " " + lastName2 + "\n");
+                resp += ("PM#" + id + " " + nom + " " + lastName + " " + lastName2 + "\n");
             }
 
             rs.close();
@@ -229,33 +274,32 @@ public class ConxDB {
     }
 
     /*public String consultOper() {
-        ArrayList<String> resp = new ArrayList<String>();
-        try {
-            Statement st = c.createStatement();
-            ResultSet rs = st.executeQuery(""
-                    + "SELECT * "
-                    + "FROM \"OPERADOR\" "
-                    + "ORDER BY \"PK_ID_OPERADOR\" ASC;");
-            System.out.println("");
-            while (rs.next()) {
-                int id = rs.getInt("PK_ID_OPERADOR");
-                String nom = rs.getString("NOMBRE_OPERADOR");
-                String lastName = rs.getString("APELLIDO_PATERNO_OPERADOR");
-                String lastName2 = rs.getString("APELLIDO_MATERNO_OPERADOR");
+     ArrayList<String> resp = new ArrayList<String>();
+     try {
+     Statement st = c.createStatement();
+     ResultSet rs = st.executeQuery(""
+     + "SELECT * "
+     + "FROM \"OPERADOR\" "
+     + "ORDER BY \"PK_ID_OPERADOR\" ASC;");
+     System.out.println("");
+     while (rs.next()) {
+     int id = rs.getInt("PK_ID_OPERADOR");
+     String nom = rs.getString("NOMBRE_OPERADOR");
+     String lastName = rs.getString("APELLIDO_PATERNO_OPERADOR");
+     String lastName2 = rs.getString("APELLIDO_MATERNO_OPERADOR");
 
-                resp.add("#" + id + " " + nom + " " + lastName + " " + lastName2);
-            }
+     resp.add("#" + id + " " + nom + " " + lastName + " " + lastName2);
+     }
 
-            rs.close();
-            st.close();
-            return resp;
-        } catch (Exception e) {
-            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
-            //return e.getMessage();
-        }
-        return resp;
-    }*/
-
+     rs.close();
+     st.close();
+     return resp;
+     } catch (Exception e) {
+     System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+     //return e.getMessage();
+     }
+     return resp;
+     }*/
     public String consultAmbulance(int id) {
         String resp = "Error";
         try {

@@ -35,10 +35,14 @@ public class Interface extends JFrame implements ActionListener {
     JTextField tOperVoluntary = new JTextField(30);
     JTextField tParamedicVoluntary = new JTextField(30);
     JTextField tOper = new JTextField(30);
+    JTextField tRadioOper = new JTextField(30);
     JTextField tParamedic = new JTextField(30);
     JTextField tApplicant = new JTextField(30);
     JTextField tTime = new JTextField(10);
-    JMenu mOper = new JMenu("Operador");
+    JMenu mOper = new JMenu("Elegir opción");
+    JMenu mRadioOper = new JMenu("Elegir opción");
+    JMenu mParamedic = new JMenu("Elegir opción");
+    JMenu mAmbulance = new JMenu("Elegir opción");
     int folio = 0;
     ConxDB db = new ConxDB();
     //String[] data;
@@ -64,6 +68,7 @@ public class Interface extends JFrame implements ActionListener {
         JLabel lOperVoluntary = new JLabel("Operador Voluntario");
         JLabel lParamedicVoluntary = new JLabel("Paramedico Voluntario");
         JLabel lOper = new JLabel("Operador");
+        JLabel lRadioOper = new JLabel("Radio Operador");
         JLabel lParamedic = new JLabel("Paramedico");
         JLabel lApplicant = new JLabel("Solicitante");
         JButton bEmergency = new JButton("Emergencia");
@@ -72,36 +77,28 @@ public class Interface extends JFrame implements ActionListener {
         tTime.setEditable(false);
         tTime.setHorizontalAlignment(JTextField.CENTER);
         JMenuBar mBarOper = new JMenuBar();
-        String opers = db.consultOper();
-        int a = 0;
-        char[] cadena;
-        cadena = opers.toCharArray();
-        for (int i = 0; i < opers.length(); i++) {
-            if (cadena[i] == '\n') {
-                a++;
-            }
-        }
-        /*JMenuItem iOper[]=new JMenuItem[10];//----------------------------------------------------------------------------------------------------
-        String word = "";
-        a=0;
-        for (int i = 0; i < opers.length(); i++) {
-            if (cadena[i] == '\n') {
-                mOper.add(iOper[1]);
-                iOper[a].addActionListener(this);
-                word = "";
-            } else {
-                word += cadena[i];
-            }
-        }*/
+        JMenuBar mBarRadioOper = new JMenuBar();
+        JMenuBar mBarParamedic = new JMenuBar();
+        JMenuBar mBarAmbulance = new JMenuBar();
+
+        menuUpdate();
         mBarOper.add(mOper);
-        mOper.setPreferredSize(new Dimension(150, 30));
-        System.out.println("done");
+        mBarRadioOper.add(mRadioOper);
+        mBarParamedic.add(mParamedic);
+        mBarAmbulance.add(mAmbulance);
+        mOper.setPreferredSize(new Dimension(330, 20));
+        mRadioOper.setPreferredSize(new Dimension(330, 20));
+        mParamedic.setPreferredSize(new Dimension(330, 20));
+        mAmbulance.setPreferredSize(new Dimension(330, 20));
+        tKmAmbulance.setEditable(false);
+        tKmAmbulance.setHorizontalAlignment((int) JTextField.CENTER_ALIGNMENT);
 
         bEmergency.addActionListener(this);
         bReport.addActionListener(this);
         bAdmin.addActionListener(this);
         mainPanel.add(lAmbulance);
-        mainPanel.add(tAmbulance);
+        //mainPanel.add(tAmbulance);
+        mainPanel.add(mBarAmbulance);
         mainPanel.add(lKmAmbulance);
         mainPanel.add(tKmAmbulance);
         mainPanel.add(lOperVoluntary);
@@ -109,10 +106,14 @@ public class Interface extends JFrame implements ActionListener {
         mainPanel.add(lParamedicVoluntary);
         mainPanel.add(tParamedicVoluntary);
         mainPanel.add(lOper);
-        mainPanel.add(tOper);
+        //mainPanel.add(tOper);
         mainPanel.add(mBarOper);
         mainPanel.add(lParamedic);
-        mainPanel.add(tParamedic);
+        //mainPanel.add(tParamedic);
+        mainPanel.add(mBarParamedic);
+        mainPanel.add(lRadioOper);
+        //mainPanel.add(tRadioOper);
+        mainPanel.add(mBarRadioOper);
         mainPanel.add(lApplicant);
         mainPanel.add(tApplicant);
         mainPanel.add(bEmergency);
@@ -123,24 +124,14 @@ public class Interface extends JFrame implements ActionListener {
         this.add(pTime, BorderLayout.SOUTH);
     }
 
-    /*@Override
-     public void run() {
-     this.addComponentListener(new ComponentAdapter() {
-     public void componentResized(ComponentEvent e) {
-     System.out.println(n+"\tSize Changed: "+ getWidth());
-     cD.setWindowX(getWidth());
-     n++;
-     }
-     });
-     }*/
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("event " + e.getActionCommand());
+        //System.out.println("event " + e.getActionCommand());
         switch (e.getActionCommand()) {
             case "Emergencia":
                 folio++;
-                String[] data = {String.valueOf(folio), tAmbulance.getText(), tKmAmbulance.getText(), tOperVoluntary.getText(),
-                    tParamedicVoluntary.getText(), tOper.getText(), tParamedic.getText(), tApplicant.getText()};
+                String[] data = {String.valueOf(folio), mAmbulance.getText(), tKmAmbulance.getText(), tOperVoluntary.getText(),
+                    tParamedicVoluntary.getText(), mOper.getText(), mParamedic.getText(), mRadioOper.getText(), tApplicant.getText()};
                 //System.out.println("Interface/ActionPerformed$data:\t" + data[0] + "\t" + data[1] + "\t" + data[2] + "\t" + data[3] + "\t" + data[4]);
                 emergency = new JFrame("Emergencia Folio:" + data[0]);
                 emergency.setSize(1600, 500);
@@ -154,7 +145,7 @@ public class Interface extends JFrame implements ActionListener {
                 Calendar calendario = new GregorianCalendar();
                 ctrTime cT = new ctrTime(time.format(calendario.getTime()), data[0]);
                 tabData tab = new tabData();
-                cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, data, tab);
+                cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, data, tab, db);
                 emergency.setLayout(new BorderLayout());
                 emergency.add(tab, BorderLayout.NORTH);
                 emergency.add(cD, BorderLayout.CENTER);
@@ -166,7 +157,7 @@ public class Interface extends JFrame implements ActionListener {
                 admin.setVisible(true);
                 admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
                         (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-                ConxDB db = new ConxDB(admin);
+                //ConxDB db = new ConxDB(admin);
                 //db = new ConxDB();
                 //admin ins = new admin(admin, db);
                 admin.add(new admin(admin, db));
@@ -174,6 +165,88 @@ public class Interface extends JFrame implements ActionListener {
             case "Reporte":
                 System.out.println("report");
                 break;
+            default:
+                char[] cadena = e.getActionCommand().toCharArray();
+                String command = "" + cadena[0] + cadena[1];
+                switch (command) {
+                    case "OP":
+                        mOper.setText(e.getActionCommand());
+                        break;
+                    case "RO":
+                        mRadioOper.setText(e.getActionCommand());
+                        break;
+                    case "PM":
+                        mParamedic.setText(e.getActionCommand());
+                        break;
+                    case "AB":
+                        String word = "";
+                        for (int i = 3; i < cadena.length; i++) {
+                            if (cadena[i] == ' ') {
+                                tKmAmbulance.setText(String.valueOf(db.consultAmbulanceKm(Integer.valueOf(word))));
+                                i=cadena.length;
+                            } else {
+                                word += cadena[i];
+                            }
+                        }                        
+                        mAmbulance.setText(e.getActionCommand());
+                        break;
+                }
+        }
+    }
+
+    public void menuUpdate() {
+        char[] cadena;
+        String employees = db.consultOper();
+        cadena = employees.toCharArray();
+        String word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mOper.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+        employees = db.consultRadioOper();
+        cadena = employees.toCharArray();
+        word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mRadioOper.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+        employees = db.consultParamedic();
+        cadena = employees.toCharArray();
+        word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mParamedic.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+        employees = db.consultAmbulanceNum();
+        cadena = employees.toCharArray();
+        word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mAmbulance.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ public class ctrData extends JPanel implements ActionListener {
     JFrame emergency;
     tabData tab;
     SimpleDateFormat time;
+    ConxDB db;
     int classTime = 1;
     JTextField tDir = new JTextField(30);
     JTextField tEntre = new JTextField(20);
@@ -57,6 +58,10 @@ public class ctrData extends JPanel implements ActionListener {
     JMenu mResultado = new JMenu("Resultado");
     JMenu mPriorityTransfer = new JMenu("Prioridad del traslado");
     JMenu mTransfer = new JMenu("Transferidos");
+    JMenu mOper = new JMenu();
+    JMenu mRadioOper = new JMenu();
+    JMenu mParamedic = new JMenu();
+    JMenu mAmbulance = new JMenu();
     ButtonGroup groupMult = new ButtonGroup();
     ButtonGroup groupSex = new ButtonGroup();
     int windowX = 0;
@@ -73,17 +78,21 @@ public class ctrData extends JPanel implements ActionListener {
         //ctrData(sTimeCall, windowX);
     }
 
-    public ctrData(String sTimeCall, int windowX, JFrame emergency, String[] data, tabData tab) {
+    public ctrData(String sTimeCall, int windowX, JFrame emergency, String[] data, tabData tab, ConxDB db) {
+        System.out.println("wondowX: "+windowX);
+        System.out.println("Jframe:  "+emergency.getWidth());
         this.windowX = windowX;
         this.emergency = emergency;
         this.tab = tab;
-        tAmbulance.setText(data[1]);
+        this.db = db;
+        mAmbulance.setText(data[1]);
         tKmDeparture.setText(data[2]);
         tOperVoluntary.setText(data[3]);
         tParamedicVoluntary.setText(data[4]);
-        tApplicant.setText(data[5]);
-        tOper.setText(data[5]);
-        tParamedic.setText(data[6]);
+        mOper.setText(data[5]);
+        mParamedic.setText(data[6]);
+        mRadioOper.setText(data[7]);
+        tApplicant.setText(data[8]);
         //this.sTimeCall = sTimeCall;
         //JPanel pDir = new JPanel(new GridLayout(3, 0));
         JPanel pDir = new JPanel();
@@ -138,6 +147,10 @@ public class ctrData extends JPanel implements ActionListener {
         JMenuBar mBarResultado = new JMenuBar();
         JMenuBar mBarPriorityTransfer = new JMenuBar();
         JMenuBar mBarTransfer = new JMenuBar();
+        JMenuBar mBarOper = new JMenuBar();
+        JMenuBar mBarRadioOper = new JMenuBar();
+        JMenuBar mBarParamedic = new JMenuBar();
+        JMenuBar mBarAmbulance = new JMenuBar();
         JMenuItem iFalseAlarm = new JMenuItem("Falsa alarma");
         JMenuItem iNoFound = new JMenuItem("No encontrado");
         JMenuItem iOtherTransfer = new JMenuItem("Tranf por tercero");
@@ -210,6 +223,16 @@ public class ctrData extends JPanel implements ActionListener {
         groupMult.add(multGroup);
         groupSex.add(sexM);
         groupSex.add(sexF);
+        menuUpdate();
+        mBarOper.add(mOper);
+        mBarRadioOper.add(mRadioOper);
+        mBarParamedic.add(mParamedic);
+        mBarAmbulance.add(mAmbulance);
+        mOper.setPreferredSize(new Dimension(200, 20));
+        mRadioOper.setPreferredSize(new Dimension(200, 20));
+        mParamedic.setPreferredSize(new Dimension(200, 20));
+        mAmbulance.setPreferredSize(new Dimension(200, 20));
+        tKmDeparture.setEditable(false);
 
         lDir.setPreferredSize(new Dimension(60, 50));
         //lRadioOper.setPreferredSize(new Dimension(120, 50));
@@ -306,7 +329,7 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(pDir);
 
         pTransfer.add(lRadioOper);
-        pTransfer.add(tRadioOper);
+        pTransfer.add(mBarRadioOper);
         pTransfer.add(lApplicant);
         pTransfer.add(tApplicant);
         pTransfer.add(lSpace0);
@@ -340,19 +363,19 @@ public class ctrData extends JPanel implements ActionListener {
         //this.add(tNumPatient);
         this.add(lSpace3);
         this.add(lAmbulance);
-        this.add(tAmbulance);
+        this.add(mBarAmbulance);
         this.add(lKmDeparture);
         this.add(tKmDeparture);
-        this.add(lKmComeback);
-        this.add(tKmComeback);
+        //this.add(lKmComeback);
+        //this.add(tKmComeback);
         this.add(lOperVoluntary);
         this.add(tOperVoluntary);
         this.add(lParamedicVoluntary);
         this.add(tParamedicVoluntary);
         this.add(lOper);
-        this.add(tOper);
+        this.add(mBarOper);
         this.add(lParamedic);
-        this.add(tParamedic);
+        this.add(mBarParamedic);
         this.add(lNote);
         this.add(tNote);
         pTimeAmbulance.add(bTime);
@@ -373,7 +396,9 @@ public class ctrData extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("event: " + e.getActionCommand() + " \t summoner: " + e.getSource().getClass().getSimpleName());
+        //System.out.println("event: " + e.getActionCommand() + " \t summoner: " + e.getSource().getClass().getSimpleName());
+        char[] cadena = e.getActionCommand().toCharArray();
+        String command = "" + cadena[0] + cadena[1];
         Calendar calendario = new GregorianCalendar();
         if (e.getSource().getClass().getSimpleName().equals("JRadioButton")) {
             switch (e.getActionCommand().toCharArray()[0]) {
@@ -457,6 +482,30 @@ public class ctrData extends JPanel implements ActionListener {
                     multSingle.setEnabled(true);
                     multGroup.setEnabled(true);
 
+                } else if (cadena[2] == '#') {
+                    switch (command) {
+                        case "AB":
+                            String word = "";
+                            for (int i = 3; i < cadena.length; i++) {
+                                if (cadena[i] == ' ') {
+                                    tKmDeparture.setText(String.valueOf(db.consultAmbulanceKm(Integer.valueOf(word))));
+                                    i = cadena.length;
+                                } else {
+                                    word += cadena[i];
+                                }
+                            }
+                            mAmbulance.setText(e.getActionCommand());
+                            break;
+                        case "OP":
+                            mOper.setText(e.getActionCommand());
+                            break;
+                        case "RO":
+                            mRadioOper.setText(e.getActionCommand());
+                            break;
+                        case "PM":
+                            mParamedic.setText(e.getActionCommand());
+                            break;
+                    }
                 } else {
                     mTransfer.setText(e.getActionCommand());
                 }
@@ -464,9 +513,14 @@ public class ctrData extends JPanel implements ActionListener {
                 bTime.setPreferredSize(new Dimension(windowX / 13, 30));
                 switch (classTime) {
                     case 1:
-                        tTimeDeparture.setText(time.format(calendario.getTime()));
-                        bTime.setText("Hora llegada");
-                        classTime++;
+                        System.out.println("\ttDir: " + tDir.getText());
+                        if (tDir.getText().equals("") || tCol.getText().equals("")) {
+                            JOptionPane.showMessageDialog(null, "La dirección y colonia son requisitos para que la ambulancia pueda salir");
+                        } else {
+                            tTimeDeparture.setText(time.format(calendario.getTime()));
+                            bTime.setText("Hora llegada");
+                            classTime++;
+                        }
                         break;
                     case 2:
                         tTimeArrival.setText(time.format(calendario.getTime()));
@@ -474,11 +528,24 @@ public class ctrData extends JPanel implements ActionListener {
                         classTime++;
                         break;
                     case 3:
-                        tTimeTransfer.setText(time.format(calendario.getTime()));
-                        bTime.setText("Hora hospital");
-                        classTime++;
-                        if (mTransfer.getText().equals("CRUZ ROJA") || mTransfer.getText().equals("Transferidos")) {
-                            classTime++;
+                        if (mResultado.getText().equals("Resultado")) {
+                            JOptionPane.showMessageDialog(null, "Se debe aclarar el resultado antes de poder retirarce del lugar");
+                        } else {
+                            if (mResultado.getText().equals("Traslado")) {
+                                if (mPriorityTransfer.getText().equals("Prioridad del traslado")
+                                        || mTransfer.getText().equals("Transferidos")) {
+                                    JOptionPane.showMessageDialog(null, "Se debe asignar una prioridad "
+                                            + "y el hospital donde será transferido antes de poder retirarce del lugar");
+                                } else {
+                                    tTimeTransfer.setText(time.format(calendario.getTime()));
+                                    bTime.setText("Hora hospital");
+                                    classTime++;
+                                }
+                            } else {
+                                tTimeTransfer.setText(time.format(calendario.getTime()));
+                                bTime.setText("Hora base");
+                                classTime += 2;
+                            }
                         }
                         break;
                     case 4:
@@ -507,6 +574,62 @@ public class ctrData extends JPanel implements ActionListener {
                         );
                         break;
                 }
+            }
+        }
+    }
+
+    public void menuUpdate() {
+        char[] cadena;
+        String employees = db.consultOper();
+        cadena = employees.toCharArray();
+        String word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mOper.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+        employees = db.consultRadioOper();
+        cadena = employees.toCharArray();
+        word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mRadioOper.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+        employees = db.consultParamedic();
+        cadena = employees.toCharArray();
+        word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mParamedic.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+        employees = db.consultAmbulanceNum();
+        cadena = employees.toCharArray();
+        word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mAmbulance.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
             }
         }
     }
