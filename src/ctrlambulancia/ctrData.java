@@ -79,8 +79,6 @@ public class ctrData extends JPanel implements ActionListener {
     }
 
     public ctrData(String sTimeCall, int windowX, JFrame emergency, String[] data, tabData tab, ConxDB db) {
-        System.out.println("wondowX: "+windowX);
-        System.out.println("Jframe:  "+emergency.getWidth());
         this.windowX = windowX;
         this.emergency = emergency;
         this.tab = tab;
@@ -136,7 +134,7 @@ public class ctrData extends JPanel implements ActionListener {
         JLabel lNumPatient = new JLabel("Numero de paciente CRM:");
         JLabel lAmbulance = new JLabel("Ambulancia:");
         JLabel lKmDeparture = new JLabel("Km salida:");
-        JLabel lKmComeback = new JLabel("Km llegada:");
+        //JLabel lKmComeback = new JLabel("Km llegada:");
         JLabel lOperVoluntary = new JLabel("Operador voluntario:");
         JLabel lParamedicVoluntary = new JLabel("Paramedico voluntario:");
         JLabel lOper = new JLabel("Operador:");
@@ -228,10 +226,10 @@ public class ctrData extends JPanel implements ActionListener {
         mBarRadioOper.add(mRadioOper);
         mBarParamedic.add(mParamedic);
         mBarAmbulance.add(mAmbulance);
-        mOper.setPreferredSize(new Dimension(200, 20));
-        mRadioOper.setPreferredSize(new Dimension(200, 20));
-        mParamedic.setPreferredSize(new Dimension(200, 20));
-        mAmbulance.setPreferredSize(new Dimension(200, 20));
+        mOper.setPreferredSize(new Dimension(250, 20));
+        mRadioOper.setPreferredSize(new Dimension(250, 20));
+        mParamedic.setPreferredSize(new Dimension(250, 20));
+        mAmbulance.setPreferredSize(new Dimension(150, 20));
         tKmDeparture.setEditable(false);
 
         lDir.setPreferredSize(new Dimension(60, 50));
@@ -248,7 +246,12 @@ public class ctrData extends JPanel implements ActionListener {
         lAgeOld.setPreferredSize(new Dimension(50, 50));
         lNamePatient.setPreferredSize(new Dimension(70, 50));
         lNumPatient.setPreferredSize(new Dimension(170, 50));
-        //lKmDeparture.setPreferredSize(new Dimension(70, 50));
+        lAmbulance.setPreferredSize(new Dimension(170, 50));
+        lKmDeparture.setPreferredSize(new Dimension(70, 50));
+        lOper.setPreferredSize(new Dimension(120, 50));
+        lParamedic.setPreferredSize(new Dimension(120, 50));
+        lOperVoluntary.setPreferredSize(new Dimension(170, 50));
+        lParamedicVoluntary.setPreferredSize(new Dimension(170, 50));
         lNote.setPreferredSize(new Dimension(100, 50));
         lDir.setHorizontalAlignment(SwingConstants.RIGHT);
         lRadioOper.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -260,7 +263,12 @@ public class ctrData extends JPanel implements ActionListener {
         lAgeOld.setHorizontalAlignment(SwingConstants.RIGHT);
         lNamePatient.setHorizontalAlignment(SwingConstants.RIGHT);
         lNumPatient.setHorizontalAlignment(SwingConstants.RIGHT);
-        //lKmDeparture.setHorizontalAlignment(SwingConstants.RIGHT);
+        lAmbulance.setHorizontalAlignment(SwingConstants.RIGHT);
+        lKmDeparture.setHorizontalAlignment(SwingConstants.RIGHT);
+        lOper.setHorizontalAlignment(SwingConstants.RIGHT);
+        lParamedic.setHorizontalAlignment(SwingConstants.RIGHT);
+        lOperVoluntary.setHorizontalAlignment(SwingConstants.RIGHT);
+        lParamedicVoluntary.setHorizontalAlignment(SwingConstants.RIGHT);
         lNote.setHorizontalAlignment(SwingConstants.RIGHT);
         //lPatient.setHorizontalAlignment(SwingConstants.RIGHT);
         multSingle.setEnabled(false);
@@ -361,21 +369,22 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(tLastName2Patient);
         //this.add(lNumPatient);
         //this.add(tNumPatient);
-        this.add(lSpace3);
+        this.add(lSpace2);
         this.add(lAmbulance);
         this.add(mBarAmbulance);
         this.add(lKmDeparture);
         this.add(tKmDeparture);
         //this.add(lKmComeback);
         //this.add(tKmComeback);
-        this.add(lOperVoluntary);
-        this.add(tOperVoluntary);
-        this.add(lParamedicVoluntary);
-        this.add(tParamedicVoluntary);
         this.add(lOper);
         this.add(mBarOper);
         this.add(lParamedic);
         this.add(mBarParamedic);
+        this.add(lSpace3);
+        this.add(lOperVoluntary);
+        this.add(tOperVoluntary);
+        this.add(lParamedicVoluntary);
+        this.add(tParamedicVoluntary);
         this.add(lNote);
         this.add(tNote);
         pTimeAmbulance.add(bTime);

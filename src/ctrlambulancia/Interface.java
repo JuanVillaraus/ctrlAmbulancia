@@ -126,7 +126,7 @@ public class Interface extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //System.out.println("event " + e.getActionCommand());
+        System.out.println("event " + e.getActionCommand());
         switch (e.getActionCommand()) {
             case "Emergencia":
                 folio++;
@@ -152,15 +152,32 @@ public class Interface extends JFrame implements ActionListener {
                 emergency.add(cT, BorderLayout.SOUTH);
                 break;
             case "Admin":
-                admin = new JFrame("Administrador");
-                admin.setSize(400, 500);
-                admin.setVisible(true);
-                admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
-                        (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-                //ConxDB db = new ConxDB(admin);
-                //db = new ConxDB();
-                //admin ins = new admin(admin, db);
-                admin.add(new admin(admin, db));
+                JPanel pPass = new JPanel();
+                JPasswordField tPass = new JPasswordField(12);
+                pPass.add(new JLabel("Password:"));
+                pPass.add(tPass);
+                //int pass = JOptionPane.showConfirmDialog(null, pPass);
+                //System.out.println("pass: "+String.valueOf(tPass.getPassword()));
+                String sPass = JOptionPane.showInputDialog("Escribe tu nombre");
+                System.out.println("pass: "+sPass);
+
+                /*JFrame fPass = new JFrame("Contraseña");
+                 fPass.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
+                 fPass.setSize(200, 200);
+                 fPass.setVisible(true);
+                 fPass.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - fPass.getWidth() / 2,
+                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - fPass.getHeight() / 2);
+                 fPass.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
+                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);*/
+                /*admin = new JFrame("Administrador");
+                 admin.setSize(400, 500);
+                 admin.setVisible(true);
+                 admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
+                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
+                 //ConxDB db = new ConxDB(admin);
+                 //db = new ConxDB();
+                 //admin ins = new admin(admin, db);
+                 admin.add(new admin(admin, db));*/
                 break;
             case "Reporte":
                 System.out.println("report");
@@ -183,11 +200,11 @@ public class Interface extends JFrame implements ActionListener {
                         for (int i = 3; i < cadena.length; i++) {
                             if (cadena[i] == ' ') {
                                 tKmAmbulance.setText(String.valueOf(db.consultAmbulanceKm(Integer.valueOf(word))));
-                                i=cadena.length;
+                                i = cadena.length;
                             } else {
                                 word += cadena[i];
                             }
-                        }                        
+                        }
                         mAmbulance.setText(e.getActionCommand());
                         break;
                 }

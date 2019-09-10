@@ -129,7 +129,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"AMBULANCIA\" "
                     + "ORDER BY \"PK_ID_AMBULANCIA\" ASC;");
-            System.out.println("");
             while (rs.next()) {
                 int id = rs.getInt("PK_ID_AMBULANCIA");
                 String num = rs.getString("NUMERO_AMBULANCIA");
@@ -155,7 +154,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"AMBULANCIA\" "
                     + "ORDER BY \"PK_ID_AMBULANCIA\" ASC;");
-            System.out.println("");
             while (rs.next()) {
                 int id = rs.getInt("PK_ID_AMBULANCIA");
                 String num = rs.getString("NUMERO_AMBULANCIA");
@@ -180,7 +178,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"AMBULANCIA\" "
                     + "WHERE \"PK_ID_AMBULANCIA\"= '" + id + "';");
-            System.out.println("");
             while (rs.next()) {
                 kmAmbulance = rs.getInt("KM_AMBULANCIA");
             }
@@ -200,7 +197,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"OPERADOR\" "
                     + "ORDER BY \"PK_ID_OPERADOR\" ASC;");
-            System.out.println("");
             while (rs.next()) {
                 int id = rs.getInt("PK_ID_OPERADOR");
                 String nom = rs.getString("NOMBRE_OPERADOR");
@@ -227,7 +223,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"RADIO_OPERADOR\" "
                     + "ORDER BY \"PK_ID_RADIO_OPERADOR\" ASC;");
-            System.out.println("");
             while (rs.next()) {
                 int id = rs.getInt("PK_ID_RADIO_OPERADOR");
                 String nom = rs.getString("NOMBRE_RADIO_OPERADOR");
@@ -254,7 +249,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"PARAMEDICO\" "
                     + "ORDER BY \"PK_ID_PARAMEDICO\" ASC;");
-            System.out.println("");
             while (rs.next()) {
                 int id = rs.getInt("PK_ID_PARAMEDICO");
                 String nom = rs.getString("NOMBRE_PARAMEDICO");
@@ -308,7 +302,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"AMBULANCIA\" "
                     + "WHERE \"PK_ID_AMBULANCIA\"= '" + id + "';");
-            System.out.println("");
             while (rs.next()) {
                 String num = rs.getString("NUMERO_AMBULANCIA");
                 String kmAmbulance = rs.getString("KM_AMBULANCIA");
@@ -333,7 +326,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"OPERADOR\" "
                     + "WHERE \"PK_ID_OPERADOR\"= '" + id + "';");
-            System.out.println("");
             while (rs.next()) {
                 //id = rs.getInt("PK_ID_OPERADOR");
                 String nom = rs.getString("NOMBRE_OPERADOR");
@@ -360,7 +352,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"RADIO_OPERADOR\" "
                     + "WHERE \"PK_ID_RADIO_OPERADOR\"= '" + id + "';");
-            System.out.println("");
             while (rs.next()) {
                 //id = rs.getInt("PK_ID_OPERADOR");
                 String nom = rs.getString("NOMBRE_RADIO_OPERADOR");
@@ -387,7 +378,6 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"PARAMEDICO\" "
                     + "WHERE \"PK_ID_PARAMEDICO\"= '" + id + "';");
-            System.out.println("");
             while (rs.next()) {
                 //id = rs.getInt("PK_ID_OPERADOR");
                 String nom = rs.getString("NOMBRE_PARAMEDICO");
