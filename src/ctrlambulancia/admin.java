@@ -21,10 +21,8 @@ import javax.swing.*;
 public class admin extends JPanel implements ActionListener {
 
     JFrame window;
+    //int window = 1200;
     ConxDB db;
-    int idOper = 1;
-    int idRadioOper = 1;
-    int idParamedic = 1;
     JButton bInsert = new JButton("Agregar");
     JButton bDelete = new JButton("Eliminar");
     JButton bConsult = new JButton("Consultar");
@@ -51,7 +49,7 @@ public class admin extends JPanel implements ActionListener {
     JScrollPane sConsult = new JScrollPane(aConsult);
 
     public admin(JFrame window, ConxDB db) {
-        this.window = window;
+        //this.window = window;
         this.db = db;
         JMenuBar mBarOption = new JMenuBar();
         JMenuBar mBarTipeJob = new JMenuBar();
@@ -102,6 +100,7 @@ public class admin extends JPanel implements ActionListener {
         mTipeJob.setPreferredSize(new Dimension(330, 30));
         lId.setPreferredSize(new Dimension(60, 30));
         aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+        //aConsult.setPreferredSize(new Dimension(window, 300));
         //sc.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         //sc.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -150,10 +149,9 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setText("Deben llenarse todos los campos");
                                 alert.setBackground(Color.RED);
                             } else {
-                                resultDB = db.insertAmbulance(idOper, Integer.parseInt(tNumAmbulance.getText()), Integer.parseInt(tKmAmbulance.getText()));
+                                resultDB = db.insertAmbulance(Integer.parseInt(tNumAmbulance.getText()), Integer.parseInt(tKmAmbulance.getText()));
                                 if (resultDB.equals("successfully completed")) {
-                                    alert.setText("La ambulancia con id:" + idOper + " ha sido agregada exitosamente");
-                                    idOper++;
+                                    alert.setText("La ambulancia ha sido agregada exitosamente");
                                     tNumAmbulance.setText(null);
                                     tKmAmbulance.setText(null);
                                     alert.setBackground(Color.GREEN);
@@ -168,10 +166,9 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setText("Deben llenarse todos los campos");
                                 alert.setBackground(Color.RED);
                             } else {
-                                resultDB = db.insertOper(idOper, tName.getText(), tLastName.getText(), tLastName2.getText());
+                                resultDB = db.insertOper(tName.getText(), tLastName.getText(), tLastName2.getText());
                                 if (resultDB.equals("successfully completed")) {
-                                    alert.setText("El operador con id:" + idOper + " ha sido agregado exitosamente");
-                                    idOper++;
+                                    alert.setText("El operador ha sido agregado exitosamente");
                                     tName.setText(null);
                                     tLastName.setText(null);
                                     tLastName2.setText(null);
@@ -187,10 +184,9 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setText("Deben llenarse todos los campos");
                                 alert.setBackground(Color.RED);
                             } else {
-                                resultDB = db.insertParamedic(idParamedic, tName.getText(), tLastName.getText(), tLastName2.getText());
+                                resultDB = db.insertParamedic(tName.getText(), tLastName.getText(), tLastName2.getText());
                                 if (resultDB.equals("successfully completed")) {
-                                    alert.setText("El paramedico con id:" + idParamedic + " ha sido agregado exitosamente");
-                                    idParamedic++;
+                                    alert.setText("El paramedico ha sido agregado exitosamente");
                                     tName.setText(null);
                                     tLastName.setText(null);
                                     tLastName2.setText(null);
@@ -206,10 +202,9 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setText("Deben llenarse todos los campos");
                                 alert.setBackground(Color.RED);
                             } else {
-                                resultDB = db.insertRadioOper(idRadioOper, tName.getText(), tLastName.getText(), tLastName2.getText());
+                                resultDB = db.insertRadioOper(tName.getText(), tLastName.getText(), tLastName2.getText());
                                 if (resultDB.equals("successfully completed")) {
-                                    alert.setText("El paramedico con id:" + idRadioOper + " ha sido agregado exitosamente");
-                                    idRadioOper++;
+                                    alert.setText("El paramedico ha sido agregado exitosamente");
                                     tName.setText(null);
                                     tLastName.setText(null);
                                     tLastName2.setText(null);
@@ -401,8 +396,9 @@ public class admin extends JPanel implements ActionListener {
                             bDelete.setVisible(false);
                             sConsult.setVisible(true);
                             bConsult.setVisible(false);
-                            aConsult.setText("Ambulancia:\n"+db.consultAmbulance());
+                            aConsult.setText("Ambulancia:\n" + db.consultAmbulance());
                             aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+                            //aConsult.setPreferredSize(new Dimension(window, 300));
                             //sc.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                             break;
                     }
@@ -451,18 +447,21 @@ public class admin extends JPanel implements ActionListener {
                             switch (e.getActionCommand()) {
                                 case "Operador":
                                     sConsult.setVisible(true);
-                                    aConsult.setText("Operador:\n"+db.consultOper());
+                                    aConsult.setText("Operador:\n" + db.consultOper());
                                     aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+                                    //aConsult.setPreferredSize(new Dimension(window, 300));
                                     break;
                                 case "Paramedico":
                                     sConsult.setVisible(true);
-                                    aConsult.setText("Paramedico:\n"+db.consultParamedic());
+                                    aConsult.setText("Paramedico:\n" + db.consultParamedic());
                                     aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+                                    //aConsult.setPreferredSize(new Dimension(window, 300));
                                     break;
                                 case "Radio Operador":
                                     sConsult.setVisible(true);
-                                    aConsult.setText("Radio Operador:\n"+db.consultRadioOper());
+                                    aConsult.setText("Radio Operador:\n" + db.consultRadioOper());
                                     aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+                                    //aConsult.setPreferredSize(new Dimension(window, 300));
                                     break;
                             }
                             break;

@@ -126,7 +126,7 @@ public class Interface extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("event " + e.getActionCommand());
+        //System.out.println("event " + e.getActionCommand());
         switch (e.getActionCommand()) {
             case "Emergencia":
                 folio++;
@@ -153,31 +153,25 @@ public class Interface extends JFrame implements ActionListener {
                 break;
             case "Admin":
                 JPanel pPass = new JPanel();
-                JPasswordField tPass = new JPasswordField(12);
-                pPass.add(new JLabel("Password:"));
+                JTextField tUser = new JTextField(8);
+                JPasswordField tPass = new JPasswordField(8);
+                pPass.add(new JLabel("User:"));
+                pPass.add(tUser);
+                pPass.add(new JLabel("Pass:"));
                 pPass.add(tPass);
-                //int pass = JOptionPane.showConfirmDialog(null, pPass);
-                //System.out.println("pass: "+String.valueOf(tPass.getPassword()));
-                String sPass = JOptionPane.showInputDialog("Escribe tu nombre");
-                System.out.println("pass: "+sPass);
-
-                /*JFrame fPass = new JFrame("Contraseña");
-                 fPass.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
-                 fPass.setSize(200, 200);
-                 fPass.setVisible(true);
-                 fPass.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - fPass.getWidth() / 2,
-                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - fPass.getHeight() / 2);
-                 fPass.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
-                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);*/
-                /*admin = new JFrame("Administrador");
-                 admin.setSize(400, 500);
-                 admin.setVisible(true);
-                 admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
-                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-                 //ConxDB db = new ConxDB(admin);
-                 //db = new ConxDB();
-                 //admin ins = new admin(admin, db);
-                 admin.add(new admin(admin, db));*/
+                if (0 == JOptionPane.showConfirmDialog(null, pPass, "login", JOptionPane.DEFAULT_OPTION)) {
+                    if(String.valueOf(tUser.getText()).equals(db.consultAdmin(String.valueOf(tPass.getPassword())))){
+                    admin = new JFrame("Administrador");
+                    admin.setSize(400, 500);
+                    admin.setVisible(true);
+                    admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
+                            (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
+                    admin.add(new admin(admin, db));
+                    //int p = JOptionPane.showConfirmDialog(null, new admin(db), "Admin",JOptionPane.DEFAULT_OPTION);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "El user o pass son incorrectos", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
                 break;
             case "Reporte":
                 System.out.println("report");
