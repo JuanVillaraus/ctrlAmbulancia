@@ -22,7 +22,7 @@ public class ConxDB {
         //System.out.println("ConxDB");
         try {
             Class.forName("org.postgresql.Driver");
-            this.c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/DBCtrlAmb", "postgres", "admin");
+            this.c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/CtrlAmbDB", "postgres", "admin");
             System.out.println("Opened database successfully");
         } catch (ClassNotFoundException | SQLException e) {
             //e.printStackTrace();
@@ -35,7 +35,7 @@ public class ConxDB {
         //System.out.println("ConxDB");
         try {
             Class.forName("org.postgresql.Driver");
-            this.c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/DBCtrlAmb", "postgres", "admin");
+            this.c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/CtrlAmbDB", "postgres", "admin");
             System.out.println("Opened database successfully");
         } catch (ClassNotFoundException | SQLException e) {
             //e.printStackTrace();
@@ -135,15 +135,54 @@ public class ConxDB {
         String query = "INSERT INTO \"PACIENTE\"(\"NOMBRE_PACIENTE\", \"APELLIDO_PATERNO_PACIENTE\", "
                 + "\"APELLIDO_MATERNO_PACIENTE\", \"EDAD_PACIENTE\", \"SEXO_PACIENTE\") VALUES(?, ?, ?, ?, ?)";
 
-        try (PreparedStatement pst = c.prepareStatement(query)) {
-
+        try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             pst.setString(1, name);
             pst.setString(2, lastName);
             pst.setString(3, lastName2);
             pst.setInt(4, ageOld);
             pst.setString(5, sex);
             pst.executeUpdate();
-            return ("successfully completed");
+            Long id = null;
+            ResultSet rs = pst.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            return ("PC#" + id);
+        } catch (SQLException ex) {
+            System.err.println("ConxDB/insertParamedic$\t" + ex.getClass().getName() + "\t" + ex.getMessage());
+            return (ex.getMessage());
+        }
+    }
+    
+    public String insertPatient(String name, String lastName, String lastName2, int ageOld, 
+            String sex, String trauma, String motivo, String padecimiento, String medicamento, 
+            String eventoPrevio, String obstetricoTipe, int obstetricoMonthes) {
+        String query = "INSERT INTO \"PACIENTE\"(\"NOMBRE_PACIENTE\", \"APELLIDO_PATERNO_PACIENTE\", "
+                + "\"APELLIDO_MATERNO_PACIENTE\", \"EDAD_PACIENTE\", \"SEXO_PACIENTE\", \"TIPO_TRAUMA_PACIENTE\", "
+                + "\"MOTIVO_ENFERMO_PACIENTE\", \"PADECIMIENTO_ENFERMO_PACIENTE\", \"MEDICAMENTO_ENFERMO_PACIENTE\", "
+                + "\"EVENTO_PREVIO_ENFERMO_PACIENTE\", \"TIPO_OBSTETRICO_PACIENTE\", \"MESES_OBSTETRICO_PACIENTE\") "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            pst.setString(1, name);
+            pst.setString(2, lastName);
+            pst.setString(3, lastName2);
+            pst.setInt(4, ageOld);
+            pst.setString(5, sex);
+            pst.setString(6, trauma);
+            pst.setString(7, motivo);
+            pst.setString(8, padecimiento);
+            pst.setString(9, medicamento);
+            pst.setString(10, eventoPrevio);
+            pst.setString(11, obstetricoTipe);
+            pst.setInt(12, obstetricoMonthes);
+            pst.executeUpdate();
+            Long id = null;
+            ResultSet rs = pst.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            return ("PC#" + id);
         } catch (SQLException ex) {
             System.err.println("ConxDB/insertParamedic$\t" + ex.getClass().getName() + "\t" + ex.getMessage());
             return (ex.getMessage());

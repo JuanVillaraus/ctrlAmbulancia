@@ -120,7 +120,7 @@ public class tabData extends JTabbedPane implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //System.out.println("event: "+e.getActionCommand() +" \t summoner: " +e.getSource().getClass().getSimpleName());
+        System.out.println("event: "+e.getActionCommand() +" \t summoner: " +e.getSource().getClass().getSimpleName());
         if (e.getSource().getClass().getSimpleName().toString().equals("JMenuItem")) {
             switch (e.getActionCommand().toCharArray()[0]) {
                 case 'E':

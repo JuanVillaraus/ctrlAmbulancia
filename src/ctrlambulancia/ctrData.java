@@ -66,6 +66,7 @@ public class ctrData extends JPanel implements ActionListener {
     ButtonGroup groupSex = new ButtonGroup();
     int windowX = 0;
     String sTimeCall;
+    String sex = "";
 
     public int getWindowX() {
         return windowX;
@@ -413,9 +414,11 @@ public class ctrData extends JPanel implements ActionListener {
             switch (e.getActionCommand().toCharArray()[0]) {
                 case 'M':
                     System.out.println("El sexo es: " + e.getActionCommand());
+                    sex = e.getActionCommand();
                     break;
                 case 'F':
                     System.out.println("El sexo es: " + e.getActionCommand());
+                    sex = e.getActionCommand();
                     break;
                 case 'G':
                     tAgeOld.setText(null);
@@ -568,7 +571,7 @@ public class ctrData extends JPanel implements ActionListener {
                         bTime.setEnabled(false);
                         emergency.dispose();
                         //System.out.println("ctrData/ActionPerformetñ$data tab: "+tab.mObstetrico.getText());
-                        System.out.println(
+                        /*System.out.println(
                                 "\tDir:" + tDir.getText()
                                 + "\n\tEntre:" + tEntre.getText()
                                 + "\n\ttRef:" + tRef.getText()
@@ -579,8 +582,13 @@ public class ctrData extends JPanel implements ActionListener {
                                 + "\n\tTimeArrival:" + tTimeArrival.getText()
                                 + "\n\tTimeTransfer:" + tTimeTransfer.getText()
                                 + "\n\tTimeHospital:" + tTimeHospital.getText()
-                                + "\n\tTimeComeback:" + tTimeComeback.getText()
-                        );
+                                + "\n\tTimeComeback:" + tTimeComeback.getText());*/
+                        String idPatient = db.insertPatient(tNamePatient.getText(), tLastNamePatient.getText(), 
+                                tLastName2Patient.getText(), Integer.valueOf(tAgeOld.getText()), sex, 
+                                tab.mTrauma.getText(), tab.tMotivo.getText(), tab.tPadecimiento.getText(), 
+                                tab.tMedicamento.getText(), tab.tEventoPrevio.getText(), tab.mObstetrico.getText(), 
+                                Integer.valueOf(tab.tObstetricoMonthes.getText()));
+                        System.out.println("id Paciente: "+idPatient);
                         break;
                 }
             }

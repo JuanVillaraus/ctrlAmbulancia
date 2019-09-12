@@ -49,7 +49,7 @@ public class admin extends JPanel implements ActionListener {
     JScrollPane sConsult = new JScrollPane(aConsult);
 
     public admin(JFrame window, ConxDB db) {
-        //this.window = window;
+        this.window = window;
         this.db = db;
         JMenuBar mBarOption = new JMenuBar();
         JMenuBar mBarTipeJob = new JMenuBar();

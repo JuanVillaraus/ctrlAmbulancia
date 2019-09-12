@@ -160,15 +160,16 @@ public class Interface extends JFrame implements ActionListener {
                 pPass.add(new JLabel("Pass:"));
                 pPass.add(tPass);
                 if (0 == JOptionPane.showConfirmDialog(null, pPass, "login", JOptionPane.DEFAULT_OPTION)) {
-                    if(String.valueOf(tUser.getText()).equals(db.consultAdmin(String.valueOf(tPass.getPassword())))){
-                    admin = new JFrame("Administrador");
-                    admin.setSize(400, 500);
-                    admin.setVisible(true);
-                    admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
-                            (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-                    admin.add(new admin(admin, db));
-                    //int p = JOptionPane.showConfirmDialog(null, new admin(db), "Admin",JOptionPane.DEFAULT_OPTION);
-                    }else{
+                    if (String.valueOf(tUser.getText()).equals(db.consultAdmin(String.valueOf(tPass.getPassword())))) {
+                        admin = new JFrame("Administrador");
+                        admin.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
+                        admin.setSize(400, 500);
+                        admin.setVisible(true);
+                        admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
+                                (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
+                        admin.add(new admin(admin, db));
+                        //int p = JOptionPane.showConfirmDialog(null, new admin(db), "Admin",JOptionPane.DEFAULT_OPTION);
+                    } else {
                         JOptionPane.showMessageDialog(null, "El user o pass son incorrectos", "ERROR", JOptionPane.WARNING_MESSAGE);
                     }
                 }
