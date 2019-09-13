@@ -153,12 +153,12 @@ public class ConxDB {
             return (ex.getMessage());
         }
     }
-    
-    public String insertPatient(String name, String lastName, String lastName2, int ageOld, 
-            String sex, String trauma, String motivo, String padecimiento, String medicamento, 
+
+    public String insertPatient(String name, String lastName, String lastName2, int ageOld,
+            String sex, String trauma, String motivo, String padecimiento, String medicamento,
             String eventoPrevio, String obstetricoTipe, int obstetricoMonthes) {
         String query = "INSERT INTO \"PACIENTE\"(\"NOMBRE_PACIENTE\", \"APELLIDO_PATERNO_PACIENTE\", "
-                + "\"APELLIDO_MATERNO_PACIENTE\", \"EDAD_PACIENTE\", \"SEXO_PACIENTE\", \"TIPO_TRAUMA_PACIENTE\", "
+                + "\"APELLIDO_MATERNO_PACIENTE\", \"EDAD_PACIENTE\", \"SEXO_PACIENTE\", \"TRAUMA_TIPO_PACIENTE\", "
                 + "\"MOTIVO_ENFERMO_PACIENTE\", \"PADECIMIENTO_ENFERMO_PACIENTE\", \"MEDICAMENTO_ENFERMO_PACIENTE\", "
                 + "\"EVENTO_PREVIO_ENFERMO_PACIENTE\", \"TIPO_OBSTETRICO_PACIENTE\", \"MESES_OBSTETRICO_PACIENTE\") "
                 + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -184,7 +184,46 @@ public class ConxDB {
             }
             return ("PC#" + id);
         } catch (SQLException ex) {
-            System.err.println("ConxDB/insertParamedic$\t" + ex.getClass().getName() + "\t" + ex.getMessage());
+            System.err.println("ConxDB/insertPatient$\t" + ex.getClass().getName() + "\t" + ex.getMessage());
+            return (ex.getMessage());
+        }
+    }
+
+    public String insertEmergencyReport(String dir, String entre, String ref, String col, String del, String nameApplicant,
+            String resultado, String transfer, int priorityTransfer, String hospTransfer, int alive, int deads, int idPatient,
+            int idParamedic, int idOper, int idAmbulance, int idRadioOper, String operVoluntary, String paramedicVoluntary, String timeCall) {
+        String query = "INSERT INTO \"EMERGENCIA\"(\"DIR_EMERGENCIA\", \"ENTRE_EMERGENCIA\", \"REF_EMERGENCIA\", \"COL_EMERGENCIA\", "
+                + "\"DEL_EMERGENCIA\", \"NOMBRE_SOLICITANTE_EMERGENCIA\", \"RESULTADO_EMERGENCIA\", \"TRASLADO_EMERGENCIA\", "
+                + "\"PRIORIDAD_TRASLADO_EMERGENCIA\", \"HOSP_TRASLADO_EMERGENCIA\", \"NUMERO_PACIENTES_EMERGENCIA\", \"NUMERO_MUERTOS_EMERGENCIA\", "
+                + "\"ID_PACIENTE_EMERGENCIA\", \"ID_PARAMEDICO_EMERGENCIA\", \"ID_OPERADOR_EMERGENCIA\", \"ID_AMBULANCIA_EMERGENCIA\", "
+                + "\"ID_RADIO_OPERADOR_EMERGENCIA\", \"OPERADOR_VOLUNTARIO_EMERGENCIA\", \"PARAMEDICO_VOLUNTARIO_EMERGENCIA\", \"HORA_LLAMADA_EMERGENCIA\") "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pst = c.prepareStatement(query)) {
+
+            pst.setString(1, dir);
+            pst.setString(2, entre);
+            pst.setString(3, ref);
+            pst.setString(4, col);
+            pst.setString(5, del);
+            pst.setString(6, nameApplicant);
+            pst.setString(7, resultado);
+            pst.setString(8, transfer);
+            pst.setInt(9, priorityTransfer);
+            pst.setString(10, hospTransfer);
+            pst.setInt(11, alive);
+            pst.setInt(12, deads);
+            pst.setInt(13, idPatient);
+            pst.setInt(14, idParamedic);
+            pst.setInt(15, idOper);
+            pst.setInt(16, idAmbulance);
+            pst.setInt(17, idRadioOper);
+            pst.setString(18, operVoluntary);
+            pst.setString(19, paramedicVoluntary);
+            pst.setTimestamp(20, Timestamp.valueOf(timeCall));
+            pst.executeUpdate();
+            return ("successfully completed");
+        } catch (SQLException ex) {
+            System.err.println("ConxDB/insertEmergencyReport$\t" + ex.getClass().getName() + "\t" + ex.getMessage());
             return (ex.getMessage());
         }
     }
@@ -507,6 +546,46 @@ public class ConxDB {
         }
     }
 
+    public String consultPatientAll() {
+        String resp = "";
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"PACIENTE\" "
+                    + "ORDER BY \"PK_ID_PACIENTE\" ASC;");
+            while (rs.next()) {
+                int id = rs.getInt("PK_ID_PACIENTE");
+                String nom = rs.getString("NOMBRE_PACIENTE");
+                String lastName = rs.getString("APELLIDO_PATERNO_PACIENTE");
+                String lastName2 = rs.getString("APELLIDO_MATERNO_PACIENTE");
+                int ageOld = rs.getInt("EDAD_PACIENTE");
+                String sex = rs.getString("SEXO_PACIENTE");
+                String trauma = rs.getString("TRAUMA_TIPO_PACIENTE");
+                String motivo = rs.getString("MOTIVO_ENFERMO_PACIENTE");
+                String padecimiento = rs.getString("PADECIMIENTO_ENFERMO_PACIENTE");
+                String medicamento = rs.getString("MEDICAMENTO_ENFERMO_PACIENTE");
+                String eventoPrevio = rs.getString("EVENTO_PREVIO_ENFERMO_PACIENTE");
+                String obstetrico = rs.getString("TIPO_OBSTETRICO_PACIENTE");
+                String obstetricoMonthes = rs.getString("MESES_OBSTETRICO_PACIENTE");
+
+                resp += ("[PC#" + id + "]\nNombre: " + nom + " " + lastName + " " + lastName2 + "\n"
+                        + "Edad: " + ageOld + " años \t\tSexo: " + sex + "\n"
+                        + "trauma: " + trauma + "\n"
+                        + "ENFERMO motivo: " + motivo + "\t\tpadecimiento: " + padecimiento + "\n"
+                        + "medicamento: " + medicamento + "\t\tevento previo: " + eventoPrevio + "\n"
+                        + "OBTETRICO tipo: " + obstetrico + "\t\tmeses: " + obstetricoMonthes + "\n\n");
+            }
+
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
     public String deleteAmbulance(int id) {
         String SQL = "DELETE FROM \"AMBULANCIA\" WHERE \"PK_ID_AMBULANCIA\" = ?";
         try (PreparedStatement pstmt = c.prepareStatement(SQL)) {
@@ -562,7 +641,7 @@ public class ConxDB {
             return (ex.getMessage());
         }
     }
-    
+
     public String deletePatient(int id) {
         String SQL = "DELETE FROM \"PACIENTE\" WHERE \"PK_ID_PACIENTE\" = ?";
         try (PreparedStatement pstmt = c.prepareStatement(SQL)) {
