@@ -141,7 +141,7 @@ public class Interface extends JFrame implements ActionListener {
                 emergency.setExtendedState(MAXIMIZED_BOTH);
                 emergency.setVisible(true);
                 emergency.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
-                time = new SimpleDateFormat("hh:mm:ss");
+                time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 Calendar calendario = new GregorianCalendar();
                 ctrTime cT = new ctrTime(time.format(calendario.getTime()), data[0]);
                 tabData tab = new tabData();

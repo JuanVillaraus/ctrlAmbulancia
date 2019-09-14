@@ -19,7 +19,8 @@ public class ctrData extends JPanel implements ActionListener {
 
     JFrame emergency;
     tabData tab;
-    SimpleDateFormat time;
+    SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
+    SimpleDateFormat timeFull = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     ConxDB db;
     int classTime = 1;
     JTextField tDir = new JTextField(30);
@@ -30,12 +31,6 @@ public class ctrData extends JPanel implements ActionListener {
     JTextField tRadioOper = new JTextField(20);
     JTextField tApplicant = new JTextField(20);
     JTextField tNumPatient = new JTextField(5);
-    JTextField tTimeCall = new JTextField(8);
-    JTextField tTimeDeparture = new JTextField(8);
-    JTextField tTimeArrival = new JTextField(8);
-    JTextField tTimeTransfer = new JTextField(8);
-    JTextField tTimeHospital = new JTextField(8);
-    JTextField tTimeComeback = new JTextField(8);
     JTextField tAlive = new JTextField(5);
     JTextField tDeads = new JTextField(5);
     JTextField tAgeOld = new JTextField(5);
@@ -50,6 +45,12 @@ public class ctrData extends JPanel implements ActionListener {
     JTextField tParamedicVoluntary = new JTextField(17);
     JTextField tOper = new JTextField(17);
     JTextField tParamedic = new JTextField(17);
+    JTextField tTimeCall = new JTextField(8);
+    JTextField tTimeDeparture = new JTextField(8);
+    JTextField tTimeArrival = new JTextField(8);
+    JTextField tTimeTransfer = new JTextField(8);
+    JTextField tTimeHospital = new JTextField(8);
+    JTextField tTimeComeback = new JTextField(8);
     JRadioButton multSingle = new JRadioButton("Individual", false);
     JRadioButton multGroup = new JRadioButton("Grupal", false);
     JRadioButton sexM = new JRadioButton("M", false);
@@ -67,6 +68,13 @@ public class ctrData extends JPanel implements ActionListener {
     int windowX = 0;
     String sTimeCall;
     String sex = "";
+    String timeCall ="";
+    String timeDeparture ="";
+    String timeArrival ="";
+    String timeTransfer ="";
+    String timeHospital ="";
+    String timeComeback ="";
+    char[] cadena;
 
     public int getWindowX() {
         return windowX;
@@ -79,7 +87,8 @@ public class ctrData extends JPanel implements ActionListener {
         //ctrData(sTimeCall, windowX);
     }
 
-    public ctrData(String sTimeCall, int windowX, JFrame emergency, String[] data, tabData tab, ConxDB db) {
+    public ctrData(String sTimeCall, int windowX, JFrame emergency, String[] data, tabData tab, ConxDB db) {        
+        this.timeCall = sTimeCall;
         this.windowX = windowX;
         this.emergency = emergency;
         this.tab = tab;
@@ -92,19 +101,15 @@ public class ctrData extends JPanel implements ActionListener {
         mParamedic.setText(data[6]);
         mRadioOper.setText(data[7]);
         tApplicant.setText(data[8]);
-        //this.sTimeCall = sTimeCall;
-        //JPanel pDir = new JPanel(new GridLayout(3, 0));
         JPanel pDir = new JPanel();
         JPanel pTransfer = new JPanel();
         JPanel pTimeAmbulance = new JPanel(new GridLayout(1, 13));
-        //JPanel pTimeAmbulance = new JPanel();
-        //JPanel pPatient = new JPanel();
         pTimeAmbulance.setBackground(Color.cyan);
-        //pTimeAmbulance.setLayout(new GridLayout(1,8));
-        //pTimeAmbulance.setLayout(new GridLayout(1,8));
-        //pTimeAmbulance.setPreferredSize(new Dimension(1600, 30));
-
-        time = new SimpleDateFormat("hh:mm:ss");
+        cadena = timeCall.toCharArray();
+        sTimeCall = "";
+        for (int i = 11; i < cadena.length; i++) {
+            sTimeCall += cadena[i];
+        }
 
         JLabel lSpace0 = new JLabel("");
         JLabel lSpace1 = new JLabel("");
@@ -525,16 +530,17 @@ public class ctrData extends JPanel implements ActionListener {
                 bTime.setPreferredSize(new Dimension(windowX / 13, 30));
                 switch (classTime) {
                     case 1:
-                        System.out.println("\ttDir: " + tDir.getText());
                         if (tDir.getText().equals("") || tCol.getText().equals("")) {
                             JOptionPane.showMessageDialog(null, "La dirección y colonia son requisitos para que la ambulancia pueda salir");
                         } else {
+                            timeDeparture = timeFull.format(calendario.getTime());
                             tTimeDeparture.setText(time.format(calendario.getTime()));
                             bTime.setText("Hora llegada");
                             classTime++;
                         }
                         break;
                     case 2:
+                        timeArrival = timeFull.format(calendario.getTime());
                         tTimeArrival.setText(time.format(calendario.getTime()));
                         bTime.setText("Hora traslado");
                         classTime++;
@@ -549,11 +555,13 @@ public class ctrData extends JPanel implements ActionListener {
                                     JOptionPane.showMessageDialog(null, "Se debe asignar una prioridad "
                                             + "y el hospital donde será transferido antes de poder retirarce del lugar");
                                 } else {
+                                    timeTransfer = timeFull.format(calendario.getTime());
                                     tTimeTransfer.setText(time.format(calendario.getTime()));
                                     bTime.setText("Hora hospital");
                                     classTime++;
                                 }
                             } else {
+                                timeTransfer = timeFull.format(calendario.getTime());
                                 tTimeTransfer.setText(time.format(calendario.getTime()));
                                 bTime.setText("Hora base");
                                 classTime += 2;
@@ -561,28 +569,17 @@ public class ctrData extends JPanel implements ActionListener {
                         }
                         break;
                     case 4:
+                        timeHospital = timeFull.format(calendario.getTime());
                         tTimeHospital.setText(time.format(calendario.getTime()));
                         bTime.setText("Hora base");
                         classTime++;
                         break;
                     case 5:
+                        timeComeback = timeFull.format(calendario.getTime());
                         tTimeComeback.setText(time.format(calendario.getTime()));
                         bTime.setText("Hora");
                         bTime.setEnabled(false);
                         emergency.dispose();
-                        //System.out.println("ctrData/ActionPerformetñ$data tab: "+tab.mObstetrico.getText());
-                        /*System.out.println(
-                                "\tDir:" + tDir.getText()
-                                + "\n\tEntre:" + tEntre.getText()
-                                + "\n\ttRef:" + tRef.getText()
-                                + "\n\tCol:" + tCol.getText()
-                                + "\n\tDel:" + tDel.getText()
-                                + "\n\tTimeCall:" + tTimeCall.getText()
-                                + "\n\tTimeDeparture:" + tTimeDeparture.getText()
-                                + "\n\tTimeArrival:" + tTimeArrival.getText()
-                                + "\n\tTimeTransfer:" + tTimeTransfer.getText()
-                                + "\n\tTimeHospital:" + tTimeHospital.getText()
-                                + "\n\tTimeComeback:" + tTimeComeback.getText());*/
                         String idPatient = db.insertPatient(tNamePatient.getText(), tLastNamePatient.getText(), 
                                 tLastName2Patient.getText(), Integer.valueOf(tAgeOld.getText()), sex, 
                                 tab.mTrauma.getText(), tab.tMotivo.getText(), tab.tPadecimiento.getText(), 

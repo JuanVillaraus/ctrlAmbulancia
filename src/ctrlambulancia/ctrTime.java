@@ -21,9 +21,9 @@ public class ctrTime extends JPanel {
 
     Calendar calendario = new GregorianCalendar();
     SimpleDateFormat date;
-        JTextField tFolio = new JTextField(10);
+    JTextField tFolio = new JTextField(10);
 
-    public ctrTime(String sTimeCall,String folio) {
+    public ctrTime(String sTimeCall, String folio) {
         tFolio.setText(folio);
         RealTime rt = new RealTime();
         JLabel lDate = new JLabel("Fecha:");
@@ -36,6 +36,11 @@ public class ctrTime extends JPanel {
         JTextField tTimeCall = new JTextField(10);
         date = new SimpleDateFormat("dd MMMM yyyy");
         tDate.setText(date.format(calendario.getTime()));
+        char[] cadena = sTimeCall.toCharArray();
+        sTimeCall = "";
+        for (int i = 11; i < cadena.length; i++) {
+            sTimeCall += cadena[i];
+        }
         tTime.setText(sTimeCall);
         tTimeCall.setText(sTimeCall);
         tDate.setEditable(false);
@@ -58,7 +63,7 @@ public class ctrTime extends JPanel {
         this.add(tTimeCall);
         this.add(lFolio);
         this.add(tFolio);
-        setLayout(new GridLayout(1,8));
+        setLayout(new GridLayout(1, 8));
         rt.start();
     }
 }

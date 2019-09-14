@@ -397,7 +397,6 @@ public class ConxDB {
                     + "FROM \"OPERADOR\" "
                     + "WHERE \"PK_ID_OPERADOR\"= '" + id + "';");
             while (rs.next()) {
-                //id = rs.getInt("PK_ID_OPERADOR");
                 String nom = rs.getString("NOMBRE_OPERADOR");
                 String lastName = rs.getString("APELLIDO_PATERNO_OPERADOR");
                 String lastName2 = rs.getString("APELLIDO_MATERNO_OPERADOR");
@@ -449,7 +448,6 @@ public class ConxDB {
                     + "FROM \"RADIO_OPERADOR\" "
                     + "WHERE \"PK_ID_RADIO_OPERADOR\"= '" + id + "';");
             while (rs.next()) {
-                //id = rs.getInt("PK_ID_OPERADOR");
                 String nom = rs.getString("NOMBRE_RADIO_OPERADOR");
                 String lastName = rs.getString("APELLIDO_PATERNO_RADIO_OPERADOR");
                 String lastName2 = rs.getString("APELLIDO_MATERNO_RADIO_OPERADOR");
@@ -501,7 +499,6 @@ public class ConxDB {
                     + "FROM \"PARAMEDICO\" "
                     + "WHERE \"PK_ID_PARAMEDICO\"= '" + id + "';");
             while (rs.next()) {
-                //id = rs.getInt("PK_ID_OPERADOR");
                 String nom = rs.getString("NOMBRE_PARAMEDICO");
                 String lastName = rs.getString("APELLIDO_PATERNO_PARAMEDICO");
                 String lastName2 = rs.getString("APELLIDO_MATERNO_PARAMEDICO");
@@ -582,6 +579,200 @@ public class ConxDB {
             return resp;
         } catch (Exception e) {
             System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
+    public String consultPatient(int id) {
+        String resp = "Error";
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"PACIENTE\" "
+                    + "WHERE \"PK_ID_PACIENTE\"= '" + id + "';");
+            while (rs.next()) {
+                String nom = rs.getString("NOMBRE_PACIENTE");
+                String lastName = rs.getString("APELLIDO_PATERNO_PACIENTE");
+                String lastName2 = rs.getString("APELLIDO_MATERNO_PACIENTE");
+                int ageOld = rs.getInt("EDAD_PACIENTE");
+                String sex = rs.getString("SEXO_PACIENTE");
+                String trauma = rs.getString("TRAUMA_TIPO_PACIENTE");
+                String motivo = rs.getString("MOTIVO_ENFERMO_PACIENTE");
+                String padecimiento = rs.getString("PADECIMIENTO_ENFERMO_PACIENTE");
+                String medicamento = rs.getString("MEDICAMENTO_ENFERMO_PACIENTE");
+                String eventoPrevio = rs.getString("EVENTO_PREVIO_ENFERMO_PACIENTE");
+                String obstetrico = rs.getString("TIPO_OBSTETRICO_PACIENTE");
+                String obstetricoMonthes = rs.getString("MESES_OBSTETRICO_PACIENTE");
+
+                resp += ("[PC#" + id + "]\nNombre: " + nom + " " + lastName + " " + lastName2 + "\n"
+                        + "Edad: " + ageOld + " años \t\tSexo: " + sex + "\n"
+                        + "trauma: " + trauma + "\n"
+                        + "ENFERMO motivo: " + motivo + "\t\tpadecimiento: " + padecimiento + "\n"
+                        + "medicamento: " + medicamento + "\t\tevento previo: " + eventoPrevio + "\n"
+                        + "OBTETRICO tipo: " + obstetrico + "\t\tmeses: " + obstetricoMonthes + "\n\n");
+            }
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
+    public String consultEmergency(int idEmergency) {
+        String resp = "Error";
+        String namePatient = "";
+        String nameParamedic = "";
+        String nameOper = "";
+        String nameRadioOper = "";
+        String numAmbulance = "";
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"EMERGENCIA\" "
+                    + "WHERE \"PK_ID_EMERGENCIA\"= '" + idEmergency + "';");
+            while (rs.next()) {
+                String dir = rs.getString("DIR_EMERGENCIA");
+                String entre = rs.getString("ENTRE_EMERGENCIA");
+                String ref = rs.getString("REF_EMERGENCIA");
+                String col = rs.getString("COL_EMERGENCIA");
+                String del = rs.getString("DEL_EMERGENCIA");
+                String nameApplicant = rs.getString("NOMBRE_SOLICITANTE_EMERGENCIA");
+                String resultado = rs.getString("RESULTADO_EMERGENCIA");
+                String transfer = rs.getString("TRASLADO_EMERGENCIA");
+                int priorityTransfer = rs.getInt("PRIORIDAD_TRASLADO_EMERGENCIA");
+                String hospTransfer = rs.getString("HOSP_TRASLADO_EMERGENCIA");
+                int alive = rs.getInt("NUMERO_PACIENTES_EMERGENCIA");
+                int deads = rs.getInt("NUMERO_MUERTOS_EMERGENCIA");
+                int idPatient = rs.getInt("ID_PACIENTE_EMERGENCIA");
+                int idParamedic = rs.getInt("ID_PARAMEDICO_EMERGENCIA");
+                int idOper = rs.getInt("ID_OPERADOR_EMERGENCIA");
+                int idAmbulance = rs.getInt("ID_AMBULANCIA_EMERGENCIA");
+                int idRadioOper = rs.getInt("ID_RADIO_OPERADOR_EMERGENCIA");
+                String operVoluntary = rs.getString("OPERADOR_VOLUNTARIO_EMERGENCIA");
+                String paramedicVoluntary = rs.getString("PARAMEDICO_VOLUNTARIO_EMERGENCIA");
+                String timeCall = rs.getString("HORA_LLAMADA_EMERGENCIA");
+
+                try {
+                    Statement stPatient = c.createStatement();
+                    ResultSet rsPatient = stPatient.executeQuery(""
+                            + "SELECT \"NOMBRE_PACIENTE\",\"APELLIDO_PATERNO_PACIENTE\",\"APELLIDO_MATERNO_PACIENTE\" "
+                            + "FROM \"EMERGENCIA\", \"PACIENTE\""
+                            + "WHERE \"PK_ID_PACIENTE\"= '" + idPatient + "';");
+                    while (rsPatient.next()) {
+                        namePatient = rsPatient.getString("NOMBRE_PACIENTE") + " "
+                                + rsPatient.getString("APELLIDO_PATERNO_PACIENTE") + " "
+                                + rsPatient.getString("APELLIDO_MATERNO_PACIENTE");
+                    }
+
+                    rsPatient.close();
+                    stPatient.close();
+                } catch (Exception e) {
+                    System.err.println("ConxDB/ConsultaEmergency/patient$\t" + e.getClass().getName() + "\t" + e.getMessage());
+                    return e.getMessage();
+                }
+
+                try {
+                    Statement stParamedic = c.createStatement();
+                    ResultSet rsParamedic = stParamedic.executeQuery(""
+                            + "SELECT \"NOMBRE_PARAMEDICO\",\"APELLIDO_PATERNO_PARAMEDICO\",\"APELLIDO_MATERNO_PARAMEDICO\" "
+                            + "FROM \"EMERGENCIA\", \"PARAMEDICO\""
+                            + "WHERE \"PK_ID_PARAMEDICO\"= '" + idParamedic + "';");
+                    while (rsParamedic.next()) {
+                        nameParamedic = rsParamedic.getString("NOMBRE_PARAMEDICO") + " "
+                                + rsParamedic.getString("APELLIDO_PATERNO_PARAMEDICO") + " "
+                                + rsParamedic.getString("APELLIDO_MATERNO_PARAMEDICO");
+                    }
+
+                    rsParamedic.close();
+                    stParamedic.close();
+                } catch (Exception e) {
+                    System.err.println("ConxDB/ConsultaEmergency/paramedic$\t" + e.getClass().getName() + "\t" + e.getMessage());
+                    return e.getMessage();
+                }
+
+                try {
+                    Statement stOper = c.createStatement();
+                    ResultSet rsOper = stOper.executeQuery(""
+                            + "SELECT \"NOMBRE_OPERADOR\",\"APELLIDO_PATERNO_OPERADOR\",\"APELLIDO_MATERNO_OPERADOR\" "
+                            + "FROM \"EMERGENCIA\", \"OPERADOR\""
+                            + "WHERE \"PK_ID_OPERADOR\"= '" + idOper + "';");
+                    while (rsOper.next()) {
+                        nameOper = rsOper.getString("NOMBRE_OPERADOR") + " "
+                                + rsOper.getString("APELLIDO_PATERNO_OPERADOR") + " "
+                                + rsOper.getString("APELLIDO_MATERNO_OPERADOR");
+                    }
+
+                    rsOper.close();
+                    stOper.close();
+                } catch (Exception e) {
+                    System.err.println("ConxDB/ConsultaEmergency/oper$\t" + e.getClass().getName() + "\t" + e.getMessage());
+                    return e.getMessage();
+                }
+
+                try {
+                    Statement stAmbulance = c.createStatement();
+                    ResultSet rsAmbulance = stAmbulance.executeQuery(""
+                            + "SELECT \"NUMERO_AMBULANCIA\" "
+                            + "FROM \"EMERGENCIA\", \"AMBULANCIA\""
+                            + "WHERE \"PK_ID_AMBULANCIA\"= '" + idRadioOper + "';");
+                    while (rsAmbulance.next()) {
+                        numAmbulance = rsAmbulance.getString("NUMERO_AMBULANCIA");
+                    }
+
+                    rsAmbulance.close();
+                    stAmbulance.close();
+                } catch (Exception e) {
+                    System.err.println("ConxDB/ConsultaEmergency/Ambulance$\t" + e.getClass().getName() + "\t" + e.getMessage());
+                    return e.getMessage();
+                }
+
+                try {
+                    Statement stRadioOper = c.createStatement();
+                    ResultSet rsRadioOper = stRadioOper.executeQuery(""
+                            + "SELECT \"NOMBRE_RADIO_OPERADOR\",\"APELLIDO_PATERNO_RADIO_OPERADOR\",\"APELLIDO_MATERNO_RADIO_OPERADOR\" "
+                            + "FROM \"EMERGENCIA\", \"RADIO_OPERADOR\""
+                            + "WHERE \"PK_ID_RADIO_OPERADOR\"= '" + idRadioOper + "';");
+                    while (rsRadioOper.next()) {
+                        nameRadioOper = rsRadioOper.getString("NOMBRE_RADIO_OPERADOR") + " "
+                                + rsRadioOper.getString("APELLIDO_PATERNO_RADIO_OPERADOR") + " "
+                                + rsRadioOper.getString("APELLIDO_MATERNO_RADIO_OPERADOR");
+                    }
+
+                    rsRadioOper.close();
+                    stRadioOper.close();
+                } catch (Exception e) {
+                    System.err.println("ConxDB/ConsultaEmergency/radioOper$\t" + e.getClass().getName() + "\t" + e.getMessage());
+                    return e.getMessage();
+                }
+
+                resp += ("[EM#" + idEmergency + "]\n"
+                        + "Dirección: " + dir + " \t\tentre: " + entre + "\n"
+                        + "Referencia: " + ref + "\n"
+                        + "Colonia: " + col + " \t\tDelegación: " + del + "\n"
+                        + "Nombre del solicitante: " + nameApplicant + "\n"
+                        + "Resultado: " + resultado + "\n"
+                        + "Traslado: " + transfer + "\t\tPrioridad: " + priorityTransfer + "\t\tHospital: " + hospTransfer + "\n"
+                        + "Vivos: " + alive + "\t\tMuertos: " + deads + "\n"
+                        + "Paciente: #" + idPatient + "\tNombre: " + namePatient + "\n"
+                        + "Paramedico: #" + idParamedic + "\tNombre: " + nameParamedic + "\n"
+                        + "Paramedico voluntario: : " + paramedicVoluntary + "\n"
+                        + "Operador: #" + idOper + "\tNombre: " + nameOper + "\n"
+                        + "Operador voluntario: " + operVoluntary + "\n"
+                        + "Ambulancia: id:" + idAmbulance + "\tNumero: " + numAmbulance + "\n"
+                        + "RadioOperador: #" + idRadioOper + "\tNombre: " + nameRadioOper + "\n"
+                        + "hora de la llamada: " + timeCall
+                        + "\n\n");
+            }
+
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergency$\t" + e.getClass().getName() + "\t" + e.getMessage());
             return e.getMessage();
         }
     }
