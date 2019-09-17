@@ -27,9 +27,11 @@ public class Interface extends JFrame implements ActionListener {
     //ConxDB db;
     SimpleDateFormat date, time;
     ctrData cD;
+    Consulta con;
     int n = 0;
     JFrame emergency;
     JFrame admin;
+    JFrame consult;
     JTextField tAmbulance = new JTextField(30);
     JTextField tKmAmbulance = new JTextField(30);
     JTextField tOperVoluntary = new JTextField(30);
@@ -130,10 +132,7 @@ public class Interface extends JFrame implements ActionListener {
         switch (e.getActionCommand()) {
             case "Emergencia":
                 folio++;
-                String[] data = {String.valueOf(folio), mAmbulance.getText(), tKmAmbulance.getText(), tOperVoluntary.getText(),
-                    tParamedicVoluntary.getText(), mOper.getText(), mParamedic.getText(), mRadioOper.getText(), tApplicant.getText()};
-                //System.out.println("Interface/ActionPerformed$data:\t" + data[0] + "\t" + data[1] + "\t" + data[2] + "\t" + data[3] + "\t" + data[4]);
-                emergency = new JFrame("Emergencia Folio:" + data[0]);
+                emergency = new JFrame("Emergencia Folio:" + String.valueOf(folio));
                 emergency.setSize(1600, 500);
                 emergency.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - emergency.getWidth() / 2,
                         (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - emergency.getHeight() / 2);
@@ -143,9 +142,11 @@ public class Interface extends JFrame implements ActionListener {
                 emergency.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
                 time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 Calendar calendario = new GregorianCalendar();
-                ctrTime cT = new ctrTime(time.format(calendario.getTime()), data[0]);
+                ctrTime cT = new ctrTime(time.format(calendario.getTime()), String.valueOf(folio));
                 tabData tab = new tabData();
-                cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, data, tab, db);
+                cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, tab, db,
+                        mAmbulance.getText(), tKmAmbulance.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(), mOper.getText(),
+                        mParamedic.getText(), mRadioOper.getText(), tApplicant.getText());
                 emergency.setLayout(new BorderLayout());
                 emergency.add(tab, BorderLayout.NORTH);
                 emergency.add(cD, BorderLayout.CENTER);
@@ -175,7 +176,16 @@ public class Interface extends JFrame implements ActionListener {
                 }
                 break;
             case "Reporte":
-                System.out.println("report");
+                consult = new JFrame("Reporte");
+                consult.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
+                consult.setSize(1600, 500);
+                consult.setVisible(true);
+                consult.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - consult.getWidth() / 2,
+                        (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - consult.getHeight() / 2);
+                consult.setFocusable(true);
+                consult.setExtendedState(MAXIMIZED_BOTH);
+                con = new Consulta(consult, db);
+                consult.add(con);
                 break;
             default:
                 char[] cadena = e.getActionCommand().toCharArray();

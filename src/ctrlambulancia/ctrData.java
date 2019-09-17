@@ -58,22 +58,28 @@ public class ctrData extends JPanel implements ActionListener {
     JButton bTime = new JButton("Hora salida");
     JMenu mResultado = new JMenu("Resultado");
     JMenu mPriorityTransfer = new JMenu("Prioridad del traslado");
-    JMenu mTransfer = new JMenu("Transferidos");
+    JMenu mTransfer = new JMenu("Hospital a transferir");
     JMenu mOper = new JMenu();
     JMenu mRadioOper = new JMenu();
     JMenu mParamedic = new JMenu();
     JMenu mAmbulance = new JMenu();
     ButtonGroup groupMult = new ButtonGroup();
     ButtonGroup groupSex = new ButtonGroup();
+    JTextArea tNote = new JTextArea(5, 30);
     int windowX = 0;
+    int idAmbulance = 0;
+    int idParamedic = 0;
+    int idOper = 0;
+    int idRadioOper = 0;
+    int idPatient = 0;
     String sTimeCall;
     String sex = "";
-    String timeCall ="";
-    String timeDeparture ="";
-    String timeArrival ="";
-    String timeTransfer ="";
-    String timeHospital ="";
-    String timeComeback ="";
+    String timeCall = "";
+    String timeDeparture = "";
+    String timeArrival = "";
+    String timeTransfer = "";
+    String timeHospital = "";
+    String timeComeback = "";
     char[] cadena;
 
     public int getWindowX() {
@@ -87,20 +93,22 @@ public class ctrData extends JPanel implements ActionListener {
         //ctrData(sTimeCall, windowX);
     }
 
-    public ctrData(String sTimeCall, int windowX, JFrame emergency, String[] data, tabData tab, ConxDB db) {        
+    public ctrData(String sTimeCall, int windowX, JFrame emergency, tabData tab, ConxDB db, String sAmbulance,
+            String sKmAmbulance, String sOperVoluntary, String sParamedicVoluntary, String sOper, String sParamedic,
+            String sRadioOper, String sApplicant) {
         this.timeCall = sTimeCall;
         this.windowX = windowX;
         this.emergency = emergency;
         this.tab = tab;
         this.db = db;
-        mAmbulance.setText(data[1]);
-        tKmDeparture.setText(data[2]);
-        tOperVoluntary.setText(data[3]);
-        tParamedicVoluntary.setText(data[4]);
-        mOper.setText(data[5]);
-        mParamedic.setText(data[6]);
-        mRadioOper.setText(data[7]);
-        tApplicant.setText(data[8]);
+        mAmbulance.setText(sAmbulance);
+        tKmDeparture.setText(sKmAmbulance);
+        tOperVoluntary.setText(sOperVoluntary);
+        tParamedicVoluntary.setText(sParamedicVoluntary);
+        mOper.setText(sOper);
+        mParamedic.setText(sParamedic);
+        mRadioOper.setText(sRadioOper);
+        tApplicant.setText(sApplicant);
         JPanel pDir = new JPanel();
         JPanel pTransfer = new JPanel();
         JPanel pTimeAmbulance = new JPanel(new GridLayout(1, 13));
@@ -109,6 +117,54 @@ public class ctrData extends JPanel implements ActionListener {
         sTimeCall = "";
         for (int i = 11; i < cadena.length; i++) {
             sTimeCall += cadena[i];
+        }
+        String word = "";
+        cadena = sAmbulance.toCharArray();
+        if (cadena[0] == 'A' && cadena[1] == 'B') {
+            for (int i = 3; i < cadena.length; i++) {
+                if (cadena[i] == ' ') {
+                    this.idAmbulance = Integer.valueOf(word);
+                    i = cadena.length;
+                } else {
+                    word += cadena[i];
+                }
+            }
+        }
+        word = "";
+        cadena = sParamedic.toCharArray();
+        if (cadena[0] == 'P' && cadena[1] == 'M') {
+            for (int i = 3; i < cadena.length; i++) {
+                if (cadena[i] == ' ') {
+                    this.idParamedic = Integer.valueOf(word);
+                    i = cadena.length;
+                } else {
+                    word += cadena[i];
+                }
+            }
+        }
+        word = "";
+        cadena = sOper.toCharArray();
+        if (cadena[0] == 'O' && cadena[1] == 'P') {
+            for (int i = 3; i < cadena.length; i++) {
+                if (cadena[i] == ' ') {
+                    this.idOper = Integer.valueOf(word);
+                    i = cadena.length;
+                } else {
+                    word += cadena[i];
+                }
+            }
+        }
+        word = "";
+        cadena = sRadioOper.toCharArray();
+        if (cadena[0] == 'R' && cadena[1] == 'P') {
+            for (int i = 3; i < cadena.length; i++) {
+                if (cadena[i] == ' ') {
+                    this.idRadioOper = Integer.valueOf(word);
+                    i = cadena.length;
+                } else {
+                    word += cadena[i];
+                }
+            }
         }
 
         JLabel lSpace0 = new JLabel("");
@@ -147,7 +203,6 @@ public class ctrData extends JPanel implements ActionListener {
         JLabel lParamedic = new JLabel("Paramedico:");
         JLabel lNote = new JLabel("Observacion:");
         //JTextField tNote = new JTextField(50);
-        JTextArea tNote = new JTextArea(5, 30);
         JMenuBar mBarResultado = new JMenuBar();
         JMenuBar mBarPriorityTransfer = new JMenuBar();
         JMenuBar mBarTransfer = new JMenuBar();
@@ -413,7 +468,10 @@ public class ctrData extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         //System.out.println("event: " + e.getActionCommand() + " \t summoner: " + e.getSource().getClass().getSimpleName());
         char[] cadena = e.getActionCommand().toCharArray();
-        String command = "" + cadena[0] + cadena[1];
+        String command = "";
+        if (e.getActionCommand().length() > 1) {
+            command = "" + cadena[0] + cadena[1];
+        }
         Calendar calendario = new GregorianCalendar();
         if (e.getSource().getClass().getSimpleName().equals("JRadioButton")) {
             switch (e.getActionCommand().toCharArray()[0]) {
@@ -441,6 +499,7 @@ public class ctrData extends JPanel implements ActionListener {
                     tNamePatient.setEditable(false);
                     tLastNamePatient.setEditable(false);
                     tLastName2Patient.setEditable(false);
+                    System.out.println("single: " + multSingle.isSelected());
                     break;
                 case 'I':
                     tAlive.setText(null);
@@ -454,6 +513,7 @@ public class ctrData extends JPanel implements ActionListener {
                     tNamePatient.setEditable(true);
                     tLastNamePatient.setEditable(true);
                     tLastName2Patient.setEditable(true);
+                    System.out.println("single: " + multSingle.isSelected());
                     break;
                 default:
                     System.out.println("El event JRadioButton es: " + e.getActionCommand());
@@ -580,12 +640,46 @@ public class ctrData extends JPanel implements ActionListener {
                         bTime.setText("Hora");
                         bTime.setEnabled(false);
                         emergency.dispose();
-                        String idPatient = db.insertPatient(tNamePatient.getText(), tLastNamePatient.getText(), 
-                                tLastName2Patient.getText(), Integer.valueOf(tAgeOld.getText()), sex, 
-                                tab.mTrauma.getText(), tab.tMotivo.getText(), tab.tPadecimiento.getText(), 
-                                tab.tMedicamento.getText(), tab.tEventoPrevio.getText(), tab.mObstetrico.getText(), 
-                                Integer.valueOf(tab.tObstetricoMonthes.getText()));
-                        System.out.println("id Paciente: "+idPatient);
+                        int obstetricoMonthes = 0;
+                        if (!tab.tObstetricoMonthes.getText().equals("")) {
+                            obstetricoMonthes = Integer.valueOf(tab.tObstetricoMonthes.getText());
+                        }
+                        String sPatient = db.insertPatient(tNamePatient.getText(), tLastNamePatient.getText(),
+                                tLastName2Patient.getText(), Integer.valueOf(tAgeOld.getText()), sex,
+                                tab.mTrauma.getText(), tab.tMotivo.getText(), tab.tPadecimiento.getText(),
+                                tab.tMedicamento.getText(), tab.tEventoPrevio.getText(), tab.mObstetrico.getText(),
+                                obstetricoMonthes);
+                        System.out.println("id Paciente: " + sPatient);
+                        String word = "";
+                        cadena = sPatient.toCharArray();
+                        if (cadena[0] == 'P' && cadena[1] == 'C') {
+                            for (int i = 3; i < cadena.length; i++) {
+                                word += cadena[i];
+                            }
+                            idPatient = Integer.valueOf(word);
+                        }
+                        int alive = 0;
+                        if (tAlive.getText().equals("")) {
+                            if (multSingle.isSelected()) {
+                                alive = 1;
+                            }
+                        } else {
+                            alive = Integer.valueOf(tAlive.getText());
+                        }
+                        int deads = 0;
+                        if (!tDeads.getText().equals("")) {
+                            deads = Integer.valueOf(tDeads.getText());
+                        }
+                        int priority = 0;
+                        if (!mPriorityTransfer.getText().equals("Prioridad del traslado")) {
+                            priority = Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]);
+                        }
+                        String s = db.insertEmergencyReport(tDir.getText(), tEntre.getText(), tRef.getText(),
+                                tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
+                                mTransfer.getText(), priority, alive, deads, idPatient, idParamedic, idOper,
+                                idAmbulance, idRadioOper, tOperVoluntary.getText(), tParamedicVoluntary.getText(),
+                                timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText());
+                        System.out.println("Registro Emergency: " + s);
                         break;
                 }
             }
