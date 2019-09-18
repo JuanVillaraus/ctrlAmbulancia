@@ -1,0 +1,16 @@
+[PC#19]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#29]
+Nombre: Citlali Campo Guerra
+Edad: 23 años 		Sexo: F
+trauma: Tipo de Trauma
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Embarazada		meses: 9
+

@@ -1,0 +1,115 @@
+[EM#1]
+Dirección: Cuauhtemoc #38023 		entre: Cortes y Juan Soto
+Referencia: restaurante guacamole
+Colonia: centro 		Delegación: null
+Nombre del solicitante: Pablo Cruz Ortiz
+Resultado: #1 Atropellado
+Traslado: traslado		Prioridad: 3
+Vivos: 1		Muertos: 0
+Paciente: #19	Nombre: Leticia Sanchez Perez
+Paramedico: #1	Nombre: Carlos Salinas de Gortari
+Paramedico voluntario: : Sofia Vergara
+Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: Rosa Mendez
+Ambulancia: id:2	Numero: 159
+RadioOperador: #2	Nombre: Ernesto Zedillo Ponce de León
+hora de la llamada: 2019-05-12 12:45:42
+hora de la salida: null
+hora de la llegada: null
+hora de la traslado: null
+hora de la hospital: null
+hora de la base: null
+Observaciones: null
+
+[EM#2]
+Dirección: asdfasdf 		entre: sadfasd
+Referencia: fwerqw
+Colonia: wqer 		Delegación: wqer
+Nombre del solicitante: sdfasdf
+Resultado: Traslado
+Traslado: ISSSTE		Prioridad: 51
+Vivos: 1		Muertos: 0
+Paciente: #0	Nombre: Leticia Sanchez Perez
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : sadf
+Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: asdf
+Ambulancia: id:1	Numero: 159
+RadioOperador: #0	Nombre: Ernesto Zedillo Ponce de León
+hora de la llamada: 2019-09-17 01:30:37
+hora de la salida: null
+hora de la llegada: null
+hora de la traslado: null
+hora de la hospital: null
+hora de la base: null
+Observaciones: null
+
+[EM#3]
+Dirección: ewrtwert 		entre: ewrtewrt
+Referencia: ertwert
+Colonia: ewrtewrt 		Delegación: ertwetr
+Nombre del solicitante: ewrtert
+Resultado: Traslado
+Traslado: SM DDF		Prioridad: 51
+Vivos: 1		Muertos: 0
+Paciente: #0	Nombre: Leticia Sanchez Perez
+Paramedico: #1	Nombre: Carlos Salinas de Gortari
+Paramedico voluntario: : wert
+Operador: #2	Nombre: Enrique Peña Nieto
+Operador voluntario: sdf
+Ambulancia: id:2	Numero: 159
+RadioOperador: #0	Nombre: Ernesto Zedillo Ponce de León
+hora de la llamada: 2019-09-17 01:46:57
+hora de la salida: null
+hora de la llegada: null
+hora de la traslado: null
+hora de la hospital: null
+hora de la base: null
+Observaciones: null
+
+[EM#4]
+Dirección: Carlos Cruz 		entre: calle 12 y calle 13
+Referencia: a lado del nucleo deportivo
+Colonia: 21 de abril 		Delegación: 
+Nombre del solicitante: Jose
+Resultado: Traslado
+Traslado: NAVAL		Prioridad: 50
+Vivos: 1		Muertos: 0
+Paciente: #29	Nombre: Citlali Campo Guerra
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : Vanesa
+Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: Sofia
+Ambulancia: id:2	Numero: 159
+RadioOperador: #0	Nombre: Ernesto Zedillo Ponce de León
+hora de la llamada: 2019-09-17 02:02:10
+hora de la salida: null
+hora de la llegada: null
+hora de la traslado: null
+hora de la hospital: null
+hora de la base: null
+Observaciones: null
+
+[EM#5]
+Dirección: Av. Miguel Angel de Quevedo 		entre: calle J.P.Silva y calle Raz y Guzmán
+Referencia: frente al Tecnologico de Veracruz
+Colonia: Col. Formando Hogar 		Delegación: 
+Nombre del solicitante: Pablo Cruz Ortiz
+Resultado: Traslado
+Traslado: Naval		Prioridad: 3
+Vivos: 1		Muertos: 0
+Paciente: #23	Nombre: werwqer werwer werwr
+Paramedico: #1	Nombre: Carlos Salinas de Gortari
+Paramedico voluntario: : Sofia Vergara
+Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: Rosa Mendez
+Ambulancia: id:2	Numero: 159
+RadioOperador: #2	Nombre: Ernesto Zedillo Ponce de León
+hora de la llamada: 2019-05-18 12:45:42
+hora de la salida: 2019-05-18 12:56:42
+hora de la llegada: 2019-05-18 13:12:42
+hora de la traslado: 2019-05-18 13:31:42
+hora de la hospital: 2019-05-18 13:43:42
+hora de la base: 2019-05-18 14:06:42
+Observaciones: 
+

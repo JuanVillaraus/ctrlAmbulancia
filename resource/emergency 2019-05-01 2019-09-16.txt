@@ -1,0 +1,23 @@
+[EM#1]
+Dirección: Cuauhtemoc #38023 		entre: Cortes y Juan Soto
+Referencia: restaurante guacamole
+Colonia: centro 		Delegación: null
+Nombre del solicitante: Pablo Cruz Ortiz
+Resultado: #1 Atropellado
+Traslado: traslado		Prioridad: 3
+Vivos: 1		Muertos: 0
+Paciente: #19	Nombre: Leticia Sanchez Perez
+Paramedico: #1	Nombre: Carlos Salinas de Gortari
+Paramedico voluntario: : Sofia Vergara
+Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: Rosa Mendez
+Ambulancia: id:2	Numero: 159
+RadioOperador: #2	Nombre: Ernesto Zedillo Ponce de León
+hora de la llamada: 2019-05-12 12:45:42
+hora de la salida: null
+hora de la llegada: null
+hora de la traslado: null
+hora de la hospital: null
+hora de la base: null
+Observaciones: null
+
