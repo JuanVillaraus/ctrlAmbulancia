@@ -60,6 +60,7 @@ public class Consulta extends JPanel implements ActionListener {
         JMenuItem iOptionSearch8 = new JMenuItem("Operador Voluntario");
         JMenuItem iOptionSearch9 = new JMenuItem("Paramedico Voluntario");
         JMenuItem iOptionSearch10 = new JMenuItem("Radio Operador");
+        JMenuItem iOptionSearch11 = new JMenuItem("Ambulancia");
 
         JMenuBar mBarResultado = new JMenuBar();
         JMenuBar mBarPriorityTransfer = new JMenuBar();
@@ -73,7 +74,7 @@ public class Consulta extends JPanel implements ActionListener {
         JMenuItem iResultado3 = new JMenuItem("Tranf por tercero");
         JMenuItem iResultado4 = new JMenuItem("No necesita tranf");
         JMenuItem iResultado5 = new JMenuItem("No quiere tranf");
-        JMenuItem iResultado6 = new JMenuItem("Traslado");
+        JMenuItem iResultado6 = new JMenuItem("traslado");
         JMenuItem iResultado7 = new JMenuItem("Fallecido");
         JMenuItem iPriority1 = new JMenuItem("Prioridad 1");
         JMenuItem iPriority2 = new JMenuItem("Prioridad 2");
@@ -148,6 +149,7 @@ public class Consulta extends JPanel implements ActionListener {
         iOptionSearch8.addActionListener(this);
         iOptionSearch9.addActionListener(this);
         iOptionSearch10.addActionListener(this);
+        iOptionSearch11.addActionListener(this);
         bSearch.addActionListener(this);
         mOption.add(iOption1);
         mOption.add(iOption2);
@@ -161,6 +163,7 @@ public class Consulta extends JPanel implements ActionListener {
         mOptionSearch.add(iOptionSearch8);
         mOptionSearch.add(iOptionSearch9);
         mOptionSearch.add(iOptionSearch10);
+        mOptionSearch.add(iOptionSearch11);
         mBarOption.add(mOption);
         mBarOptionSearch.add(mOptionSearch);
         mOption.setPreferredSize(new Dimension(150, 30));
@@ -198,7 +201,7 @@ public class Consulta extends JPanel implements ActionListener {
         mResultado.setHorizontalAlignment(SwingConstants.CENTER);
         mResultado.setHorizontalTextPosition(JTextField.CENTER);
 
-        top.add(mBarOption);
+        //top.add(mBarOption);
         top.add(mBarOptionSearch);
         top.add(lDateOpen);
         top.add(tDateOpen);
@@ -224,67 +227,29 @@ public class Consulta extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().getClass().getSimpleName().equals("JButton")) {
-            switch (mOption.getText()) {
-                case "Reporte Emergencia":
-                    String sEmergency;
-                    if (tId.getText().equals("")) {
-                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
-                            sEmergency = db.consultEmergency();
-                            tMain.setText(sEmergency);
-                            try {
-                                a.escribirTxt("resource/Emergencia.txt", sEmergency);
-                            } catch (IOException ex) {
-                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
-                            System.out.println("pendiente");
-                        } else {
-                            sEmergency = db.consultEmergency(tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
-                            try {
-                                a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                            } catch (IOException ex) {
-                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    } else {
-                        tMain.setText(db.consultEmergency(Integer.valueOf(tId.getText())));
+            String sEmergency;
+            if (tId.getText().equals("")) {
+                if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                    sEmergency = db.consultEmergency();
+                    tMain.setText(sEmergency);
+                    try {
+                        a.escribirTxt("resource/Emergencia.txt", sEmergency);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    break;
-                case "Paciente":
-                    String sPatient;
-                    if (tId.getText().equals("")) {
-                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
-                            sPatient = db.consultPatientAll();
-                            tMain.setText(sPatient);
-                            try {
-                                a.escribirTxt("resource/Paciente.txt", sPatient);
-                            } catch (IOException ex) {
-                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
-                            if (tDateClose.getText().equals("")) {
-                                sPatient = db.consultPatient(tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sPatient);
-                                try {
-                                    a.escribirTxt("resource/Paciente " + tDateOpen.getText() + ".txt", sPatient);
-                                } catch (IOException ex) {
-                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        } else {
-                            sPatient = db.consultPatient(tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sPatient);
-                            try {
-                                a.escribirTxt("resource/Paciente " + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sPatient);
-                            } catch (IOException ex) {
-                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    } else {
-                        tMain.setText(db.consultPatient(Integer.valueOf(tId.getText())));
+                } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                    System.out.println("pendiente");
+                } else {
+                    sEmergency = db.consultEmergency(tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                    tMain.setText(sEmergency);
+                    try {
+                        a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    break;
+                }
+            } else {
+                tMain.setText(db.consultEmergency(Integer.valueOf(tId.getText())));
             }
         } else {
             switch (e.getActionCommand()) {
@@ -392,7 +357,7 @@ public class Consulta extends JPanel implements ActionListener {
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
                     break;
-                    case "Prioridad del traslado":
+                case "Prioridad del traslado":
                     mOptionSearch.setText(e.getActionCommand());
                     lId.setVisible(false);
                     tId.setVisible(false);
@@ -512,6 +477,67 @@ public class Consulta extends JPanel implements ActionListener {
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
                     break;
+                case "Ambulancia":
+                    mOptionSearch.setText(e.getActionCommand());
+                    lId.setVisible(false);
+                    tId.setVisible(false);
+                    tName.setVisible(false);
+                    lDateOpen.setVisible(false);
+                    tDateOpen.setVisible(false);
+                    lDateClose.setVisible(false);
+                    tDateClose.setVisible(false);
+                    lDir.setVisible(false);
+                    tDir.setVisible(false);
+                    mResultado.setVisible(false);
+                    mPriorityTransfer.setVisible(false);
+                    mTransfer.setVisible(false);
+                    mOper.setVisible(false);
+                    mRadioOper.setVisible(false);
+                    mParamedic.setVisible(false);
+                    mAmbulance.setVisible(true);
+                    bSearch.setVisible(true);
+                    break;
+                case "Falsa alarma":
+                case "No encontrado":
+                case "Tranf por tercero":
+                case "No necesita tranf":
+                case "No quiere tranf":
+                case "traslado":
+                case "Fallecido":
+                    mResultado.setText(e.getActionCommand());
+                    break;
+                case "Prioridad 1":
+                case "Prioridad 2":
+                case "Prioridad 3":
+                    mPriorityTransfer.setText(e.getActionCommand());
+                case "CRUZ ROJA":
+                case "SM DDF":
+                case "ISSSTE":
+                case "IMSS":
+                case "SSA":
+                case "PEMEX":
+                case "MILITAR":
+                case "NAVAL":
+                case "PRIVADO":
+                case "OTRO":
+                    mTransfer.setText(e.getActionCommand());
+                    break;
+                default:
+                    String cmd = "" + e.getActionCommand().toCharArray()[0] + e.getActionCommand().toCharArray()[1];
+                    switch (cmd) {
+                        case "PM":
+                            mParamedic.setText(e.getActionCommand());
+                            break;
+                        case "OP":
+                            mOper.setText(e.getActionCommand());
+                            break;
+                        case "RO":
+                            mRadioOper.setText(e.getActionCommand());
+                            break;
+                        case "AB":
+                            mAmbulance.setText(e.getActionCommand());
+                            break;
+                    }
             }
         }
     }

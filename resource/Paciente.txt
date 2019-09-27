@@ -1,0 +1,256 @@
+[PC#1]
+Nombre: Rosa Figueroa Hernandez
+Edad: 16 años 		Sexo: femenino
+trauma: null
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: null
+
+[PC#2]
+Nombre: Cesar Vega Villegas
+Edad: 23 años 		Sexo: masculino
+trauma: null
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: null
+
+[PC#3]
+Nombre: Carlo Magno Conquer
+Edad: 23 años 		Sexo: masculino
+trauma: null
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: null
+
+[PC#4]
+Nombre: Hugo Sanchez Colorado
+Edad: 23 años 		Sexo: masculino
+trauma: null
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: null
+
+[PC#5]
+Nombre: Hugo Sanchez Colorado
+Edad: 23 años 		Sexo: masculino
+trauma: null
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: null
+
+[PC#6]
+Nombre: Hugo Sanchez Colorado
+Edad: 23 años 		Sexo: masculino
+trauma: null
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: null
+
+[PC#7]
+Nombre: Hugo Sanchez Colorado
+Edad: 23 años 		Sexo: masculino
+trauma: null
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: null
+
+[PC#8]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#9]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#10]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#11]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#12]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#13]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#14]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#15]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#16]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#17]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#18]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#19]
+Nombre: Leticia Sanchez Perez
+Edad: 36 años 		Sexo: Femenino
+trauma: 5p
+ENFERMO motivo: null		padecimiento: null
+medicamento: null		evento previo: null
+OBTETRICO tipo: null		meses: 0
+
+[PC#20]
+Nombre: sdfsdfs sfdsfs fsfsfs
+Edad: 13 años 		Sexo: 
+trauma: 5
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#21]
+Nombre: werwer werwerw werwer
+Edad: 48 años 		Sexo: 
+trauma: 5B
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#22]
+Nombre: fghjfgh ghjfghj ghjfghj
+Edad: 48 años 		Sexo: M
+trauma: INT 14
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#23]
+Nombre: werwqer werwer werwr
+Edad: 16 años 		Sexo: 
+trauma: 2C
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#24]
+Nombre: iopiopiop iopiopi opiopi
+Edad: 26 años 		Sexo: M
+trauma: INT 14
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#25]
+Nombre: Guadalupe asddaf sdfasd
+Edad: 48 años 		Sexo: F
+trauma: INT 14
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#26]
+Nombre: Ricardo asdwefrw werwer
+Edad: 48 años 		Sexo: M
+trauma: INT 14
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#27]
+Nombre: Sofia rwetret terter
+Edad: 23 años 		Sexo: F
+trauma: INT 14
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#28]
+Nombre: Valentina sdf sdfsd
+Edad: 78 años 		Sexo: F
+trauma: INT 14
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#29]
+Nombre: Citlali Campo Guerra
+Edad: 23 años 		Sexo: F
+trauma: Tipo de Trauma
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Embarazada		meses: 9
+
+[PC#30]
+Nombre: dfgfhg fdgh fdgh
+Edad: 23 años 		Sexo: 
+trauma: Tipo de Trauma
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#31]
+Nombre: lkj ljk ljkl
+Edad: 45 años 		Sexo: 
+trauma: Tipo de Trauma
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Tipo de obstetrico		meses: 0
+
+[PC#32]
+Nombre: Sofia Flores Castillo
+Edad: 21 años 		Sexo: F
+trauma: 13A
+ENFERMO motivo: 		padecimiento: 
+medicamento: 		evento previo: 
+OBTETRICO tipo: Embarazada		meses: 8
+

@@ -7,6 +7,8 @@ Resultado: #1 Atropellado
 Traslado: traslado		Prioridad: 3
 Vivos: 1		Muertos: 0
 Paciente: #19	Nombre: Leticia Sanchez Perez
+Edad: 36
+Trauma: 5p
 Paramedico: #1	Nombre: Carlos Salinas de Gortari
 Paramedico voluntario: : Sofia Vergara
 Operador: #1	Nombre: Andres Manuel Lopez Obrador
@@ -30,6 +32,8 @@ Resultado: Traslado
 Traslado: ISSSTE		Prioridad: 51
 Vivos: 1		Muertos: 0
 Paciente: #0	Nombre: Leticia Sanchez Perez
+Edad: 36
+Trauma: 5p
 Paramedico: #2	Nombre: Felipe Calderón Hinojosa
 Paramedico voluntario: : sadf
 Operador: #1	Nombre: Andres Manuel Lopez Obrador
@@ -53,6 +57,8 @@ Resultado: Traslado
 Traslado: SM DDF		Prioridad: 51
 Vivos: 1		Muertos: 0
 Paciente: #0	Nombre: Leticia Sanchez Perez
+Edad: 36
+Trauma: 5p
 Paramedico: #1	Nombre: Carlos Salinas de Gortari
 Paramedico voluntario: : wert
 Operador: #2	Nombre: Enrique Peña Nieto
@@ -76,6 +82,9 @@ Resultado: Traslado
 Traslado: NAVAL		Prioridad: 50
 Vivos: 1		Muertos: 0
 Paciente: #29	Nombre: Citlali Campo Guerra
+Edad: 23
+Trauma: Tipo de Trauma
+Tipo Obstetrico: Embarazada	9 meses
 Paramedico: #2	Nombre: Felipe Calderón Hinojosa
 Paramedico voluntario: : Vanesa
 Operador: #1	Nombre: Andres Manuel Lopez Obrador
@@ -99,6 +108,35 @@ Resultado: Traslado
 Traslado: Naval		Prioridad: 3
 Vivos: 1		Muertos: 0
 Paciente: #23	Nombre: werwqer werwer werwr
+Edad: 16
+Trauma: 2C
+Tipo Obstetrico: Tipo de obstetrico	0 meses
+Paramedico: #1	Nombre: Carlos Salinas de Gortari
+Paramedico voluntario: : Sofia Vergara
+Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: Rosa Mendez
+Ambulancia: id:2	Numero: 159
+RadioOperador: #2	Nombre: Ernesto Zedillo Ponce de León
+hora de la llamada: 2019-05-18 12:45:42
+hora de la salida: 2019-05-18 12:56:42
+hora de la llegada: 2019-05-18 13:12:42
+hora de la traslado: 2019-05-18 13:31:42
+hora de la hospital: 2019-05-18 13:43:42
+hora de la base: 2019-05-18 14:06:42
+Observaciones: 
+
+[EM#6]
+Dirección: Av. Miguel Angel de Quevedo 		entre: calle J.P.Silva y calle Raz y Guzmán
+Referencia: frente al Tecnologico de Veracruz
+Colonia: Col. Formando Hogar 		Delegación: 
+Nombre del solicitante: Pablo Cruz Ortiz
+Resultado: Traslado
+Traslado: Naval		Prioridad: 3
+Vivos: 1		Muertos: 0
+Paciente: #29	Nombre: Citlali Campo Guerra
+Edad: 23
+Trauma: Tipo de Trauma
+Tipo Obstetrico: Embarazada	9 meses
 Paramedico: #1	Nombre: Carlos Salinas de Gortari
 Paramedico voluntario: : Sofia Vergara
 Operador: #1	Nombre: Andres Manuel Lopez Obrador
