@@ -625,6 +625,7 @@ public class ctrData extends JPanel implements ActionListener {
                                 tTimeTransfer.setText(time.format(calendario.getTime()));
                                 bTime.setText("Hora base");
                                 classTime += 2;
+                                timeHospital = "2000-1-1 0:00:00";
                             }
                         }
                         break;
@@ -644,19 +645,25 @@ public class ctrData extends JPanel implements ActionListener {
                         if (!tab.tObstetricoMonthes.getText().equals("")) {
                             obstetricoMonthes = Integer.valueOf(tab.tObstetricoMonthes.getText());
                         }
-                        String sPatient = db.insertPatient(tNamePatient.getText(), tLastNamePatient.getText(),
-                                tLastName2Patient.getText(), Integer.valueOf(tAgeOld.getText()), sex,
-                                tab.mTrauma.getText(), tab.tMotivo.getText(), tab.tPadecimiento.getText(),
-                                tab.tMedicamento.getText(), tab.tEventoPrevio.getText(), tab.mObstetrico.getText(),
-                                obstetricoMonthes);
-                        System.out.println("id Paciente: " + sPatient);
-                        String word = "";
-                        cadena = sPatient.toCharArray();
-                        if (cadena[0] == 'P' && cadena[1] == 'C') {
-                            for (int i = 3; i < cadena.length; i++) {
-                                word += cadena[i];
+                        String sPatient = "";
+                        if (mResultado.getText().equals("Traslado")) {
+                            int ageOld = 0;
+                            if (!tAgeOld.getText().equals("")) {
+                                ageOld = Integer.valueOf(tAgeOld.getText());
                             }
-                            idPatient = Integer.valueOf(word);
+                            sPatient = db.insertPatient(tNamePatient.getText(), tLastNamePatient.getText(),
+                                    tLastName2Patient.getText(), ageOld, sex, tab.mTrauma.getText(),
+                                    tab.tMotivo.getText(), tab.tPadecimiento.getText(), tab.tMedicamento.getText(),
+                                    tab.tEventoPrevio.getText(), tab.mObstetrico.getText(), obstetricoMonthes);
+                            System.out.println("id Paciente: " + sPatient);
+                            String word = "";
+                            cadena = sPatient.toCharArray();
+                            if (cadena[0] == 'P' && cadena[1] == 'C') {
+                                for (int i = 3; i < cadena.length; i++) {
+                                    word += cadena[i];
+                                }
+                                idPatient = Integer.valueOf(word);
+                            }
                         }
                         int alive = 0;
                         if (tAlive.getText().equals("")) {

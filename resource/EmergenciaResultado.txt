@@ -1,0 +1,23 @@
+[EM#7]
+Dirección: cuauhtemoc 		entre: circunvalación
+Referencia: un oxxo
+Colonia: centro 		Delegación: 
+Nombre del solicitante: anonimo
+Resultado: Tranf por tercero
+Traslado: Hospital a transferir		Prioridad: 0
+Vivos: 0		Muertos: 0
+Paciente: #0	Nombre: 
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : Pepe
+Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: Sofia
+Ambulancia: id:3	Numero: 
+RadioOperador: #0	Nombre: 
+hora de la llamada: 2019-09-28 10:59:48
+hora de la salida: 2019-09-28 11:00:15
+hora de la llegada: 2019-09-28 11:00:25
+hora de la traslado: 2019-09-28 11:00:31
+hora de la hospital: 2000-01-01 00:00:00
+hora de la base: 2019-09-28 11:00:38
+Observaciones: 
+

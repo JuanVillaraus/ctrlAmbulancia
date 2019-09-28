@@ -1,0 +1,23 @@
+[EM#3]
+Dirección: ewrtwert 		entre: ewrtewrt
+Referencia: ertwert
+Colonia: ewrtewrt 		Delegación: ertwetr
+Nombre del solicitante: ewrtert
+Resultado: Traslado
+Traslado: SM DDF		Prioridad: 51
+Vivos: 1		Muertos: 0
+Paciente: #0	
+Paramedico: #1	Nombre: Carlos Salinas de Gortari
+Paramedico voluntario: : wert
+Operador: #2	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: sdf
+Ambulancia: id:2	Numero: 159
+RadioOperador: #0	Nombre: null
+hora de la llamada: 2019-09-17 01:46:57
+hora de la salida: null
+hora de la llegada: null
+hora de la traslado: null
+hora de la hospital: null
+hora de la base: null
+Observaciones: null
+

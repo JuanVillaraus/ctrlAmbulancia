@@ -36,36 +36,11 @@ Edad: 36
 Trauma: 5p
 Paramedico: #2	Nombre: Felipe Calderón Hinojosa
 Paramedico voluntario: : sadf
-Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador: #1	Nombre: Enrique Peña Nieto
 Operador voluntario: asdf
-Ambulancia: id:1	Numero: 159
-RadioOperador: #0	Nombre: Ernesto Zedillo Ponce de León
+Ambulancia: id:1	Numero: 147
+RadioOperador: #0	Nombre: null
 hora de la llamada: 2019-09-17 01:30:37
-hora de la salida: null
-hora de la llegada: null
-hora de la traslado: null
-hora de la hospital: null
-hora de la base: null
-Observaciones: null
-
-[EM#3]
-Dirección: ewrtwert 		entre: ewrtewrt
-Referencia: ertwert
-Colonia: ewrtewrt 		Delegación: ertwetr
-Nombre del solicitante: ewrtert
-Resultado: Traslado
-Traslado: SM DDF		Prioridad: 51
-Vivos: 1		Muertos: 0
-Paciente: #0	Nombre: Leticia Sanchez Perez
-Edad: 36
-Trauma: 5p
-Paramedico: #1	Nombre: Carlos Salinas de Gortari
-Paramedico voluntario: : wert
-Operador: #2	Nombre: Enrique Peña Nieto
-Operador voluntario: sdf
-Ambulancia: id:2	Numero: 159
-RadioOperador: #0	Nombre: Ernesto Zedillo Ponce de León
-hora de la llamada: 2019-09-17 01:46:57
 hora de la salida: null
 hora de la llegada: null
 hora de la traslado: null
@@ -87,10 +62,10 @@ Trauma: Tipo de Trauma
 Tipo Obstetrico: Embarazada	9 meses
 Paramedico: #2	Nombre: Felipe Calderón Hinojosa
 Paramedico voluntario: : Vanesa
-Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador: #1	Nombre: Enrique Peña Nieto
 Operador voluntario: Sofia
 Ambulancia: id:2	Numero: 159
-RadioOperador: #0	Nombre: Ernesto Zedillo Ponce de León
+RadioOperador: #0	Nombre: null
 hora de la llamada: 2019-09-17 02:02:10
 hora de la salida: null
 hora de la llegada: null
@@ -165,10 +140,10 @@ Trauma: Tipo de Trauma
 Tipo Obstetrico: Embarazada	9 meses
 Paramedico: #2	Nombre: Felipe Calderón Hinojosa
 Paramedico voluntario: : Pepe
-Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador: #1	Nombre: Enrique Peña Nieto
 Operador voluntario: Sofia
-Ambulancia: id:3	Numero: 159
-RadioOperador: #0	Nombre: Ernesto Zedillo Ponce de León
+Ambulancia: id:3	Numero: 236
+RadioOperador: #0	Nombre: null
 hora de la llamada: 2019-09-28 10:59:48
 hora de la salida: 2019-09-28 11:00:15
 hora de la llegada: 2019-09-28 11:00:25

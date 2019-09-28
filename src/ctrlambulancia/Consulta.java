@@ -31,18 +31,18 @@ public class Consulta extends JPanel implements ActionListener {
     JTextField tId = new JTextField(8);
     JTextField tName = new JTextField(20);
     JTextArea tMain = new JTextArea();
-    JLabel lDateOpen = new JLabel("De:");
+    JLabel lDateOpen = new JLabel("Fecha de:");
     JLabel lDateClose = new JLabel("hasta:");
     JLabel lId = new JLabel("ID:");
     JLabel lDir = new JLabel("Ubicación:");
     JButton bSearch = new JButton("Buscar");
-    JMenu mResultado = new JMenu("Resultado");
-    JMenu mPriorityTransfer = new JMenu("Prioridad del traslado");
-    JMenu mTransfer = new JMenu("Hospital a transferir");
-    JMenu mOper = new JMenu();
-    JMenu mRadioOper = new JMenu();
-    JMenu mParamedic = new JMenu();
-    JMenu mAmbulance = new JMenu();
+    JMenu mResultado = new JMenu("seleccione una opción");
+    JMenu mPriorityTransfer = new JMenu("seleccione una opción");
+    JMenu mTransfer = new JMenu("seleccione una opción");
+    JMenu mOper = new JMenu("seleccione una opción");
+    JMenu mRadioOper = new JMenu("seleccione una opción");
+    JMenu mParamedic = new JMenu("seleccione una opción");
+    JMenu mAmbulance = new JMenu("seleccione una opción");
 
     public Consulta(JFrame window, ConxDB db) {
         this.db = db;
@@ -169,10 +169,10 @@ public class Consulta extends JPanel implements ActionListener {
         mOption.setPreferredSize(new Dimension(150, 30));
         mOptionSearch.setPreferredSize(new Dimension(150, 30));
         tMain.setPreferredSize(new Dimension(window.getWidth() - 50, 600));
-        lDateOpen.setVisible(false);
-        tDateOpen.setVisible(false);
-        lDateClose.setVisible(false);
-        tDateClose.setVisible(false);
+//        lDateOpen.setVisible(false);
+//        tDateOpen.setVisible(false);
+//        lDateClose.setVisible(false);
+//        tDateClose.setVisible(false);
         lId.setVisible(false);
         tId.setVisible(false);
         tName.setVisible(false);
@@ -185,7 +185,7 @@ public class Consulta extends JPanel implements ActionListener {
         mAmbulance.setVisible(false);
         lDir.setVisible(false);
         tDir.setVisible(false);
-        bSearch.setVisible(false);
+//        bSearch.setVisible(false);
         menuUpdate();
         mBarOper.add(mOper);
         mBarRadioOper.add(mRadioOper);
@@ -203,10 +203,6 @@ public class Consulta extends JPanel implements ActionListener {
 
         //top.add(mBarOption);
         top.add(mBarOptionSearch);
-        top.add(lDateOpen);
-        top.add(tDateOpen);
-        top.add(lDateClose);
-        top.add(tDateClose);
         top.add(lId);
         top.add(tId);
         top.add(tName);
@@ -219,6 +215,10 @@ public class Consulta extends JPanel implements ActionListener {
         top.add(mBarAmbulance);
         top.add(lDir);
         top.add(tDir);
+        top.add(lDateOpen);
+        top.add(tDateOpen);
+        top.add(lDateClose);
+        top.add(tDateClose);
         top.add(bSearch);
         this.add(top, BorderLayout.NORTH);
         this.add(scMain);
@@ -228,28 +228,170 @@ public class Consulta extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().getClass().getSimpleName().equals("JButton")) {
             String sEmergency;
-            if (tId.getText().equals("")) {
-                if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
-                    sEmergency = db.consultEmergency();
-                    tMain.setText(sEmergency);
-                    try {
-                        a.escribirTxt("resource/Emergencia.txt", sEmergency);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+            switch (mOptionSearch.getText()) {
+                case "Opción para Buscar":
+                    if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                        sEmergency = db.consultEmergency();
+                        tMain.setText(sEmergency);
+                        try {
+                            a.escribirTxt("resource/Emergencia.txt", sEmergency);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                        System.out.println("pendiente");
+                    } else {
+                        sEmergency = db.consultEmergency(tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                        tMain.setText(sEmergency);
+                        try {
+                            a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
-                    System.out.println("pendiente");
-                } else {
-                    sEmergency = db.consultEmergency(tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                    tMain.setText(sEmergency);
-                    try {
-                        a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                    break;
+                case "ID":
+//                    tMain.setText(db.consultEmergency(Integer.valueOf(tId.getText())));
+                    tMain.setText("pendiente");
+                    break;
+                case "Ubicación":
+                case "Resultado":
+                    if (mResultado.getText().equals("seleccione una opción")) {
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        sEmergency = db.consultEmergencyResultado(mResultado.getText());
+                        tMain.setText(sEmergency);
+                        try {
+                            a.escribirTxt("resource/Emergencias " + mResultado.getText() + ".txt", sEmergency);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                }
-            } else {
-                tMain.setText(db.consultEmergency(Integer.valueOf(tId.getText())));
+                    break;
+                case "Traslado":
+                    if (mTransfer.getText().equals("seleccione una opción")) {
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        sEmergency = db.consultEmergencyTransfer(mTransfer.getText());
+                        tMain.setText(sEmergency);
+                        try {
+                            a.escribirTxt("resource/Emergencias a " + mTransfer.getText() + ".txt", sEmergency);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case "Prioridad del traslado":
+                    if (mPriorityTransfer.getText().equals("seleccione una opción")) {
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]));
+                        tMain.setText(sEmergency);
+                        try {
+                            a.escribirTxt("resource/Emergencias con " + mPriorityTransfer.getText() + " del Traslado.txt", sEmergency);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case "Operador":
+                    if (mOper.getText().equals("seleccione una opción")) {
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        int idOper = 0;
+                        String word = "";
+                        char[] cadena = mOper.getText().toCharArray();
+                        for (int i = 3; i < cadena.length; i++) {
+                            if (cadena[i] == ' ') {
+                                idOper = Integer.valueOf(word);
+                                i = cadena.length;
+                            } else {
+                                word += cadena[i];
+                            }
+                        }
+                        sEmergency = db.consultEmergencyOper(idOper);
+                        tMain.setText(sEmergency);
+                        try {
+                            a.escribirTxt("resource/Emergencias con " + mOper.getText() + ".txt", sEmergency);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case "Paramedico":
+                    if (mParamedic.getText().equals("seleccione una opción")) {
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        int idParamedic = 0;
+                        String word = "";
+                        char[] cadena = mParamedic.getText().toCharArray();
+                        for (int i = 3; i < cadena.length; i++) {
+                            if (cadena[i] == ' ') {
+                                idParamedic = Integer.valueOf(word);
+                                i = cadena.length;
+                            } else {
+                                word += cadena[i];
+                            }
+                        }
+                        sEmergency = db.consultEmergencyParamedic(idParamedic);
+                        tMain.setText(sEmergency);
+                        try {
+                            a.escribirTxt("resource/Emergencias con " + mParamedic.getText() + ".txt", sEmergency);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case "Operador Voluntario":
+                case "Paramedico Voluntario":
+                case "Radio Operador":
+                    if (mRadioOper.getText().equals("seleccione una opción")) {
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        int idRadioOper = 0;
+                        String word = "";
+                        char[] cadena = mRadioOper.getText().toCharArray();
+                        for (int i = 3; i < cadena.length; i++) {
+                            if (cadena[i] == ' ') {
+                                idRadioOper = Integer.valueOf(word);
+                                i = cadena.length;
+                            } else {
+                                word += cadena[i];
+                            }
+                        }
+                        sEmergency = db.consultEmergencyRadioOper(idRadioOper);
+                        tMain.setText(sEmergency);
+                        try {
+                            a.escribirTxt("resource/Emergencias con " + mRadioOper.getText() + ".txt", sEmergency);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case "Ambulancia":
+                    if (mAmbulance.getText().equals("seleccione una opción")) {
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        int idAmbulance = 0;
+                        String word = "";
+                        char[] cadena = mAmbulance.getText().toCharArray();
+                        for (int i = 3; i < cadena.length; i++) {
+                            if (cadena[i] == ' ') {
+                                idAmbulance = Integer.valueOf(word);
+                                i = cadena.length;
+                            } else {
+                                word += cadena[i];
+                            }
+                        }
+                        sEmergency = db.consultEmergencyAmbulance(idAmbulance);
+                        tMain.setText(sEmergency);
+                        try {
+                            a.escribirTxt("resource/Emergencias con AB#" + idAmbulance + ".txt", sEmergency);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
             }
         } else {
             switch (e.getActionCommand()) {
@@ -262,10 +404,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(true);
                     tName.setVisible(false);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -277,35 +419,35 @@ public class Consulta extends JPanel implements ActionListener {
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
                     break;
-                case "Fecha":
-                    mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
-                    tName.setVisible(false);
-                    lDateOpen.setVisible(true);
-                    tDateOpen.setVisible(true);
-                    lDateClose.setVisible(true);
-                    tDateClose.setVisible(true);
-                    lDir.setVisible(false);
-                    tDir.setVisible(false);
-                    mResultado.setVisible(false);
-                    mPriorityTransfer.setVisible(false);
-                    mTransfer.setVisible(false);
-                    mOper.setVisible(false);
-                    mRadioOper.setVisible(false);
-                    mParamedic.setVisible(false);
-                    mAmbulance.setVisible(false);
-                    bSearch.setVisible(true);
-                    break;
+//                case "Fecha":
+//                    mOptionSearch.setText(e.getActionCommand());
+//                    lId.setVisible(false);
+//                    tId.setVisible(false);
+//                    tName.setVisible(false);
+////                    lDateOpen.setVisible(true);
+////                    tDateOpen.setVisible(true);
+////                    lDateClose.setVisible(true);
+////                    tDateClose.setVisible(true);
+//                    lDir.setVisible(false);
+//                    tDir.setVisible(false);
+//                    mResultado.setVisible(false);
+//                    mPriorityTransfer.setVisible(false);
+//                    mTransfer.setVisible(false);
+//                    mOper.setVisible(false);
+//                    mRadioOper.setVisible(false);
+//                    mParamedic.setVisible(false);
+//                    mAmbulance.setVisible(false);
+//                    bSearch.setVisible(true);
+//                    break;
                 case "Ubicación":
                     mOptionSearch.setText(e.getActionCommand());
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(true);
                     mResultado.setVisible(false);
@@ -322,10 +464,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(true);
@@ -342,10 +484,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -362,10 +504,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -382,10 +524,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -402,10 +544,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -422,10 +564,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(true);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -442,10 +584,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(true);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -462,10 +604,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -482,10 +624,10 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-                    lDateOpen.setVisible(false);
-                    tDateOpen.setVisible(false);
-                    lDateClose.setVisible(false);
-                    tDateClose.setVisible(false);
+//                    lDateOpen.setVisible(false);
+//                    tDateOpen.setVisible(false);
+//                    lDateClose.setVisible(false);
+//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);

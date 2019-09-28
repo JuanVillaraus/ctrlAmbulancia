@@ -1,0 +1,23 @@
+[EM#2]
+Dirección: asdfasdf 		entre: sadfasd
+Referencia: fwerqw
+Colonia: wqer 		Delegación: wqer
+Nombre del solicitante: sdfasdf
+Resultado: Traslado
+Traslado: ISSSTE		Prioridad: 51
+Vivos: 1		Muertos: 0
+Paciente: #0	
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : sadf
+Operador: #1	Nombre: Enrique Peña Nieto
+Operador voluntario: asdf
+Ambulancia: id:1	Numero: 147
+RadioOperador: #0	Nombre: null
+hora de la llamada: 2019-09-17 01:30:37
+hora de la salida: null
+hora de la llegada: null
+hora de la traslado: null
+hora de la hospital: null
+hora de la base: null
+Observaciones: null
+
