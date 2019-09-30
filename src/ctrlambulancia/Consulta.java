@@ -169,10 +169,6 @@ public class Consulta extends JPanel implements ActionListener {
         mOption.setPreferredSize(new Dimension(150, 30));
         mOptionSearch.setPreferredSize(new Dimension(150, 30));
         tMain.setPreferredSize(new Dimension(window.getWidth() - 50, 600));
-//        lDateOpen.setVisible(false);
-//        tDateOpen.setVisible(false);
-//        lDateClose.setVisible(false);
-//        tDateClose.setVisible(false);
         lId.setVisible(false);
         tId.setVisible(false);
         tName.setVisible(false);
@@ -241,10 +237,12 @@ public class Consulta extends JPanel implements ActionListener {
                     } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                         System.out.println("pendiente");
                     } else {
-                        sEmergency = db.consultEmergency(tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                        sEmergency = db.consultEmergency(tDateOpen.getText() + " 00:00:00",
+                                tDateClose.getText() + " 23:59:59");
                         tMain.setText(sEmergency);
                         try {
-                            a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " "
+                                    + tDateClose.getText() + ".txt", sEmergency);
                         } catch (IOException ex) {
                             Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -255,48 +253,210 @@ public class Consulta extends JPanel implements ActionListener {
                     tMain.setText("pendiente");
                     break;
                 case "Ubicación":
+                    if (tDir.getText() == null || tDir.getText().equals("")) {
+                        JOptionPane.showMessageDialog(null, "Debe ingresar la dirección que desea buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyDir(tDir.getText());
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias " + tDir.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyDir(tDir.getText(), tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
+                                            + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyDir(tDir.getText(), tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
+                                            + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyDir(tDir.getText(), tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    break;
                 case "Resultado":
                     if (mResultado.getText().equals("seleccione una opción")) {
-                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        sEmergency = db.consultEmergencyResultado(mResultado.getText());
-                        tMain.setText(sEmergency);
-                        try {
-                            a.escribirTxt("resource/Emergencias " + mResultado.getText() + ".txt", sEmergency);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        String resultado = mResultado.getText();
+                        if (resultado == "traslado") {
+                            resultado = "Traslado";
+                        }
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyResultado(resultado);
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias con " + resultado + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyResultado(resultado, tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia con " + resultado + " del "
+                                            + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyResultado(resultado, tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia con " + resultado + " del "
+                                            + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyResultado(resultado, tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia con " + resultado + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                     break;
                 case "Traslado":
                     if (mTransfer.getText().equals("seleccione una opción")) {
-                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        sEmergency = db.consultEmergencyTransfer(mTransfer.getText());
-                        tMain.setText(sEmergency);
-                        try {
-                            a.escribirTxt("resource/Emergencias a " + mTransfer.getText() + ".txt", sEmergency);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyTransfer(mTransfer.getText());
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias a " + mTransfer.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyTransfer(mTransfer.getText(), tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
+                                            + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyTransfer(mTransfer.getText(), tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
+                                            + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyTransfer(mTransfer.getText(), tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                     break;
                 case "Prioridad del traslado":
                     if (mPriorityTransfer.getText().equals("seleccione una opción")) {
-                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]));
-                        tMain.setText(sEmergency);
-                        try {
-                            a.escribirTxt("resource/Emergencias con " + mPriorityTransfer.getText() + " del Traslado.txt", sEmergency);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
+                                    + mPriorityTransfer.getText().toCharArray()[10]));
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias con " + mPriorityTransfer.getText()
+                                        + " del Traslado.txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
+                                        + mPriorityTransfer.getText().toCharArray()[10]), tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
+                                            + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
+                                        + mPriorityTransfer.getText().toCharArray()[10]), tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
+                                            + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
+                                    + mPriorityTransfer.getText().toCharArray()[10]), tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                     break;
                 case "Operador":
                     if (mOper.getText().equals("seleccione una opción")) {
-                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
                     } else {
                         int idOper = 0;
                         String word = "";
@@ -309,18 +469,53 @@ public class Consulta extends JPanel implements ActionListener {
                                 word += cadena[i];
                             }
                         }
-                        sEmergency = db.consultEmergencyOper(idOper);
-                        tMain.setText(sEmergency);
-                        try {
-                            a.escribirTxt("resource/Emergencias con " + mOper.getText() + ".txt", sEmergency);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyOper(idOper);
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias con " + mOper.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyOper(idOper, tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia Operador #" + idOper + " del "
+                                            + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyOper(idOper, tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia Operador #" + idOper + " del "
+                                            + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyOper(idOper, tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia Operador #" + idOper + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                     break;
                 case "Paramedico":
                     if (mParamedic.getText().equals("seleccione una opción")) {
-                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
                     } else {
                         int idParamedic = 0;
                         String word = "";
@@ -333,20 +528,149 @@ public class Consulta extends JPanel implements ActionListener {
                                 word += cadena[i];
                             }
                         }
-                        sEmergency = db.consultEmergencyParamedic(idParamedic);
-                        tMain.setText(sEmergency);
-                        try {
-                            a.escribirTxt("resource/Emergencias con " + mParamedic.getText() + ".txt", sEmergency);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyParamedic(idParamedic);
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias con " + mParamedic.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyParamedic(idParamedic, tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia Paramedico #" + idParamedic + " del "
+                                            + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyParamedic(idParamedic, tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia Paramedico #" + idParamedic + " del "
+                                            + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyParamedic(idParamedic, tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia Paramedico #" + idParamedic + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                     break;
                 case "Operador Voluntario":
+                    if (tName.getText() == null || tName.getText().equals("")) {
+                        JOptionPane.showMessageDialog(null, "Debe ingresar la dirección que desea buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyOperVoluntary(tName.getText());
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias con " + tName.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyOperVoluntary(tName.getText(), tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                            + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyOperVoluntary(tName.getText(), tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                            + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyOperVoluntary(tName.getText(), tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    break;
                 case "Paramedico Voluntario":
+                    if (tName.getText() == null || tName.getText().equals("")) {
+                        JOptionPane.showMessageDialog(null, "Debe ingresar la dirección que desea buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText());
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias con " + tName.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText(),
+                                        tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                            + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText(),
+                                        tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                            + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText(), tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    break;
                 case "Radio Operador":
                     if (mRadioOper.getText().equals("seleccione una opción")) {
-                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
                     } else {
                         int idRadioOper = 0;
                         String word = "";
@@ -359,18 +683,53 @@ public class Consulta extends JPanel implements ActionListener {
                                 word += cadena[i];
                             }
                         }
-                        sEmergency = db.consultEmergencyRadioOper(idRadioOper);
-                        tMain.setText(sEmergency);
-                        try {
-                            a.escribirTxt("resource/Emergencias con " + mRadioOper.getText() + ".txt", sEmergency);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyRadioOper(idRadioOper);
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias con " + mRadioOper.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyRadioOper(idRadioOper, tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia Radio Operador #" + idRadioOper
+                                            + " del " + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyRadioOper(idRadioOper, tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia Radio Operador #" + idRadioOper
+                                            + " del " + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyRadioOper(idRadioOper, tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia Operador #" + idRadioOper + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                     break;
                 case "Ambulancia":
                     if (mAmbulance.getText().equals("seleccione una opción")) {
-                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar", "ERROR", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar una opción para buscar",
+                                "ERROR", JOptionPane.WARNING_MESSAGE);
                     } else {
                         int idAmbulance = 0;
                         String word = "";
@@ -383,12 +742,46 @@ public class Consulta extends JPanel implements ActionListener {
                                 word += cadena[i];
                             }
                         }
-                        sEmergency = db.consultEmergencyAmbulance(idAmbulance);
-                        tMain.setText(sEmergency);
-                        try {
-                            a.escribirTxt("resource/Emergencias con AB#" + idAmbulance + ".txt", sEmergency);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                            sEmergency = db.consultEmergencyAmbulance(idAmbulance);
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencias con " + mAmbulance.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                            if (tDateOpen.getText().equals("")) {
+                                sEmergency = db.consultEmergencyAmbulance(idAmbulance, tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia Ambulancia #" + idAmbulance + " del "
+                                            + tDateClose.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                sEmergency = db.consultEmergencyAmbulance(idAmbulance, tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                tMain.setText(sEmergency);
+                                try {
+                                    a.escribirTxt("resource/Emergencia Ambulancia #" + idAmbulance + " del "
+                                            + tDateOpen.getText() + ".txt", sEmergency);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        } else {
+                            sEmergency = db.consultEmergencyAmbulance(idAmbulance, tDateOpen.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia Ambulancia #" + idAmbulance + " del "
+                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                     break;
@@ -404,10 +797,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(true);
                     tName.setVisible(false);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -419,35 +808,11 @@ public class Consulta extends JPanel implements ActionListener {
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
                     break;
-//                case "Fecha":
-//                    mOptionSearch.setText(e.getActionCommand());
-//                    lId.setVisible(false);
-//                    tId.setVisible(false);
-//                    tName.setVisible(false);
-////                    lDateOpen.setVisible(true);
-////                    tDateOpen.setVisible(true);
-////                    lDateClose.setVisible(true);
-////                    tDateClose.setVisible(true);
-//                    lDir.setVisible(false);
-//                    tDir.setVisible(false);
-//                    mResultado.setVisible(false);
-//                    mPriorityTransfer.setVisible(false);
-//                    mTransfer.setVisible(false);
-//                    mOper.setVisible(false);
-//                    mRadioOper.setVisible(false);
-//                    mParamedic.setVisible(false);
-//                    mAmbulance.setVisible(false);
-//                    bSearch.setVisible(true);
-//                    break;
                 case "Ubicación":
                     mOptionSearch.setText(e.getActionCommand());
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(true);
                     mResultado.setVisible(false);
@@ -464,10 +829,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(true);
@@ -484,10 +845,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -504,10 +861,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -524,10 +877,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -544,10 +893,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -564,10 +909,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(true);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -584,10 +925,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(true);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -604,10 +941,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -624,10 +957,6 @@ public class Consulta extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     tName.setVisible(false);
-//                    lDateOpen.setVisible(false);
-//                    tDateOpen.setVisible(false);
-//                    lDateClose.setVisible(false);
-//                    tDateClose.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);

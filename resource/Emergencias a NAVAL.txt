@@ -1,0 +1,26 @@
+[EM#4]
+Dirección: Carlos Cruz 		entre: calle 12 y calle 13
+Referencia: a lado del nucleo deportivo
+Colonia: 21 de abril 		Delegación: 
+Nombre del solicitante: Jose
+Resultado: Traslado
+Traslado: NAVAL		Prioridad: 50
+Vivos: 1		Muertos: 0
+Paciente: #29	Nombre: Citlali Campo Guerra
+Edad: 23
+Trauma: Tipo de Trauma
+Tipo Obstetrico: Embarazada	9 meses
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : Vanesa
+Operador: #1	Nombre: Enrique Peña Nieto
+Operador voluntario: Sofia
+Ambulancia: id:2	Numero: 159
+RadioOperador: #0	Nombre: null
+hora de la llamada: 2019-09-17 02:02:10
+hora de la salida: null
+hora de la llegada: null
+hora de la traslado: null
+hora de la hospital: null
+hora de la base: null
+Observaciones: null
+
