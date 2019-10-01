@@ -171,6 +171,7 @@ public class ctrData extends JPanel implements ActionListener {
         JLabel lSpace1 = new JLabel("");
         JLabel lSpace2 = new JLabel("");
         JLabel lSpace3 = new JLabel("");
+        JLabel lSpace4 = new JLabel("");
         JLabel lDir = new JLabel("Ubicación:");
         JLabel lEntre = new JLabel("Entre:");
         JLabel lRef = new JLabel("Referencia:");
@@ -301,8 +302,9 @@ public class ctrData extends JPanel implements ActionListener {
         lLastName2Patient.setPreferredSize(new Dimension(120, 50));
         lSpace0.setPreferredSize(new Dimension(25, 50));
         lSpace1.setPreferredSize(new Dimension(25, 50));
-        lSpace2.setPreferredSize(new Dimension(200, 50));
+        lSpace2.setPreferredSize(new Dimension(100, 50));
         lSpace3.setPreferredSize(new Dimension(200, 50));
+        lSpace4.setPreferredSize(new Dimension(200, 50));
         lSex.setPreferredSize(new Dimension(50, 50));
         lAgeOld.setPreferredSize(new Dimension(50, 50));
         lNamePatient.setPreferredSize(new Dimension(70, 50));
@@ -407,13 +409,13 @@ public class ctrData extends JPanel implements ActionListener {
         pTransfer.add(mBarTransfer);
         this.add(pTransfer);
         this.add(lSpace1);
-        this.add(multSingle);
-        this.add(multGroup);
+//        this.add(multSingle);
+//        this.add(multGroup);
         this.add(lAlive);
         this.add(tAlive);
         this.add(lDeads);
         this.add(tDeads);
-        //this.add(lSpace2);
+        this.add(lSpace2);
         this.add(lPatient);
         this.add(lSex);
         this.add(sexM);
@@ -430,7 +432,7 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(tLastName2Patient);
         //this.add(lNumPatient);
         //this.add(tNumPatient);
-        this.add(lSpace2);
+        this.add(lSpace3);
         this.add(lAmbulance);
         this.add(mBarAmbulance);
         this.add(lKmDeparture);
@@ -441,7 +443,7 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(mBarOper);
         this.add(lParamedic);
         this.add(mBarParamedic);
-        this.add(lSpace3);
+        this.add(lSpace4);
         this.add(lOperVoluntary);
         this.add(tOperVoluntary);
         this.add(lParamedicVoluntary);
@@ -483,38 +485,38 @@ public class ctrData extends JPanel implements ActionListener {
                     System.out.println("El sexo es: " + e.getActionCommand());
                     sex = e.getActionCommand();
                     break;
-                case 'G':
-                    tAgeOld.setText(null);
-                    tNumFrap.setText(null);
-                    tNamePatient.setText(null);
-                    tLastNamePatient.setText(null);
-                    tLastName2Patient.setText(null);
-                    groupSex.clearSelection();
-                    sexM.setEnabled(false);
-                    sexF.setEnabled(false);
-                    tAlive.setEditable(true);
-                    tDeads.setEditable(true);
-                    tAgeOld.setEditable(false);
-                    tNumFrap.setEditable(false);
-                    tNamePatient.setEditable(false);
-                    tLastNamePatient.setEditable(false);
-                    tLastName2Patient.setEditable(false);
-                    System.out.println("single: " + multSingle.isSelected());
-                    break;
-                case 'I':
-                    tAlive.setText(null);
-                    tDeads.setText(null);
-                    sexM.setEnabled(true);
-                    sexF.setEnabled(true);
-                    tAlive.setEditable(false);
-                    tDeads.setEditable(false);
-                    tAgeOld.setEditable(true);
-                    tNumFrap.setEditable(true);
-                    tNamePatient.setEditable(true);
-                    tLastNamePatient.setEditable(true);
-                    tLastName2Patient.setEditable(true);
-                    System.out.println("single: " + multSingle.isSelected());
-                    break;
+//                case 'G':
+//                    tAgeOld.setText(null);
+//                    tNumFrap.setText(null);
+//                    tNamePatient.setText(null);
+//                    tLastNamePatient.setText(null);
+//                    tLastName2Patient.setText(null);
+//                    groupSex.clearSelection();
+//                    sexM.setEnabled(false);
+//                    sexF.setEnabled(false);
+//                    tAlive.setEditable(true);
+//                    tDeads.setEditable(true);
+//                    tAgeOld.setEditable(false);
+//                    tNumFrap.setEditable(false);
+//                    tNamePatient.setEditable(false);
+//                    tLastNamePatient.setEditable(false);
+//                    tLastName2Patient.setEditable(false);
+//                    System.out.println("single: " + multSingle.isSelected());
+//                    break;
+//                case 'I':
+//                    tAlive.setText(null);
+//                    tDeads.setText(null);
+//                    sexM.setEnabled(true);
+//                    sexF.setEnabled(true);
+//                    tAlive.setEditable(false);
+//                    tDeads.setEditable(false);
+//                    tAgeOld.setEditable(true);
+//                    tNumFrap.setEditable(true);
+//                    tNamePatient.setEditable(true);
+//                    tLastNamePatient.setEditable(true);
+//                    tLastName2Patient.setEditable(true);
+//                    System.out.println("single: " + multSingle.isSelected());
+//                    break;
                 default:
                     System.out.println("El event JRadioButton es: " + e.getActionCommand());
                     break;
@@ -556,8 +558,17 @@ public class ctrData extends JPanel implements ActionListener {
                     mResultado.setText(e.getActionCommand());
                     mPriorityTransfer.setEnabled(true);
                     mTransfer.setEnabled(true);
-                    multSingle.setEnabled(true);
-                    multGroup.setEnabled(true);
+                    sexM.setEnabled(true);
+                    sexF.setEnabled(true);
+                    tAlive.setEditable(true);
+                    tDeads.setEditable(true);
+                    tAgeOld.setEditable(true);
+                    tNumFrap.setEditable(true);
+                    tNamePatient.setEditable(true);
+                    tLastNamePatient.setEditable(true);
+                    tLastName2Patient.setEditable(true);
+//                    multSingle.setEnabled(true);
+//                    multGroup.setEnabled(true);
 
                 } else if (cadena[2] == '#') {
                     switch (command) {
@@ -619,6 +630,11 @@ public class ctrData extends JPanel implements ActionListener {
                                     tTimeTransfer.setText(time.format(calendario.getTime()));
                                     bTime.setText("Hora hospital");
                                     classTime++;
+                                    if (mTransfer.getText().equals("CRUZ ROJA")) {
+                                        bTime.setText("Hora base");
+                                        classTime++;
+                                        timeHospital = "2000-1-1 0:00:00";
+                                    }
                                 }
                             } else {
                                 timeTransfer = timeFull.format(calendario.getTime());

@@ -122,3 +122,31 @@ hora de la hospital: 2019-05-18 13:43:42
 hora de la base: 2019-05-18 14:06:42
 Observaciones: 
 
+[EM#8]
+Dirección: Cuautemoc 		entre: cortes y juan soto
+Referencia: oxxo
+Colonia: centro 		Delegación: veracruz-boca del rio
+Nombre del solicitante: Roberto
+Resultado: Traslado
+Traslado: CRUZ ROJA		Prioridad: 2
+Vivos: 1		Muertos: 0
+Paciente: #33	Nombre:   
+Edad: 0
+Trauma: Tipo de Trauma
+Tipo Obstetrico: Tipo de obstetrico	0 meses
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : 
+Operador: #1	Nombre: Enrique Peña Nieto
+Operador voluntario: 
+Ambulancia: id:5	Numero: 956
+RadioOperador: #0	Nombre: null
+hora de la llamada: 2019-10-01 04:13:12
+hora de la salida: 2019-10-01 04:15:00
+hora de la llegada: 2019-10-01 04:15:11
+hora de la traslado: 2019-10-01 04:19:34
+hora de la hospital: 2019-10-01 04:19:39
+hora de la base: 2019-10-01 04:19:42
+Observaciones: pskdfoijdsaokfk		qjjbwjefbwij	jfwjendfjwsndf++
+sdfskdf
+dsfksdfnskdfnks
+
