@@ -8,7 +8,8 @@ package ctrlambulancia;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
+//import org.apache.poi.hssf.*;
+//import org.apache.poi.ss.usermodel.Cell;
 /**
  *
  * @author Sistemas
@@ -142,4 +143,22 @@ public class archivo {
             System.err.println("SOY SAVE: No se encontro el archivo " + dir);
         }
     }
+    
+//    public static void writeExcelData(){
+//		//create blank workbook
+//		HSSFWorkbook workbook = new HSSFWorkbook();
+//		HSSFSheet spreadsheet = workbook.createSheet("Sheet1");
+//		try{
+//			HSSFRow row = spreadsheet.createRow(0);
+//			Cell cell = row.createCell(0);
+//			String result = array[0] + " " + array[1] + " " + array[2];
+//			cell.setCellValue(result);
+//			FileOutputStream out = new FileOutputStream(new File("C:\\Users\\XXX\\Documents\\CreateWorkbook.xls"));
+//			workbook.write(out);
+//			out.close();
+//		}catch(Exception e){
+//			System.out.println("Error: " + e);
+//		}
+//		System.out.println("createworkbook.xls created!");
+//	}
 }

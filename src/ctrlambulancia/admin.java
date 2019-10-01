@@ -21,6 +21,7 @@ import javax.swing.*;
 public class admin extends JPanel implements ActionListener {
 
     JFrame window;
+    Interface frameMain;
     //int window = 1200;
     ConxDB db;
     JButton bInsert = new JButton("Agregar");
@@ -48,9 +49,10 @@ public class admin extends JPanel implements ActionListener {
     //JScrollPane sConsult = new JScrollPane(tConsult, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
     JScrollPane sConsult = new JScrollPane(aConsult);
 
-    public admin(JFrame window, ConxDB db) {
+    public admin(JFrame window, ConxDB db, Interface frameMain) {
         this.window = window;
         this.db = db;
+        this.frameMain = frameMain;
         JMenuBar mBarOption = new JMenuBar();
         JMenuBar mBarTipeJob = new JMenuBar();
         JMenuItem iInsert = new JMenuItem("Agregar");
@@ -150,11 +152,13 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setBackground(Color.RED);
                             } else {
                                 resultDB = db.insertAmbulance(Integer.parseInt(tNumAmbulance.getText()), Integer.parseInt(tKmAmbulance.getText()));
-                                if (resultDB.equals("successfully completed")) {
+                                if (resultDB.toCharArray()[0] == 'A' && resultDB.toCharArray()[1] == 'B') {
                                     alert.setText("La ambulancia ha sido agregada exitosamente");
+                                    frameMain.menuAmbulanceUpdate(resultDB + " Numero:" + tNumAmbulance.getText() + "\n");
                                     tNumAmbulance.setText(null);
                                     tKmAmbulance.setText(null);
                                     alert.setBackground(Color.GREEN);
+                                    System.out.println("result " + resultDB);
                                 } else {
                                     alert.setText(resultDB);
                                     alert.setBackground(Color.RED);
@@ -167,8 +171,10 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setBackground(Color.RED);
                             } else {
                                 resultDB = db.insertOper(tName.getText(), tLastName.getText(), tLastName2.getText());
-                                if (resultDB.equals("successfully completed")) {
+                                if (resultDB.toCharArray()[0] == 'O' && resultDB.toCharArray()[1] == 'P') {
                                     alert.setText("El operador ha sido agregado exitosamente");
+                                    frameMain.menuOperUpdate(resultDB + " " + tName.getText() + " " 
+                                            + tLastName.getText() + " " + tLastName2.getText() + "\n");
                                     tName.setText(null);
                                     tLastName.setText(null);
                                     tLastName2.setText(null);
@@ -185,8 +191,10 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setBackground(Color.RED);
                             } else {
                                 resultDB = db.insertParamedic(tName.getText(), tLastName.getText(), tLastName2.getText());
-                                if (resultDB.equals("successfully completed")) {
+                                if (resultDB.toCharArray()[0] == 'P' && resultDB.toCharArray()[1] == 'M') {
                                     alert.setText("El paramedico ha sido agregado exitosamente");
+                                    frameMain.menuParamedicUpdate(resultDB + " " + tName.getText() + " " 
+                                            + tLastName.getText() + " " + tLastName2.getText() + "\n");
                                     tName.setText(null);
                                     tLastName.setText(null);
                                     tLastName2.setText(null);
@@ -203,8 +211,10 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setBackground(Color.RED);
                             } else {
                                 resultDB = db.insertRadioOper(tName.getText(), tLastName.getText(), tLastName2.getText());
-                                if (resultDB.equals("successfully completed")) {
+                                if (resultDB.toCharArray()[0] == 'R' && resultDB.toCharArray()[1] == 'P') {
                                     alert.setText("El paramedico ha sido agregado exitosamente");
+                                    frameMain.menuRadioOperUpdate(resultDB + " " + tName.getText() + " " 
+                                            + tLastName.getText() + " " + tLastName2.getText() + "\n");
                                     tName.setText(null);
                                     tLastName.setText(null);
                                     tLastName2.setText(null);

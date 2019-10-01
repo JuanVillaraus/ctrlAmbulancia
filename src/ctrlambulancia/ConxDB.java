@@ -69,12 +69,18 @@ public class ConxDB {
     public String insertAmbulance(int num, int km) {
         String query = "INSERT INTO \"AMBULANCIA\"(\"NUMERO_AMBULANCIA\", \"KM_AMBULANCIA\") VALUES(?, ?)";
 
-        try (PreparedStatement pst = c.prepareStatement(query)) {
+        try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setInt(1, num);
             pst.setInt(2, km);
             pst.executeUpdate();
-            return ("successfully completed");
+            Long id = null;
+            ResultSet rs = pst.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            return ("AB#" + id);
+//            return ("successfully completed");
         } catch (SQLException ex) {
             System.err.println("ConxDB/insertOper$\n" + ex.getClass().getName() + "\n" + ex.getMessage());
             return (ex.getMessage());
@@ -85,13 +91,19 @@ public class ConxDB {
         String query = "INSERT INTO \"OPERADOR\"(\"NOMBRE_OPERADOR\", \"APELLIDO_PATERNO_OPERADOR\", "
                 + "\"APELLIDO_MATERNO_OPERADOR\") VALUES(?, ?, ?)";
 
-        try (PreparedStatement pst = c.prepareStatement(query)) {
+        try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, name);
             pst.setString(2, lastName);
             pst.setString(3, lastName2);
             pst.executeUpdate();
-            return ("successfully completed");
+            Long id = null;
+            ResultSet rs = pst.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            return ("OP#" + id);
+//            return ("successfully completed");
         } catch (SQLException ex) {
             System.err.println("ConxDB/insertOper$\n" + ex.getClass().getName() + "\n" + ex.getMessage());
             return (ex.getMessage());
@@ -102,13 +114,19 @@ public class ConxDB {
         String query = "INSERT INTO \"RADIO_OPERADOR\"(\"NOMBRE_RADIO_OPERADOR\", \"APELLIDO_PATERNO_RADIO_OPERADOR\", "
                 + "\"APELLIDO_MATERNO_RADIO_OPERADOR\") VALUES(?, ?, ?)";
 
-        try (PreparedStatement pst = c.prepareStatement(query)) {
+        try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, name);
             pst.setString(2, lastName);
             pst.setString(3, lastName2);
             pst.executeUpdate();
-            return ("successfully completed");
+            Long id = null;
+            ResultSet rs = pst.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            return ("RO#" + id);
+//            return ("successfully completed");
         } catch (SQLException ex) {
             System.err.println("ConxDB/insertRadioOper$\t" + ex.getClass().getName() + "\t" + ex.getMessage());
             return (ex.getMessage());
@@ -119,13 +137,19 @@ public class ConxDB {
         String query = "INSERT INTO \"PARAMEDICO\"(\"NOMBRE_PARAMEDICO\", \"APELLIDO_PATERNO_PARAMEDICO\", "
                 + "\"APELLIDO_MATERNO_PARAMEDICO\") VALUES(?, ?, ?)";
 
-        try (PreparedStatement pst = c.prepareStatement(query)) {
+        try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, name);
             pst.setString(2, lastName);
             pst.setString(3, lastName2);
             pst.executeUpdate();
-            return ("successfully completed");
+            Long id = null;
+            ResultSet rs = pst.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            return ("PM#" + id);
+//            return ("successfully completed");
         } catch (SQLException ex) {
             System.err.println("ConxDB/insertParamedic$\t" + ex.getClass().getName() + "\t" + ex.getMessage());
             return (ex.getMessage());

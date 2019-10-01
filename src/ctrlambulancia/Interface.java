@@ -168,7 +168,7 @@ public class Interface extends JFrame implements ActionListener {
                         admin.setVisible(true);
                         admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
                                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-                        admin.add(new admin(admin, db));
+                        admin.add(new admin(admin, db, this));
                         //int p = JOptionPane.showConfirmDialog(null, new admin(db), "Admin",JOptionPane.DEFAULT_OPTION);
                     } else {
                         JOptionPane.showMessageDialog(null, "El user o pass son incorrectos", "ERROR", JOptionPane.WARNING_MESSAGE);
@@ -264,6 +264,66 @@ public class Interface extends JFrame implements ActionListener {
             if (cadena[i] == '\n') {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mAmbulance.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+    }
+    
+    public void menuAmbulanceUpdate(String employees){        
+        char[] cadena = employees.toCharArray();
+        String word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mAmbulance.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+    }
+    
+    public void menuOperUpdate(String employees){        
+        char[] cadena = employees.toCharArray();
+        String word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mOper.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+    }
+    
+    public void menuRadioOperUpdate(String employees){        
+        char[] cadena = employees.toCharArray();
+        String word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mRadioOper.add(iEmployees);
+                iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+    }
+    
+    public void menuParamedicUpdate(String employees){        
+        char[] cadena = employees.toCharArray();
+        String word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                JMenuItem iEmployees = new JMenuItem(word);
+                mParamedic.add(iEmployees);
                 iEmployees.addActionListener(this);
                 word = "";
             } else {
