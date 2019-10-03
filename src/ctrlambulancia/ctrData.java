@@ -33,11 +33,31 @@ public class ctrData extends JPanel implements ActionListener {
     JTextField tNumPatient = new JTextField(5);
     JTextField tAlive = new JTextField(5);
     JTextField tDeads = new JTextField(5);
-    JTextField tAgeOld = new JTextField(5);
-    JTextField tNumFrap = new JTextField(5);
-    JTextField tNamePatient = new JTextField(20);
-    JTextField tLastNamePatient = new JTextField(15);
-    JTextField tLastName2Patient = new JTextField(15);
+    JTextField tAgeOld1 = new JTextField(5);
+    JTextField tAgeOld2 = new JTextField(5);
+    JTextField tAgeOld3 = new JTextField(5);
+    JTextField tAgeOld4 = new JTextField(5);
+    JTextField tAgeOld5 = new JTextField(5);
+    JTextField tNumFrap1 = new JTextField(5);
+    JTextField tNumFrap2 = new JTextField(5);
+    JTextField tNumFrap3 = new JTextField(5);
+    JTextField tNumFrap4 = new JTextField(5);
+    JTextField tNumFrap5 = new JTextField(5);
+    JTextField tNamePatient1 = new JTextField(20);
+    JTextField tNamePatient2 = new JTextField(20);
+    JTextField tNamePatient3 = new JTextField(20);
+    JTextField tNamePatient4 = new JTextField(20);
+    JTextField tNamePatient5 = new JTextField(20);
+    JTextField tLastNamePatient1 = new JTextField(15);
+    JTextField tLastNamePatient2 = new JTextField(15);
+    JTextField tLastNamePatient3 = new JTextField(15);
+    JTextField tLastNamePatient4 = new JTextField(15);
+    JTextField tLastNamePatient5 = new JTextField(15);
+    JTextField tLastName2Patient1 = new JTextField(15);
+    JTextField tLastName2Patient2 = new JTextField(15);
+    JTextField tLastName2Patient3 = new JTextField(15);
+    JTextField tLastName2Patient4 = new JTextField(15);
+    JTextField tLastName2Patient5 = new JTextField(15);
     JTextField tAmbulance = new JTextField(5);
     JTextField tKmDeparture = new JTextField(5);
     JTextField tKmComeback = new JTextField(5);
@@ -53,8 +73,26 @@ public class ctrData extends JPanel implements ActionListener {
     JTextField tTimeComeback = new JTextField(8);
     JRadioButton multSingle = new JRadioButton("Individual", false);
     JRadioButton multGroup = new JRadioButton("Grupal", false);
-    JRadioButton sexM = new JRadioButton("M", false);
-    JRadioButton sexF = new JRadioButton("F", false);
+    JRadioButton sexM1 = new JRadioButton("M", false);
+    JRadioButton sexM2 = new JRadioButton("M", false);
+    JRadioButton sexM3 = new JRadioButton("M", false);
+    JRadioButton sexM4 = new JRadioButton("M", false);
+    JRadioButton sexM5 = new JRadioButton("M", false);
+    JRadioButton sexF1 = new JRadioButton("F", false);
+    JRadioButton sexF2 = new JRadioButton("F", false);
+    JRadioButton sexF3 = new JRadioButton("F", false);
+    JRadioButton sexF4 = new JRadioButton("F", false);
+    JRadioButton sexF5 = new JRadioButton("F", false);
+    JRadioButton rAlive1 = new JRadioButton("Vivo", false);
+    JRadioButton rAlive2 = new JRadioButton("Vivo", false);
+    JRadioButton rAlive3 = new JRadioButton("Vivo", false);
+    JRadioButton rAlive4 = new JRadioButton("Vivo", false);
+    JRadioButton rAlive5 = new JRadioButton("Vivo", false);
+    JRadioButton rDeads1 = new JRadioButton("Difunto", false);
+    JRadioButton rDeads2 = new JRadioButton("Difunto", false);
+    JRadioButton rDeads3 = new JRadioButton("Difunto", false);
+    JRadioButton rDeads4 = new JRadioButton("Difunto", false);
+    JRadioButton rDeads5 = new JRadioButton("Difunto", false);
     JButton bTime = new JButton("Hora salida");
     JMenu mResultado = new JMenu("Resultado");
     JMenu mPriorityTransfer = new JMenu("Prioridad del traslado");
@@ -65,7 +103,9 @@ public class ctrData extends JPanel implements ActionListener {
     JMenu mAmbulance = new JMenu();
     ButtonGroup groupMult = new ButtonGroup();
     ButtonGroup groupSex = new ButtonGroup();
+    ButtonGroup groupStatus = new ButtonGroup();
     JTextArea tNote = new JTextArea(5, 30);
+    JLabel lPatient = new JLabel("");
     int windowX = 0;
     int idAmbulance = 0;
     int idParamedic = 0;
@@ -74,6 +114,7 @@ public class ctrData extends JPanel implements ActionListener {
     int idPatient = 0;
     String sTimeCall;
     String sex = "";
+    String status = "";
     String timeCall = "";
     String timeDeparture = "";
     String timeArrival = "";
@@ -172,6 +213,10 @@ public class ctrData extends JPanel implements ActionListener {
         JLabel lSpace2 = new JLabel("");
         JLabel lSpace3 = new JLabel("");
         JLabel lSpace4 = new JLabel("");
+        JLabel lSpace5 = new JLabel("");
+        JLabel lSpace6 = new JLabel("");
+        JLabel lSpace7 = new JLabel("");
+        JLabel lSpace9 = new JLabel("");
         JLabel lDir = new JLabel("Ubicación:");
         JLabel lEntre = new JLabel("Entre:");
         JLabel lRef = new JLabel("Referencia:");
@@ -186,14 +231,43 @@ public class ctrData extends JPanel implements ActionListener {
         JLabel lApplicant = new JLabel("Solicitante:");
         JLabel lRadioOper = new JLabel("Radio Operador:");
         JLabel lPatient = new JLabel("Pacientes:");
-        JLabel lSex = new JLabel("Sexo:");
-        JLabel lAgeOld = new JLabel("Edad:");
+        JLabel lSex1 = new JLabel("Sexo:");
+        JLabel lSex2 = new JLabel("Sexo:");
+        JLabel lSex3 = new JLabel("Sexo:");
+        JLabel lSex4 = new JLabel("Sexo:");
+        JLabel lSex5 = new JLabel("Sexo:");
+        JLabel lAgeOld1 = new JLabel("Edad:");
+        JLabel lAgeOld2 = new JLabel("Edad:");
+        JLabel lAgeOld3 = new JLabel("Edad:");
+        JLabel lAgeOld4 = new JLabel("Edad:");
+        JLabel lAgeOld5 = new JLabel("Edad:");
         JLabel lAlive = new JLabel("Vivos:");
         JLabel lDeads = new JLabel("Muertos:");
-        JLabel lNumFrap = new JLabel("Num frap:");
-        JLabel lNamePatient = new JLabel("Nombre:");
-        JLabel lLastNamePatient = new JLabel("Apellido paterno:");
-        JLabel lLastName2Patient = new JLabel("Apellido materno:");
+        JLabel lNumFrap1 = new JLabel("Num frap:");
+        JLabel lNumFrap2 = new JLabel("Num frap:");
+        JLabel lNumFrap3 = new JLabel("Num frap:");
+        JLabel lNumFrap4 = new JLabel("Num frap:");
+        JLabel lNumFrap5 = new JLabel("Num frap:");
+        JLabel lNamePatient1 = new JLabel("Nombre:");
+        JLabel lNamePatient2 = new JLabel("Nombre:");
+        JLabel lNamePatient3 = new JLabel("Nombre:");
+        JLabel lNamePatient4 = new JLabel("Nombre:");
+        JLabel lNamePatient5 = new JLabel("Nombre:");
+        JLabel lLastNamePatient1 = new JLabel("Apellido paterno:");
+        JLabel lLastNamePatient2 = new JLabel("Apellido paterno:");
+        JLabel lLastNamePatient3 = new JLabel("Apellido paterno:");
+        JLabel lLastNamePatient4 = new JLabel("Apellido paterno:");
+        JLabel lLastNamePatient5 = new JLabel("Apellido paterno:");
+        JLabel lLastName2Patient1 = new JLabel("Apellido materno:");
+        JLabel lLastName2Patient2 = new JLabel("Apellido materno:");
+        JLabel lLastName2Patient3 = new JLabel("Apellido materno:");
+        JLabel lLastName2Patient4 = new JLabel("Apellido materno:");
+        JLabel lLastName2Patient5 = new JLabel("Apellido materno:");
+        JLabel lStatus1 = new JLabel("Estado:");
+        JLabel lStatus2 = new JLabel("Estado:");
+        JLabel lStatus3 = new JLabel("Estado:");
+        JLabel lStatus4 = new JLabel("Estado:");
+        JLabel lStatus5 = new JLabel("Estado:");
         JLabel lNumPatient = new JLabel("Numero de paciente CRM:");
         JLabel lAmbulance = new JLabel("Ambulancia:");
         JLabel lKmDeparture = new JLabel("Km salida:");
@@ -231,6 +305,7 @@ public class ctrData extends JPanel implements ActionListener {
         JMenuItem iTransfer8 = new JMenuItem("NAVAL");
         JMenuItem iTransfer9 = new JMenuItem("PRIVADO");
         JMenuItem iTransfer10 = new JMenuItem("OTRO");
+        JButton bUpPatient = new JButton(" + ");
         iFalseAlarm.addActionListener(this);
         iNoFound.addActionListener(this);
         iOtherTransfer.addActionListener(this);
@@ -253,9 +328,12 @@ public class ctrData extends JPanel implements ActionListener {
         iTransfer10.addActionListener(this);
         multSingle.addActionListener(this);
         multGroup.addActionListener(this);
-        sexM.addActionListener(this);
-        sexF.addActionListener(this);
+        sexM1.addActionListener(this);
+        sexF1.addActionListener(this);
+        rAlive1.addActionListener(this);
+        rDeads1.addActionListener(this);
         bTime.addActionListener(this);
+        bUpPatient.addActionListener(this);
         mResultado.add(iFalseAlarm);
         mResultado.add(iNoFound);
         mResultado.add(iOtherTransfer);
@@ -281,8 +359,10 @@ public class ctrData extends JPanel implements ActionListener {
         mBarTransfer.add(mTransfer);
         groupMult.add(multSingle);
         groupMult.add(multGroup);
-        groupSex.add(sexM);
-        groupSex.add(sexF);
+        groupSex.add(sexM1);
+        groupSex.add(sexF1);
+        groupStatus.add(rAlive1);
+        groupStatus.add(rDeads1);
         menuUpdate();
         mBarOper.add(mOper);
         mBarRadioOper.add(mRadioOper);
@@ -298,16 +378,45 @@ public class ctrData extends JPanel implements ActionListener {
         //lRadioOper.setPreferredSize(new Dimension(120, 50));
         lAlive.setPreferredSize(new Dimension(60, 50));
         lDeads.setPreferredSize(new Dimension(60, 50));
-        lLastNamePatient.setPreferredSize(new Dimension(120, 50));
-        lLastName2Patient.setPreferredSize(new Dimension(120, 50));
         lSpace0.setPreferredSize(new Dimension(25, 50));
         lSpace1.setPreferredSize(new Dimension(25, 50));
         lSpace2.setPreferredSize(new Dimension(100, 50));
-        lSpace3.setPreferredSize(new Dimension(200, 50));
-        lSpace4.setPreferredSize(new Dimension(200, 50));
-        lSex.setPreferredSize(new Dimension(50, 50));
-        lAgeOld.setPreferredSize(new Dimension(50, 50));
-        lNamePatient.setPreferredSize(new Dimension(70, 50));
+//        lSpace3.setPreferredSize(new Dimension(60, 50));
+//        lSpace4.setPreferredSize(new Dimension(80, 50));
+//        lSpace5.setPreferredSize(new Dimension(80, 50));
+//        lSpace6.setPreferredSize(new Dimension(100, 50));
+//        lSpace7.setPreferredSize(new Dimension(100, 50));
+        lSpace9.setPreferredSize(new Dimension(200, 50));
+        lSex1.setPreferredSize(new Dimension(50, 50));
+        lSex2.setPreferredSize(new Dimension(105, 50));
+        lSex3.setPreferredSize(new Dimension(105, 50));
+        lSex4.setPreferredSize(new Dimension(105, 50));
+        lSex5.setPreferredSize(new Dimension(105, 50));
+        lAgeOld1.setPreferredSize(new Dimension(50, 50));
+        lAgeOld2.setPreferredSize(new Dimension(50, 50));
+        lAgeOld3.setPreferredSize(new Dimension(50, 50));
+        lAgeOld4.setPreferredSize(new Dimension(50, 50));
+        lAgeOld5.setPreferredSize(new Dimension(50, 50));
+        lNamePatient1.setPreferredSize(new Dimension(70, 50));
+        lNamePatient2.setPreferredSize(new Dimension(70, 50));
+        lNamePatient3.setPreferredSize(new Dimension(70, 50));
+        lNamePatient4.setPreferredSize(new Dimension(70, 50));
+        lNamePatient5.setPreferredSize(new Dimension(70, 50));
+        lLastNamePatient1.setPreferredSize(new Dimension(120, 50));
+        lLastNamePatient2.setPreferredSize(new Dimension(120, 50));
+        lLastNamePatient3.setPreferredSize(new Dimension(120, 50));
+        lLastNamePatient4.setPreferredSize(new Dimension(120, 50));
+        lLastNamePatient5.setPreferredSize(new Dimension(120, 50));
+        lLastName2Patient1.setPreferredSize(new Dimension(120, 50));
+        lLastName2Patient2.setPreferredSize(new Dimension(120, 50));
+        lLastName2Patient3.setPreferredSize(new Dimension(120, 50));
+        lLastName2Patient4.setPreferredSize(new Dimension(120, 50));
+        lLastName2Patient5.setPreferredSize(new Dimension(120, 50));
+        lStatus1.setPreferredSize(new Dimension(65, 50));
+        lStatus2.setPreferredSize(new Dimension(65, 50));
+        lStatus3.setPreferredSize(new Dimension(65, 50));
+        lStatus4.setPreferredSize(new Dimension(65, 50));
+        lStatus5.setPreferredSize(new Dimension(65, 50));
         lNumPatient.setPreferredSize(new Dimension(170, 50));
         lAmbulance.setPreferredSize(new Dimension(170, 50));
         lKmDeparture.setPreferredSize(new Dimension(70, 50));
@@ -320,11 +429,36 @@ public class ctrData extends JPanel implements ActionListener {
         lRadioOper.setHorizontalAlignment(SwingConstants.RIGHT);
         lAlive.setHorizontalAlignment(SwingConstants.RIGHT);
         lDeads.setHorizontalAlignment(SwingConstants.RIGHT);
-        lLastNamePatient.setHorizontalAlignment(SwingConstants.RIGHT);
-        lLastName2Patient.setHorizontalAlignment(SwingConstants.RIGHT);
-        lSex.setHorizontalAlignment(SwingConstants.RIGHT);
-        lAgeOld.setHorizontalAlignment(SwingConstants.RIGHT);
-        lNamePatient.setHorizontalAlignment(SwingConstants.RIGHT);
+        lNamePatient1.setHorizontalAlignment(SwingConstants.RIGHT);
+        lNamePatient2.setHorizontalAlignment(SwingConstants.RIGHT);
+        lNamePatient3.setHorizontalAlignment(SwingConstants.RIGHT);
+        lNamePatient4.setHorizontalAlignment(SwingConstants.RIGHT);
+        lNamePatient5.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastNamePatient1.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastNamePatient2.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastNamePatient3.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastNamePatient4.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastNamePatient5.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastName2Patient1.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastName2Patient2.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastName2Patient3.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastName2Patient4.setHorizontalAlignment(SwingConstants.RIGHT);
+        lLastName2Patient5.setHorizontalAlignment(SwingConstants.RIGHT);
+        lSex1.setHorizontalAlignment(SwingConstants.RIGHT);
+        lSex2.setHorizontalAlignment(SwingConstants.RIGHT);
+        lSex3.setHorizontalAlignment(SwingConstants.RIGHT);
+        lSex4.setHorizontalAlignment(SwingConstants.RIGHT);
+        lSex5.setHorizontalAlignment(SwingConstants.RIGHT);
+        lAgeOld1.setHorizontalAlignment(SwingConstants.RIGHT);
+        lAgeOld2.setHorizontalAlignment(SwingConstants.RIGHT);
+        lAgeOld3.setHorizontalAlignment(SwingConstants.RIGHT);
+        lAgeOld4.setHorizontalAlignment(SwingConstants.RIGHT);
+        lAgeOld5.setHorizontalAlignment(SwingConstants.RIGHT);
+        lStatus1.setHorizontalAlignment(SwingConstants.RIGHT);
+        lStatus2.setHorizontalAlignment(SwingConstants.RIGHT);
+        lStatus3.setHorizontalAlignment(SwingConstants.RIGHT);
+        lStatus4.setHorizontalAlignment(SwingConstants.RIGHT);
+        lStatus5.setHorizontalAlignment(SwingConstants.RIGHT);
         lNumPatient.setHorizontalAlignment(SwingConstants.RIGHT);
         lAmbulance.setHorizontalAlignment(SwingConstants.RIGHT);
         lKmDeparture.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -336,8 +470,10 @@ public class ctrData extends JPanel implements ActionListener {
         //lPatient.setHorizontalAlignment(SwingConstants.RIGHT);
         multSingle.setEnabled(false);
         multGroup.setEnabled(false);
-        sexM.setEnabled(false);
-        sexF.setEnabled(false);
+        sexM1.setEnabled(false);
+        sexF1.setEnabled(false);
+        rAlive1.setEnabled(false);
+        rDeads1.setEnabled(false);
         tTimeCall.setText(sTimeCall);
         tTimeDeparture.setText("00:00:00");
         tTimeArrival.setText("00:00:00");
@@ -360,11 +496,11 @@ public class ctrData extends JPanel implements ActionListener {
         mTransfer.setEnabled(false);
         tAlive.setEditable(false);
         tDeads.setEditable(false);
-        tAgeOld.setEditable(false);
-        tNumFrap.setEditable(false);
-        tNamePatient.setEditable(false);
-        tLastNamePatient.setEditable(false);
-        tLastName2Patient.setEditable(false);
+        tAgeOld1.setEditable(false);
+        tNumFrap1.setEditable(false);
+        tNamePatient1.setEditable(false);
+        tLastNamePatient1.setEditable(false);
+        tLastName2Patient1.setEditable(false);
         bTime.setPreferredSize(new Dimension(windowX / 13, 30));
         mResultado.setPreferredSize(new Dimension(150, 30));
         mPriorityTransfer.setPreferredSize(new Dimension(150, 30));
@@ -416,23 +552,96 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(lDeads);
         this.add(tDeads);
         this.add(lSpace2);
+
         this.add(lPatient);
-        this.add(lSex);
-        this.add(sexM);
-        this.add(sexF);
-        this.add(lAgeOld);
-        this.add(tAgeOld);
-        this.add(lNumFrap);
-        this.add(tNumFrap);
-        this.add(lNamePatient);
-        this.add(tNamePatient);
-        this.add(lLastNamePatient);
-        this.add(tLastNamePatient);
-        this.add(lLastName2Patient);
-        this.add(tLastName2Patient);
+        this.add(lStatus1);
+        this.add(rAlive1);
+        this.add(rDeads1);
+        this.add(lSex1);
+        this.add(sexM1);
+        this.add(sexF1);
+        this.add(lAgeOld1);
+        this.add(tAgeOld1);
+        this.add(lNumFrap1);
+        this.add(tNumFrap1);
+        this.add(lNamePatient1);
+        this.add(tNamePatient1);
+        this.add(lLastNamePatient1);
+        this.add(tLastNamePatient1);
+        this.add(lLastName2Patient1);
+        this.add(tLastName2Patient1);
+        this.add(bUpPatient);
+        this.add(lSpace3);
+
+//        this.add(lSex2);
+//        this.add(sexM2);
+//        this.add(sexF2);
+//        this.add(lAgeOld2);
+//        this.add(tAgeOld2);
+//        this.add(lNumFrap2);
+//        this.add(tNumFrap2);
+//        this.add(lNamePatient2);
+//        this.add(tNamePatient2);
+//        this.add(lLastNamePatient2);
+//        this.add(tLastNamePatient2);
+//        this.add(lLastName2Patient2);
+//        this.add(tLastName2Patient2);
+//        this.add(lStatus2);
+//        this.add(rAlive2);
+//        this.add(rDeads2);
+//        
+//        this.add(lSex3);
+//        this.add(sexM3);
+//        this.add(sexF3);
+//        this.add(lAgeOld3);
+//        this.add(tAgeOld3);
+//        this.add(lNumFrap3);
+//        this.add(tNumFrap3);
+//        this.add(lNamePatient3);
+//        this.add(tNamePatient3);
+//        this.add(lLastNamePatient3);
+//        this.add(tLastNamePatient3);
+//        this.add(lLastName2Patient3);
+//        this.add(tLastName2Patient3);
+//        this.add(lStatus3);
+//        this.add(rAlive3);
+//        this.add(rDeads3);
+//        
+//        this.add(lSex4);
+//        this.add(sexM4);
+//        this.add(sexF4);
+//        this.add(lAgeOld4);
+//        this.add(tAgeOld4);
+//        this.add(lNumFrap4);
+//        this.add(tNumFrap4);
+//        this.add(lNamePatient4);
+//        this.add(tNamePatient4);
+//        this.add(lLastNamePatient4);
+//        this.add(tLastNamePatient4);
+//        this.add(lLastName2Patient4);
+//        this.add(tLastName2Patient4);
+//        this.add(lStatus4);
+//        this.add(rAlive4);
+//        this.add(rDeads4);
+//        
+//        this.add(lSex5);
+//        this.add(sexM5);
+//        this.add(sexF5);
+//        this.add(lAgeOld5);
+//        this.add(tAgeOld5);
+//        this.add(lNumFrap5);
+//        this.add(tNumFrap5);
+//        this.add(lNamePatient5);
+//        this.add(tNamePatient5);
+//        this.add(lLastNamePatient5);
+//        this.add(tLastNamePatient5);
+//        this.add(lLastName2Patient5);
+//        this.add(tLastName2Patient5);
+//        this.add(lStatus5);
+//        this.add(rAlive5);
+//        this.add(rDeads5);
         //this.add(lNumPatient);
         //this.add(tNumPatient);
-        this.add(lSpace3);
         this.add(lAmbulance);
         this.add(mBarAmbulance);
         this.add(lKmDeparture);
@@ -443,7 +652,7 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(mBarOper);
         this.add(lParamedic);
         this.add(mBarParamedic);
-        this.add(lSpace4);
+        this.add(lSpace9);
         this.add(lOperVoluntary);
         this.add(tOperVoluntary);
         this.add(lParamedicVoluntary);
@@ -464,6 +673,7 @@ public class ctrData extends JPanel implements ActionListener {
         pTimeAmbulance.add(lTimeComeback);
         pTimeAmbulance.add(tTimeComeback);
         this.add(pTimeAmbulance, BorderLayout.SOUTH);
+        this.add(lPatient);
     }
 
     @Override
@@ -485,36 +695,42 @@ public class ctrData extends JPanel implements ActionListener {
                     System.out.println("El sexo es: " + e.getActionCommand());
                     sex = e.getActionCommand();
                     break;
+                case 'V':
+                    status = e.getActionCommand();
+                    break;
+                case 'D':
+                    status = e.getActionCommand();
+                    break;
 //                case 'G':
-//                    tAgeOld.setText(null);
-//                    tNumFrap.setText(null);
-//                    tNamePatient.setText(null);
-//                    tLastNamePatient.setText(null);
-//                    tLastName2Patient.setText(null);
+//                    tAgeOld1.setText(null);
+//                    tNumFrap1.setText(null);
+//                    tNamePatient1.setText(null);
+//                    tLastNamePatient1.setText(null);
+//                    tLastName2Patient1.setText(null);
 //                    groupSex.clearSelection();
-//                    sexM.setEnabled(false);
-//                    sexF.setEnabled(false);
+//                    sexM1.setEnabled(false);
+//                    sexF1.setEnabled(false);
 //                    tAlive.setEditable(true);
 //                    tDeads.setEditable(true);
-//                    tAgeOld.setEditable(false);
-//                    tNumFrap.setEditable(false);
-//                    tNamePatient.setEditable(false);
-//                    tLastNamePatient.setEditable(false);
-//                    tLastName2Patient.setEditable(false);
+//                    tAgeOld1.setEditable(false);
+//                    tNumFrap1.setEditable(false);
+//                    tNamePatient1.setEditable(false);
+//                    tLastNamePatient1.setEditable(false);
+//                    tLastName2Patient1.setEditable(false);
 //                    System.out.println("single: " + multSingle.isSelected());
 //                    break;
 //                case 'I':
 //                    tAlive.setText(null);
 //                    tDeads.setText(null);
-//                    sexM.setEnabled(true);
-//                    sexF.setEnabled(true);
+//                    sexM1.setEnabled(true);
+//                    sexF1.setEnabled(true);
 //                    tAlive.setEditable(false);
 //                    tDeads.setEditable(false);
-//                    tAgeOld.setEditable(true);
-//                    tNumFrap.setEditable(true);
-//                    tNamePatient.setEditable(true);
-//                    tLastNamePatient.setEditable(true);
-//                    tLastName2Patient.setEditable(true);
+//                    tAgeOld1.setEditable(true);
+//                    tNumFrap1.setEditable(true);
+//                    tNamePatient1.setEditable(true);
+//                    tLastNamePatient1.setEditable(true);
+//                    tLastName2Patient1.setEditable(true);
 //                    System.out.println("single: " + multSingle.isSelected());
 //                    break;
                 default:
@@ -536,37 +752,41 @@ public class ctrData extends JPanel implements ActionListener {
                     mTransfer.setEnabled(false);
                     tAlive.setText(null);
                     tDeads.setText(null);
-                    tAgeOld.setText(null);
-                    tNumFrap.setText(null);
-                    tNamePatient.setText(null);
-                    tLastNamePatient.setText(null);
-                    tLastName2Patient.setText(null);
+                    tAgeOld1.setText(null);
+                    tNumFrap1.setText(null);
+                    tNamePatient1.setText(null);
+                    tLastNamePatient1.setText(null);
+                    tLastName2Patient1.setText(null);
                     groupMult.clearSelection();
                     groupSex.clearSelection();
                     multSingle.setEnabled(false);
                     multGroup.setEnabled(false);
-                    sexM.setEnabled(false);
-                    sexF.setEnabled(false);
+                    sexM1.setEnabled(false);
+                    sexF1.setEnabled(false);
                     tAlive.setEditable(false);
                     tDeads.setEditable(false);
-                    tAgeOld.setEditable(false);
-                    tNumFrap.setEditable(false);
-                    tNamePatient.setEditable(false);
-                    tLastNamePatient.setEditable(false);
-                    tLastName2Patient.setEditable(false);
+                    tAgeOld1.setEditable(false);
+                    tNumFrap1.setEditable(false);
+                    tNamePatient1.setEditable(false);
+                    tLastNamePatient1.setEditable(false);
+                    tLastName2Patient1.setEditable(false);
+                    rAlive1.setEnabled(false);
+                    rDeads1.setEnabled(false);
                 } else if (e.getActionCommand().equals("Traslado")) {
                     mResultado.setText(e.getActionCommand());
                     mPriorityTransfer.setEnabled(true);
                     mTransfer.setEnabled(true);
-                    sexM.setEnabled(true);
-                    sexF.setEnabled(true);
+                    sexM1.setEnabled(true);
+                    sexF1.setEnabled(true);
                     tAlive.setEditable(true);
                     tDeads.setEditable(true);
-                    tAgeOld.setEditable(true);
-                    tNumFrap.setEditable(true);
-                    tNamePatient.setEditable(true);
-                    tLastNamePatient.setEditable(true);
-                    tLastName2Patient.setEditable(true);
+                    tAgeOld1.setEditable(true);
+                    tNumFrap1.setEditable(true);
+                    tNamePatient1.setEditable(true);
+                    tLastNamePatient1.setEditable(true);
+                    tLastName2Patient1.setEditable(true);
+                    rAlive1.setEnabled(true);
+                    rDeads1.setEnabled(true);
 //                    multSingle.setEnabled(true);
 //                    multGroup.setEnabled(true);
 
@@ -598,112 +818,121 @@ public class ctrData extends JPanel implements ActionListener {
                     mTransfer.setText(e.getActionCommand());
                 }
             } else {
-                bTime.setPreferredSize(new Dimension(windowX / 13, 30));
-                switch (classTime) {
-                    case 1:
-                        if (tDir.getText().equals("") || tCol.getText().equals("")) {
-                            JOptionPane.showMessageDialog(null, "La dirección y colonia son requisitos para que la ambulancia pueda salir");
-                        } else {
-                            timeDeparture = timeFull.format(calendario.getTime());
-                            tTimeDeparture.setText(time.format(calendario.getTime()));
-                            bTime.setText("Hora llegada");
+                if (e.getActionCommand().equals(" + ")) {
+                    System.out.println(" + ");
+                    String preLPatient = lPatient.getText();
+                    preLPatient += "Estado: " + status + "\tsexo: " + sex + "\tedad:" + tAgeOld1.getText()
+                            + "\tNumFRAP: " + tNumFrap1.getText() + "\t" + tNamePatient1.getText() + " "
+                            + tLastNamePatient1.getText() + " " + tLastName2Patient1.getText();
+                    lPatient.setText(preLPatient);
+                } else {
+                    bTime.setPreferredSize(new Dimension(windowX / 13, 30));
+                    switch (classTime) {
+                        case 1:
+                            if (tDir.getText().equals("") || tCol.getText().equals("")) {
+                                JOptionPane.showMessageDialog(null, "La dirección y colonia son requisitos para que la ambulancia pueda salir");
+                            } else {
+                                timeDeparture = timeFull.format(calendario.getTime());
+                                tTimeDeparture.setText(time.format(calendario.getTime()));
+                                bTime.setText("Hora llegada");
+                                classTime++;
+                            }
+                            break;
+                        case 2:
+                            timeArrival = timeFull.format(calendario.getTime());
+                            tTimeArrival.setText(time.format(calendario.getTime()));
+                            bTime.setText("Hora traslado");
                             classTime++;
-                        }
-                        break;
-                    case 2:
-                        timeArrival = timeFull.format(calendario.getTime());
-                        tTimeArrival.setText(time.format(calendario.getTime()));
-                        bTime.setText("Hora traslado");
-                        classTime++;
-                        break;
-                    case 3:
-                        if (mResultado.getText().equals("Resultado")) {
-                            JOptionPane.showMessageDialog(null, "Se debe aclarar el resultado antes de poder retirarce del lugar");
-                        } else {
-                            if (mResultado.getText().equals("Traslado")) {
-                                if (mPriorityTransfer.getText().equals("Prioridad del traslado")
-                                        || mTransfer.getText().equals("Transferidos")) {
-                                    JOptionPane.showMessageDialog(null, "Se debe asignar una prioridad "
-                                            + "y el hospital donde será transferido antes de poder retirarce del lugar");
+                            break;
+                        case 3:
+                            if (mResultado.getText().equals("Resultado")) {
+                                JOptionPane.showMessageDialog(null, "Se debe aclarar el resultado antes de poder retirarce del lugar");
+                            } else {
+                                if (mResultado.getText().equals("Traslado")) {
+                                    if (mPriorityTransfer.getText().equals("Prioridad del traslado")
+                                            || mTransfer.getText().equals("Transferidos")) {
+                                        JOptionPane.showMessageDialog(null, "Se debe asignar una prioridad "
+                                                + "y el hospital donde será transferido antes de poder retirarce del lugar");
+                                    } else {
+                                        timeTransfer = timeFull.format(calendario.getTime());
+                                        tTimeTransfer.setText(time.format(calendario.getTime()));
+                                        bTime.setText("Hora hospital");
+                                        classTime++;
+                                        if (mTransfer.getText().equals("CRUZ ROJA")) {
+                                            bTime.setText("Hora base");
+                                            classTime++;
+                                            timeHospital = "2000-1-1 0:00:00";
+                                        }
+                                    }
                                 } else {
                                     timeTransfer = timeFull.format(calendario.getTime());
                                     tTimeTransfer.setText(time.format(calendario.getTime()));
-                                    bTime.setText("Hora hospital");
-                                    classTime++;
-                                    if (mTransfer.getText().equals("CRUZ ROJA")) {
-                                        bTime.setText("Hora base");
-                                        classTime++;
-                                        timeHospital = "2000-1-1 0:00:00";
+                                    bTime.setText("Hora base");
+                                    classTime += 2;
+                                    timeHospital = "2000-1-1 0:00:00";
+                                }
+                            }
+                            break;
+                        case 4:
+                            timeHospital = timeFull.format(calendario.getTime());
+                            tTimeHospital.setText(time.format(calendario.getTime()));
+                            bTime.setText("Hora base");
+                            classTime++;
+                            break;
+                        case 5:
+                            timeComeback = timeFull.format(calendario.getTime());
+                            tTimeComeback.setText(time.format(calendario.getTime()));
+                            bTime.setText("Hora");
+                            bTime.setEnabled(false);
+                            emergency.dispose();
+                            int obstetricoMonthes = 0;
+                            if (!tab.tObstetricoMonthes.getText().equals("")) {
+                                obstetricoMonthes = Integer.valueOf(tab.tObstetricoMonthes.getText());
+                            }
+                            String sPatient = "";
+                            if (mResultado.getText().equals("Traslado")) {
+                                int ageOld = 0;
+                                if (!tAgeOld1.getText().equals("")) {
+                                    ageOld = Integer.valueOf(tAgeOld1.getText());
+                                }
+                                sPatient = db.insertPatient(tNamePatient1.getText(), tLastNamePatient1.getText(),
+                                        tLastName2Patient1.getText(), ageOld, sex, tab.mTrauma.getText(),
+                                        tab.tMotivo.getText(), tab.tPadecimiento.getText(), tab.tMedicamento.getText(),
+                                        tab.tEventoPrevio.getText(), tab.mObstetrico.getText(), obstetricoMonthes);
+                                System.out.println("id Paciente: " + sPatient);
+                                String word = "";
+                                cadena = sPatient.toCharArray();
+                                if (cadena[0] == 'P' && cadena[1] == 'C') {
+                                    for (int i = 3; i < cadena.length; i++) {
+                                        word += cadena[i];
                                     }
+                                    idPatient = Integer.valueOf(word);
+                                }
+                            }
+                            int alive = 0;
+                            if (tAlive.getText().equals("")) {
+                                if (multSingle.isSelected()) {
+                                    alive = 1;
                                 }
                             } else {
-                                timeTransfer = timeFull.format(calendario.getTime());
-                                tTimeTransfer.setText(time.format(calendario.getTime()));
-                                bTime.setText("Hora base");
-                                classTime += 2;
-                                timeHospital = "2000-1-1 0:00:00";
+                                alive = Integer.valueOf(tAlive.getText());
                             }
-                        }
-                        break;
-                    case 4:
-                        timeHospital = timeFull.format(calendario.getTime());
-                        tTimeHospital.setText(time.format(calendario.getTime()));
-                        bTime.setText("Hora base");
-                        classTime++;
-                        break;
-                    case 5:
-                        timeComeback = timeFull.format(calendario.getTime());
-                        tTimeComeback.setText(time.format(calendario.getTime()));
-                        bTime.setText("Hora");
-                        bTime.setEnabled(false);
-                        emergency.dispose();
-                        int obstetricoMonthes = 0;
-                        if (!tab.tObstetricoMonthes.getText().equals("")) {
-                            obstetricoMonthes = Integer.valueOf(tab.tObstetricoMonthes.getText());
-                        }
-                        String sPatient = "";
-                        if (mResultado.getText().equals("Traslado")) {
-                            int ageOld = 0;
-                            if (!tAgeOld.getText().equals("")) {
-                                ageOld = Integer.valueOf(tAgeOld.getText());
+                            int deads = 0;
+                            if (!tDeads.getText().equals("")) {
+                                deads = Integer.valueOf(tDeads.getText());
                             }
-                            sPatient = db.insertPatient(tNamePatient.getText(), tLastNamePatient.getText(),
-                                    tLastName2Patient.getText(), ageOld, sex, tab.mTrauma.getText(),
-                                    tab.tMotivo.getText(), tab.tPadecimiento.getText(), tab.tMedicamento.getText(),
-                                    tab.tEventoPrevio.getText(), tab.mObstetrico.getText(), obstetricoMonthes);
-                            System.out.println("id Paciente: " + sPatient);
-                            String word = "";
-                            cadena = sPatient.toCharArray();
-                            if (cadena[0] == 'P' && cadena[1] == 'C') {
-                                for (int i = 3; i < cadena.length; i++) {
-                                    word += cadena[i];
-                                }
-                                idPatient = Integer.valueOf(word);
+                            int priority = 0;
+                            if (!mPriorityTransfer.getText().equals("Prioridad del traslado")) {
+                                priority = Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]);
                             }
-                        }
-                        int alive = 0;
-                        if (tAlive.getText().equals("")) {
-                            if (multSingle.isSelected()) {
-                                alive = 1;
-                            }
-                        } else {
-                            alive = Integer.valueOf(tAlive.getText());
-                        }
-                        int deads = 0;
-                        if (!tDeads.getText().equals("")) {
-                            deads = Integer.valueOf(tDeads.getText());
-                        }
-                        int priority = 0;
-                        if (!mPriorityTransfer.getText().equals("Prioridad del traslado")) {
-                            priority = Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]);
-                        }
-                        String s = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
-                                tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
-                                mTransfer.getText(), priority, alive, deads, idPatient, idParamedic, idOper,
-                                idAmbulance, idRadioOper, tOperVoluntary.getText(), tParamedicVoluntary.getText(),
-                                timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText());
-                        System.out.println("Registro Emergency: " + s);
-                        break;
+                            String s = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
+                                    tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
+                                    mTransfer.getText(), priority, alive, deads, idPatient, idParamedic, idOper,
+                                    idAmbulance, idRadioOper, tOperVoluntary.getText(), tParamedicVoluntary.getText(),
+                                    timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText());
+                            System.out.println("Registro Emergency: " + s);
+                            break;
+                    }
                 }
             }
         }
