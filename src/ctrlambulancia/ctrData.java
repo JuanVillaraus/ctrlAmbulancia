@@ -604,7 +604,11 @@ public class ctrData extends JPanel implements ActionListener {
                     arrayPatient[0] = tNamePatient.getText();
                     arrayPatient[1] = tLastNamePatient.getText();
                     arrayPatient[2] = tLastName2Patient.getText();
-                    arrayPatient[3] = tAgeOld.getText();
+                    int ageOld = 0;
+                    if (!tAgeOld.getText().equals("") && tAgeOld.getText() != null) {
+                        ageOld = Integer.valueOf(tAgeOld.getText());
+                    }
+                    arrayPatient[3] = ageOld+"";
                     arrayPatient[4] = sex;
                     arrayPatient[5] = status;
                     arrayPatient[6] = tNumFrap.getText();
@@ -665,19 +669,22 @@ public class ctrData extends JPanel implements ActionListener {
                             classTime++;
                             break;
                         case 5:
+                            System.out.println("case 5");
                             timeComeback = timeFull.format(calendario.getTime());
                             tTimeComeback.setText(time.format(calendario.getTime()));
                             bTime.setText("Hora");
                             bTime.setEnabled(false);
                             emergency.dispose();
                             int obstetricoMonthes = 0;
-                            if (!tab.tObstetricoMonthes.getText().equals("")) {
+                            if (!tab.tObstetricoMonthes.getText().equals("")&&tab.tObstetricoMonthes.getText()!=null) {
                                 obstetricoMonthes = Integer.valueOf(tab.tObstetricoMonthes.getText());
                             }
                             String sPatient = "";
+                            String obstetrico = "";
+                            String trauma = "";
 
                             int alive = 0;
-                            if (tAlive.getText().equals("")) {
+                            if (tAlive.getText().equals("")&&tAlive.getText()==null) {
                                 if (multSingle.isSelected()) {
                                     alive = 1;
                                 }
@@ -685,42 +692,45 @@ public class ctrData extends JPanel implements ActionListener {
                                 alive = Integer.valueOf(tAlive.getText());
                             }
                             int deads = 0;
-                            if (!tDeads.getText().equals("")) {
+                            if (!tDeads.getText().equals("")&&tDeads.getText()!=null) {
                                 deads = Integer.valueOf(tDeads.getText());
                             }
                             int priority = 0;
                             if (!mPriorityTransfer.getText().equals("Prioridad del traslado")) {
                                 priority = Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]);
                             }
-                            String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
-                                    tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
-                                    mTransfer.getText(), priority, alive, deads, idParamedic, idOper,
-                                    idAmbulance, idRadioOper, tOperVoluntary.getText(), tParamedicVoluntary.getText(),
-                                    timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText());
-                            if (em.toCharArray()[0] == 'E' && em.toCharArray()[0] == 'M') {
+                            String em = "EM#11";
+//                            String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
+//                                    tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
+//                                    mTransfer.getText(), priority, alive, deads, idParamedic, idOper,
+//                                    idAmbulance, idRadioOper, tOperVoluntary.getText(), tParamedicVoluntary.getText(),
+//                                    timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText());
+                            System.out.println("insert= " + em);
+                            if (em.toCharArray()[0] == 'E' && em.toCharArray()[1] == 'M') {
                                 String word = "";
-                                    cadena = sPatient.toCharArray();
-                                        for (int i = 3; i < cadena.length; i++) {
-                                            word += cadena[i];
-                                        }
-                                        int idEmergency = Integer.valueOf(word);
+                                cadena = em.toCharArray();
+                                for (int i = 3; i < cadena.length; i++) {
+                                    word += cadena[i];
+                                }
+                                int idEmergency = Integer.valueOf(word);
                                 if (mResultado.getText().equals("Traslado")) {
-                                    int ageOld;
                                     for (int m = 0; m < patient.size(); m++) {
-                                        ageOld = 0;
-                                        if (!tAgeOld.getText().equals("")) {
-                                            ageOld = Integer.valueOf(patient.get(m)[3]);
+                                        if(!tab.mObstetrico.getText().equals("Tipo de obstetrico")){
+                                            obstetrico=tab.mObstetrico.getText();
+                                        }
+                                        if(!tab.mTrauma.getText().equals("Tipo de Trauma")){
+                                            trauma=tab.mTrauma.getText();
                                         }
                                         sPatient = db.insertPatient(patient.get(m)[0], patient.get(m)[1],
-                                                patient.get(m)[2], ageOld, patient.get(m)[4],
-                                                patient.get(m)[5], patient.get(m)[6], idEmergency, tab.mTrauma.getText(),
-                                                tab.tMotivo.getText(), tab.tPadecimiento.getText(),tab.tMedicamento.getText(), 
-                                                tab.tEventoPrevio.getText(), tab.mObstetrico.getText(), obstetricoMonthes);
+                                                patient.get(m)[2], Integer.valueOf(patient.get(m)[3]), patient.get(m)[4],
+                                                patient.get(m)[5], patient.get(m)[6], idEmergency, trauma,
+                                                tab.tMotivo.getText(), tab.tPadecimiento.getText(), tab.tMedicamento.getText(),
+                                                tab.tEventoPrevio.getText(), obstetrico, obstetricoMonthes);
                                     }
-                                    System.out.println("id Paciente: " + sPatient);                                    
+                                    System.out.println("id Paciente: " + sPatient);
                                 }
-                            }else{
-                                System.out.println("ctrData/ActionPerformed: error# "+em);
+                            } else {
+                                System.out.println("ctrData/ActionPerformed: error# " + em);
                             }
                             break;
                     }

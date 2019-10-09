@@ -229,7 +229,7 @@ public class ConxDB {
                 + "\"ID_RADIO_OPERADOR_EMERGENCIA\", \"OPERADOR_VOLUNTARIO_EMERGENCIA\", \"PARAMEDICO_VOLUNTARIO_EMERGENCIA\", "
                 + "\"HORA_LLAMADA_EMERGENCIA\", \"HORA_SALIDA_EMERGENCIA\", \"HORA_LLEGADA_EMERGENCIA\", \"HORA_TRASLADO_EMERGENCIA\", "
                 + "\"HORA_HOSPITAL_EMERGENCIA\", \"HORA_BASE_EMERGENCIA\", \"OBSERVACION_EMERGENCIA\") "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, dir);
@@ -1948,7 +1948,6 @@ public class ConxDB {
     public String consultInfoPatient(int idEmergency) {
         String infoPatient = "";
         String data = "";
-        int cont=0;
         try {
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(""
@@ -1956,8 +1955,8 @@ public class ConxDB {
                     + "FROM \"PACIENTE\""
                     + "WHERE \"ID_EMERGENCIA\"= '" + idEmergency + "';");
             while (rs.next()) {
-                cont++;
-                infoPatient += "Nombre: " + rs.getString("NOMBRE_PACIENTE") + " "
+                infoPatient += "Paciente[" + rs.getInt("PK_ID_PACIENTE") + "]: "
+                        + rs.getString("NOMBRE_PACIENTE") + " "
                         + rs.getString("APELLIDO_PATERNO_PACIENTE") + " "
                         + rs.getString("APELLIDO_MATERNO_PACIENTE") + "\n";
                 data = "" + rs.getInt("EDAD_PACIENTE");
@@ -1970,7 +1969,7 @@ public class ConxDB {
                 }
                 data = "" + rs.getString("ESTADO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                        infoPatient += "Estado: " + data + "\n";
+                    infoPatient += "Estado: " + data + "\n";
                 }
                 data = "" + rs.getString("NUM_FRAP_PACIENTE");
                 if (data != null && !data.equals("")) {
@@ -2002,7 +2001,6 @@ public class ConxDB {
                             + rs.getInt("MESES_OBSTETRICO_PACIENTE") + " meses\n";
                 }
             }
-            System.out.println("cont: "+cont);
             rs.close();
             st.close();
             return infoPatient;
