@@ -6,6 +6,7 @@
 package ctrlambulancia;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -2092,6 +2093,103 @@ public class ConxDB {
             return e.getMessage();
         }
         return null;
+    }
+
+    public String[][] reportExcel(String dateOpen, String dateClose) {
+        ArrayList<String[]> list = new ArrayList<String[]>();
+        String[] row = new String[18];
+        boolean isDate;
+        String time = "";
+        String date = "";
+        char[] arrayChar;
+        row[0] = "No";
+        row[1] = "FECHA";
+        row[2] = "AMB";
+        row[3] = "SALIDA";
+        row[4] = "REGRESO";
+        row[5] = "ASIGNACIÓN";
+        row[6] = "TRAUMA";
+        row[7] = "CLINICO";
+        row[8] = "RESCATE";
+        row[9] = "RESULTADO";
+        row[10] = "HOSPITAL";
+        row[11] = "FOLIO PAGADO";
+        row[12] = "UBICACIÓN";
+        row[13] = "OPERADOR";
+        row[14] = "PARAMEDICO";
+        row[15] = "T. DE RESPUESTA";
+        row[16] = "FRAP";
+        row[17] = "ENTREGO";
+        list.add(row);
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"EMERGENCIA\" "
+                    + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' ");
+            while (rs.next()) {
+                row[0] = rs.getString("PK_ID_EMERGENCIA");
+                arrayChar = rs.getString("HORA_LLAMADA_EMERGENCIA").toCharArray();
+                date = "";
+                time = "";
+                isDate = true;
+                for (int i = 0; i < arrayChar.length; i++) {
+                    if (arrayChar[i] == ' ') {
+                        isDate = false;
+                    } else {
+                        if (isDate) {
+                            date += arrayChar[i];
+                        } else {
+                            time += arrayChar[i];
+                        }
+                    }
+                }
+                row[1] = date;
+                row[2] = consultNumAmbulance(rs.getInt("ID_AMBULANCIA_EMERGENCIA"));
+                row[3] = time;
+                arrayChar = rs.getString("HORA_BASE_EMERGENCIA").toCharArray();
+                date = "";
+                time = "";
+                isDate = true;
+                for (int i = 0; i < arrayChar.length; i++) {
+                    if (arrayChar[i] == ' ') {
+                        isDate = false;
+                    } else {
+                        if (isDate) {
+                            date += arrayChar[i];
+                        } else {
+                            time += arrayChar[i];
+                        }
+                    }
+                }
+                row[4] = time;
+                row[5] = "pendiente";
+                row[6] = "pendiente";
+                row[7] = "pendiente";
+                row[8] = "pendiente";
+                row[9] = rs.getString("RESULTADO_EMERGENCIA");
+                row[10] = rs.getString("TRASLADO_EMERGENCIA");
+                row[11] = "pendiente";
+                row[12] = rs.getString("DIR_EMERGENCIA");
+                row[13] = consultNameOper(rs.getInt("ID_OPERADOR"));
+                row[14] = consultNameOper(rs.getInt("ID_PARAMEDICO"));
+                row[15] = "pendiente";
+                row[16] = "pendiente";
+                row[17] = "pendiente";
+                list.add(row);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
+        }
+        String[][] data = new String[list.size()][18];
+        for(int i=0;i<data.length;i++){
+            for(int j=0;j<data[0].length;j++){
+                data[i][j]=list.get(i)[j];
+            }
+        }
+        return data;
     }
 
     public String deleteAmbulance(int id) {

@@ -699,12 +699,12 @@ public class ctrData extends JPanel implements ActionListener {
                             if (!mPriorityTransfer.getText().equals("Prioridad del traslado")) {
                                 priority = Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]);
                             }
-                            String em = "EM#11";
-//                            String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
-//                                    tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
-//                                    mTransfer.getText(), priority, alive, deads, idParamedic, idOper,
-//                                    idAmbulance, idRadioOper, tOperVoluntary.getText(), tParamedicVoluntary.getText(),
-//                                    timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText());
+//                            String em = "EM#11";
+                            String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
+                                    tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
+                                    mTransfer.getText(), priority, alive, deads, idParamedic, idOper,
+                                    idAmbulance, idRadioOper, tOperVoluntary.getText(), tParamedicVoluntary.getText(),
+                                    timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText());
                             System.out.println("insert= " + em);
                             if (em.toCharArray()[0] == 'E' && em.toCharArray()[1] == 'M') {
                                 String word = "";

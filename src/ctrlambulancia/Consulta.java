@@ -235,7 +235,27 @@ public class Consulta extends JPanel implements ActionListener {
                             Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
-                        System.out.println("pendiente");
+                        if (tDateOpen.getText().equals("")) {
+                            sEmergency = db.consultEmergency(tDateClose.getText()
+                                    + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia.txt", sEmergency);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            sEmergency = db.consultEmergency(tDateOpen.getText()
+                                    + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                            tMain.setText(sEmergency);
+                            try {
+                                a.escribirTxt("resource/Emergencia.txt", sEmergency);
+                                a.writeExcelData("resource/reporte.xlsx", "hoja1", db.reportExcel(tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
                     } else {
                         sEmergency = db.consultEmergency(tDateOpen.getText() + " 00:00:00",
                                 tDateClose.getText() + " 23:59:59");

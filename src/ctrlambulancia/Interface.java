@@ -10,13 +10,13 @@ package ctrlambulancia;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+//import java.awt.event.ComponentAdapter;
+//import java.awt.event.ComponentEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.*;
-import java.sql.*;
+//import java.sql.*;
 
 /**
  *
@@ -24,7 +24,6 @@ import java.sql.*;
  */
 public class Interface extends JFrame implements ActionListener {
 
-    //ConxDB db;
     SimpleDateFormat date, time;
     ctrData cD;
     Consulta con;

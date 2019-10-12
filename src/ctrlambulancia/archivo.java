@@ -8,8 +8,10 @@ package ctrlambulancia;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-//import org.apache.poi.hssf.*;
-//import org.apache.poi.ss.usermodel.Cell;
+//import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.ss.usermodel.*;
+
 /**
  *
  * @author Sistemas
@@ -99,7 +101,7 @@ public class archivo {
             System.err.println("SOY WRITE hay un error ");
         }
     }
-    
+
     public void escribirTxt(String dir, int texto) throws IOException {      //escribe un texto en una archivo existente o lo crea, recibe como parametro la direccion del texto y el texto ambos tipo String
         BufferedWriter bw;
         try {
@@ -127,7 +129,7 @@ public class archivo {
             System.err.println("SOY SAVE: No se encontro el archivo " + dir);
         }
     }
-    
+
     public void save(String dir, String save) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -143,22 +145,82 @@ public class archivo {
             System.err.println("SOY SAVE: No se encontro el archivo " + dir);
         }
     }
-    
-//    public static void writeExcelData(){
-//		//create blank workbook
-//		HSSFWorkbook workbook = new HSSFWorkbook();
-//		HSSFSheet spreadsheet = workbook.createSheet("Sheet1");
-//		try{
-//			HSSFRow row = spreadsheet.createRow(0);
-//			Cell cell = row.createCell(0);
-//			String result = array[0] + " " + array[1] + " " + array[2];
-//			cell.setCellValue(result);
-//			FileOutputStream out = new FileOutputStream(new File("C:\\Users\\XXX\\Documents\\CreateWorkbook.xls"));
-//			workbook.write(out);
-//			out.close();
-//		}catch(Exception e){
-//			System.out.println("Error: " + e);
-//		}
-//		System.out.println("createworkbook.xls created!");
-//	}
+
+//    public void writeExcelData(String dir, String nameSheet, String[] data) {
+//        //create blank workbook
+//        HSSFWorkbook workbook = new HSSFWorkbook();
+//        HSSFSheet spreadsheet = workbook.createSheet(nameSheet);
+//        try {
+//            HSSFRow row = spreadsheet.createRow(0);
+//            Cell cell = row.createCell(0);
+//            String result = data[0] + " " + data[1] + " " + data[2];
+//            cell.setCellValue(result);
+//            FileOutputStream out = new FileOutputStream(new File(dir));
+//            workbook.write(out);
+//            out.close();
+//        } catch (Exception e) {
+//            System.out.println("Error: " + e);
+//        }
+//        System.out.println("createworkbook.xls created!");
+//    }
+
+    public void writeExcelData(String dir, String nameSheet, String[][] data) {
+
+//		String nombreArchivo="Inventario.xlsx";
+//		String dir= "C:\\Ficheros-Excel\\"+nombreArchivo;
+//		String hoja="Hoja1";
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet spreadsheet = workbook.createSheet(nameSheet);
+        //cabecera de la hoja de excel
+//        String[] header = new String[]{"Código", "Producto", "Precio", "Unidades"};
+
+        //contenido de la hoja de excel
+//        String[][] document = new String[][]{
+//            {"AP150", "ACCESS POINT TP-LINK TL-WA901ND 450Mbps Wireless N 1RJ45 10-100 3Ant.", "112.00", "50"},
+//            {"RTP150", "ROUTER TP-LINK TL-WR940ND 10-100Mbpps LAN WAN 2.4 - 2.4835Ghz", "19.60", "25"},
+//            {"TRT300", "TARJETA DE RED TPLINK TL-WN881ND 300Mpbs Wire-N PCI-Exp.", "10.68", "15"},
+//            {"TRT300", "DE RED TPLINK TL-WN881ND 300Mpbs Wire-N PCI-Exp.", "10.68", "15"},
+//            {"TR0", "DE RED TPLINK TL-WN881ND 300Mpbs Wire-N PCI-Exp.", "10.68", "15"}
+//        };
+
+        //poner negrita a la cabecera
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        //generar los datos para el documento
+        for (int i = 0; i <= data.length; i++) {
+            XSSFRow row = spreadsheet.createRow(i);//se crea las filas
+            for (int j = 0; j < data[0].length; j++) {
+                if (i == 0) {//para la cabecera
+                    XSSFCell cell = row.createCell(j);//se crea las celdas para la cabecera, junto con la posición
+                    cell.setCellStyle(style); // se añade el style crea anteriormente 
+                    cell.setCellValue(data[0][j]);//se añade el contenido				
+                } else {//para el contenido
+                    XSSFCell cell = row.createCell(j);//se crea las celdas para la contenido, junto con la posición
+                    cell.setCellValue(data[i - 1][j]); //se añade el contenido
+                }
+            }
+        }
+
+        File file;
+        file = new File(dir);
+        try (FileOutputStream fileOuS = new FileOutputStream(file)) {
+            if (file.exists()) {// si el archivo existe se elimina
+                file.delete();
+                System.out.println("Archivo eliminado");
+            }
+            workbook.write(fileOuS);
+            fileOuS.flush();
+            fileOuS.close();
+            System.out.println("Archivo Creado");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
