@@ -2186,6 +2186,8 @@ public class ConxDB {
         String[][] data = new String[list.size()][18];
         for(int i=0;i<data.length;i++){
             for(int j=0;j<data[0].length;j++){
+//                data[i][j]="pendiente";
+
                 data[i][j]=list.get(i)[j];
             }
         }

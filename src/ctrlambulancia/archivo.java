@@ -165,23 +165,8 @@ public class archivo {
 //    }
 
     public void writeExcelData(String dir, String nameSheet, String[][] data) {
-
-//		String nombreArchivo="Inventario.xlsx";
-//		String dir= "C:\\Ficheros-Excel\\"+nombreArchivo;
-//		String hoja="Hoja1";
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet spreadsheet = workbook.createSheet(nameSheet);
-        //cabecera de la hoja de excel
-//        String[] header = new String[]{"Código", "Producto", "Precio", "Unidades"};
-
-        //contenido de la hoja de excel
-//        String[][] document = new String[][]{
-//            {"AP150", "ACCESS POINT TP-LINK TL-WA901ND 450Mbps Wireless N 1RJ45 10-100 3Ant.", "112.00", "50"},
-//            {"RTP150", "ROUTER TP-LINK TL-WR940ND 10-100Mbpps LAN WAN 2.4 - 2.4835Ghz", "19.60", "25"},
-//            {"TRT300", "TARJETA DE RED TPLINK TL-WN881ND 300Mpbs Wire-N PCI-Exp.", "10.68", "15"},
-//            {"TRT300", "DE RED TPLINK TL-WN881ND 300Mpbs Wire-N PCI-Exp.", "10.68", "15"},
-//            {"TR0", "DE RED TPLINK TL-WN881ND 300Mpbs Wire-N PCI-Exp.", "10.68", "15"}
-//        };
 
         //poner negrita a la cabecera
         CellStyle style = workbook.createCellStyle();

@@ -10,7 +10,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -250,8 +249,11 @@ public class Consulta extends JPanel implements ActionListener {
                             tMain.setText(sEmergency);
                             try {
                                 a.escribirTxt("resource/Emergencia.txt", sEmergency);
-                                a.writeExcelData("resource/reporte.xlsx", "hoja1", db.reportExcel(tDateOpen.getText()
-                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+                                String[][] data = db.reportExcel(tDateOpen.getText()+ " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                System.out.println("data done");
+                                a.writeExcelData("resource/reporte.xlsx", "hoja1", data);
+//                                a.writeExcelData("resource/reporte.xlsx", "hoja1", db.reportExcel(tDateOpen.getText()//---------------------
+//                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
