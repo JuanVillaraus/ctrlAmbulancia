@@ -6,7 +6,8 @@
 package ctrlambulancia;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -2097,7 +2098,12 @@ public class ConxDB {
 
     public String[][] reportExcel(String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
+        SimpleDateFormat timeF;
+        Calendar timeUp;// = Calendar.getInstance();
+        Calendar timeClose;// = Calendar.getInstance();
         String[] row = new String[18];
+        Long calTime;
+        String id;
         boolean isDate;
         String time = "";
         String date = "";
@@ -2128,8 +2134,12 @@ public class ConxDB {
                     + "FROM \"EMERGENCIA\" "
                     + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' ");
             while (rs.next()) {
-                row[0] = rs.getString("PK_ID_EMERGENCIA");
-                arrayChar = rs.getString("HORA_LLAMADA_EMERGENCIA").toCharArray();
+                row = new String[18];
+                id = rs.getInt("PK_ID_EMERGENCIA") + "";
+                System.out.println("id: " + id);
+                row[0] = id;
+                row[1] = rs.getString("HORA_LLAMADA_EMERGENCIA");
+                arrayChar = row[1].toCharArray();
                 date = "";
                 time = "";
                 isDate = true;
@@ -2147,7 +2157,8 @@ public class ConxDB {
                 row[1] = date;
                 row[2] = consultNumAmbulance(rs.getInt("ID_AMBULANCIA_EMERGENCIA"));
                 row[3] = time;
-                arrayChar = rs.getString("HORA_BASE_EMERGENCIA").toCharArray();
+                row[4] = rs.getString("HORA_BASE_EMERGENCIA");
+                arrayChar = row[4].toCharArray();
                 date = "";
                 time = "";
                 isDate = true;
@@ -2171,11 +2182,34 @@ public class ConxDB {
                 row[10] = rs.getString("TRASLADO_EMERGENCIA");
                 row[11] = "pendiente";
                 row[12] = rs.getString("DIR_EMERGENCIA");
-                row[13] = consultNameOper(rs.getInt("ID_OPERADOR"));
-                row[14] = consultNameOper(rs.getInt("ID_PARAMEDICO"));
-                row[15] = "pendiente";
+                row[13] = consultNameOper(rs.getInt("ID_OPERADOR_EMERGENCIA"));
+                row[14] = consultNameParamedic(rs.getInt("ID_PARAMEDICO_EMERGENCIA"));
+                row[15] = rs.getString("HORA_SALIDA_EMERGENCIA");
+                arrayChar = row[15].toCharArray();
+                date = "";
+                time = "";
+                isDate = true;
+                for (int i = 0; i < arrayChar.length; i++) {
+                    if (arrayChar[i] == ' ') {
+                        isDate = false;
+                    } else {
+                        if (isDate) {
+                            date += arrayChar[i];
+                        } else {
+                            time += arrayChar[i];
+                        }
+                    }
+                }
+                //calTime = SimpleDateFormat().parse(row[3]) -timeF.format(time);
+//                timeF  = new SimpleDateFormat("hh:mm:ss");//.parse(row[3]);
+//                Date timeDa = timeF.parse(time);
                 row[16] = "pendiente";
                 row[17] = "pendiente";
+                System.out.println("pull done");
+//                for (int j = 0; j < row.length; j++) {
+//                    System.out.print(j + " " + row[j] + "\t");
+//                    System.out.println(j);
+//                }
                 list.add(row);
             }
             rs.close();
@@ -2184,12 +2218,13 @@ public class ConxDB {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
         String[][] data = new String[list.size()][18];
-        for(int i=0;i<data.length;i++){
-            for(int j=0;j<data[0].length;j++){
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[0].length; j++) {
 //                data[i][j]="pendiente";
-
-                data[i][j]=list.get(i)[j];
+                System.out.print(list.get(i)[j] + "\t");
+                data[i][j] = list.get(i)[j];
             }
+            System.out.println();
         }
         return data;
     }

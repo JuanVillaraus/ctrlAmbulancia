@@ -175,18 +175,20 @@ public class archivo {
         style.setFont(font);
 
         //generar los datos para el documento
-        for (int i = 0; i <= data.length; i++) {
+        for (int i = 0; i < data.length; i++) {
             XSSFRow row = spreadsheet.createRow(i);//se crea las filas
             for (int j = 0; j < data[0].length; j++) {
                 if (i == 0) {//para la cabecera
                     XSSFCell cell = row.createCell(j);//se crea las celdas para la cabecera, junto con la posición
                     cell.setCellStyle(style); // se añade el style crea anteriormente 
-                    cell.setCellValue(data[0][j]);//se añade el contenido				
+                    cell.setCellValue(data[i][j]);//se añade el contenido				
                 } else {//para el contenido
                     XSSFCell cell = row.createCell(j);//se crea las celdas para la contenido, junto con la posición
-                    cell.setCellValue(data[i - 1][j]); //se añade el contenido
+                    cell.setCellValue(data[i][j]); //se añade el contenido
                 }
+                System.out.print(j+" ");
             }
+            System.out.println();
         }
 
         File file;
