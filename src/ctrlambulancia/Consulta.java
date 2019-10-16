@@ -240,6 +240,8 @@ public class Consulta extends JPanel implements ActionListener {
                             tMain.setText(sEmergency);
                             try {
                                 a.escribirTxt("resource/Emergencia.txt", sEmergency);
+                                a.writeExcelData("resource/reporte.xlsx", "hoja1", db.reportExcel(tDateClose.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -249,11 +251,10 @@ public class Consulta extends JPanel implements ActionListener {
                             tMain.setText(sEmergency);
                             try {
                                 a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + ".txt", sEmergency);
-                                String[][] data = db.reportExcel(tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                System.out.println("data done");
-                                a.writeExcelData("resource/reporte.xlsx", "hoja1", data);
-//                                a.writeExcelData("resource/reporte.xlsx", "hoja1", db.reportExcel(tDateOpen.getText()//---------------------
-//                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+//                                String[][] data = db.reportExcel(tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+//                                a.writeExcelData("resource/reporte.xlsx", "hoja1", data);
+                                a.writeExcelData("resource/reporte.xlsx", "hoja1", db.reportExcel(tDateOpen.getText()
+                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -265,6 +266,8 @@ public class Consulta extends JPanel implements ActionListener {
                         try {
                             a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " "
                                     + tDateClose.getText() + ".txt", sEmergency);
+                            a.writeExcelData("resource/reporte.xlsx", "hoja1", db.reportExcel(tDateOpen.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                         } catch (IOException ex) {
                             Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                         }

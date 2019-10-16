@@ -699,7 +699,6 @@ public class ctrData extends JPanel implements ActionListener {
                             if (!mPriorityTransfer.getText().equals("Prioridad del traslado")) {
                                 priority = Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]);
                             }
-//                            String em = "EM#11";
                             String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
                                     tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
                                     mTransfer.getText(), priority, alive, deads, idParamedic, idOper,

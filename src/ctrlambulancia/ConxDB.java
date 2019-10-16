@@ -6,7 +6,6 @@
 package ctrlambulancia;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -2098,11 +2097,11 @@ public class ConxDB {
 
     public String[][] reportExcel(String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
-        SimpleDateFormat timeF;
-        Calendar timeUp;// = Calendar.getInstance();
-        Calendar timeClose;// = Calendar.getInstance();
+//        SimpleDateFormat timeF;
+//        Calendar timeUp;// = Calendar.getInstance();
+//        Calendar timeClose;// = Calendar.getInstance();
         String[] row = new String[18];
-        Long calTime;
+//        Long calTime;
         String id;
         boolean isDate;
         String time = "";
@@ -2132,6 +2131,7 @@ public class ConxDB {
             ResultSet rs = st.executeQuery(""
                     + "SELECT * "
                     + "FROM \"EMERGENCIA\" "
+                    + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
                     + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' ");
             while (rs.next()) {
                 row = new String[18];
@@ -2175,13 +2175,13 @@ public class ConxDB {
                 }
                 row[4] = time;
                 row[5] = "pendiente";
-                row[6] = "pendiente";
+                row[6] = rs.getString("TRAUMA_TIPO_PACIENTE");
                 row[7] = "pendiente";
                 row[8] = "pendiente";
                 row[9] = rs.getString("RESULTADO_EMERGENCIA");
                 row[10] = rs.getString("TRASLADO_EMERGENCIA");
                 row[11] = "pendiente";
-                row[12] = rs.getString("DIR_EMERGENCIA");
+                row[12] = rs.getString("COL_EMERGENCIA");
                 row[13] = consultNameOper(rs.getInt("ID_OPERADOR_EMERGENCIA"));
                 row[14] = consultNameParamedic(rs.getInt("ID_PARAMEDICO_EMERGENCIA"));
                 row[15] = rs.getString("HORA_SALIDA_EMERGENCIA");
@@ -2200,16 +2200,10 @@ public class ConxDB {
                         }
                     }
                 }
-                //calTime = SimpleDateFormat().parse(row[3]) -timeF.format(time);
-//                timeF  = new SimpleDateFormat("hh:mm:ss");//.parse(row[3]);
-//                Date timeDa = timeF.parse(time);
-                row[16] = "pendiente";
+                row[15] = subTime(time, row[4]);
+                row[16] = rs.getString("NUM_FRAP_PACIENTE");
                 row[17] = "pendiente";
                 System.out.println("pull done");
-//                for (int j = 0; j < row.length; j++) {
-//                    System.out.print(j + " " + row[j] + "\t");
-//                    System.out.println(j);
-//                }
                 list.add(row);
             }
             rs.close();
@@ -2218,9 +2212,10 @@ public class ConxDB {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
         String[][] data = new String[list.size()][18];
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0;
+                i < data.length;
+                i++) {
             for (int j = 0; j < data[0].length; j++) {
-//                data[i][j]="pendiente";
                 System.out.print(list.get(i)[j] + "\t");
                 data[i][j] = list.get(i)[j];
             }
@@ -2297,5 +2292,115 @@ public class ConxDB {
         } catch (SQLException ex) {
             return (ex.getMessage());
         }
+    }
+    
+    public String deleteEmergency(int id) {
+        String SQL = "DELETE FROM \"EMERGENCIA\" WHERE \"PK_ID_EMERGENCIA\" = ?";
+        try (PreparedStatement pstmt = c.prepareStatement(SQL)) {
+            pstmt.setInt(1, id);
+            if (pstmt.executeUpdate() == 1) {
+                return ("successfully completed");
+            } else {
+                return ("not found");
+            }
+        } catch (SQLException ex) {
+            return (ex.getMessage());
+        }
+    }
+
+    public String subTime(String time1, String time2) {
+        System.out.println("time: " + time2 + "-" + time1);
+        String time = "";
+        String catchTime;
+        int seg = 0, min = 0, hor = 0, tipeTime;
+        char[] arrayChar;
+
+        tipeTime = 0;
+        catchTime = "";
+        arrayChar = time2.toCharArray();
+        for (int i = 0; i < arrayChar.length; i++) {
+            if (arrayChar[i] == ':') {
+                switch (tipeTime) {
+                    case 0:
+                        hor = Integer.valueOf(catchTime);
+                        break;
+                    case 1:
+                        min = Integer.valueOf(catchTime);
+                        break;
+                }
+                catchTime = "";
+                tipeTime++;
+            } else {
+                switch (tipeTime) {
+                    case 0:
+                        catchTime += arrayChar[i];
+                        break;
+                    case 1:
+                        catchTime += arrayChar[i];
+                        break;
+                    case 2:
+                        catchTime += arrayChar[i];
+                        break;
+                }
+            }
+        }
+        seg = Integer.valueOf(catchTime);
+        System.out.println("time2: " + hor + ":" + min + ":" + seg);
+
+        tipeTime = 0;
+        catchTime = "";
+        arrayChar = time1.toCharArray();
+        for (int i = 0; i < arrayChar.length; i++) {
+            if (arrayChar[i] == ':') {
+                switch (tipeTime) {
+                    case 0:
+                        System.out.print("time1: " + catchTime);
+                        hor -= Integer.valueOf(catchTime);
+                        break;
+                    case 1:
+                        System.out.print(":" + catchTime);
+                        min -= Integer.valueOf(catchTime);
+                        break;
+                }
+                catchTime = "";
+                tipeTime++;
+            } else {
+                switch (tipeTime) {
+                    case 0:
+                        catchTime += arrayChar[i];
+                        break;
+                    case 1:
+                        catchTime += arrayChar[i];
+                        break;
+                    case 2:
+                        catchTime += arrayChar[i];
+                        break;
+                }
+            }
+        }
+        System.out.print(":" + catchTime);
+        seg -= Integer.valueOf(catchTime);
+        if (seg < 0) {
+            seg += 60;
+            min--;
+        }
+        if (min < 0) {
+            min += 60;
+            hor--;
+        }
+        if (hor < 10 && hor >= 0) {
+            time += "0";
+        }
+        time += hor + ":";
+        if (min < 10) {
+            time += "0";
+        }
+        time += min + ":";
+        if (seg < 10) {
+            time += "0";
+        }
+        time += seg;
+        System.out.println("\nsubTime: " + time);
+        return time;
     }
 }

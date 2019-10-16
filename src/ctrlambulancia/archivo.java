@@ -186,9 +186,7 @@ public class archivo {
                     XSSFCell cell = row.createCell(j);//se crea las celdas para la contenido, junto con la posición
                     cell.setCellValue(data[i][j]); //se añade el contenido
                 }
-                System.out.print(j+" ");
             }
-            System.out.println();
         }
 
         File file;
