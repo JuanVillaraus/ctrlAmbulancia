@@ -41,6 +41,7 @@ public class ctrData extends JPanel implements ActionListener {
     JTextField tAmbulance = new JTextField(5);
     JTextField tKmDeparture = new JTextField(5);
     JTextField tKmComeback = new JTextField(5);
+    JTextField tFolio = new JTextField(5);
     JTextField tOperVoluntary = new JTextField(17);
     JTextField tParamedicVoluntary = new JTextField(17);
     JTextField tOper = new JTextField(17);
@@ -101,8 +102,8 @@ public class ctrData extends JPanel implements ActionListener {
         //ctrData(sTimeCall, windowX);
     }
 
-    public ctrData(String sTimeCall, int windowX, JFrame emergency, tabData tab, ConxDB db, String sAmbulance,
-            String sKmAmbulance, String sOperVoluntary, String sParamedicVoluntary, String sOper, String sParamedic,
+    public ctrData(String sTimeCall, int windowX, JFrame emergency, tabData tab, ConxDB db, String sAmbulance, String sKmAmbulance,
+            String sBase, String sOperVoluntary, String sParamedicVoluntary, String sOper, String sParamedic,
             String sRadioOper, String sApplicant) {
         this.timeCall = sTimeCall;
         this.windowX = windowX;
@@ -111,6 +112,7 @@ public class ctrData extends JPanel implements ActionListener {
         this.db = db;
         mAmbulance.setText(sAmbulance);
         tKmDeparture.setText(sKmAmbulance);
+        mBase.setText(sBase);
         tOperVoluntary.setText(sOperVoluntary);
         tParamedicVoluntary.setText(sParamedicVoluntary);
         mOper.setText(sOper);
@@ -208,6 +210,7 @@ public class ctrData extends JPanel implements ActionListener {
         JLabel lAmbulance = new JLabel("Ambulancia:");
         JLabel lKmDeparture = new JLabel("Km salida:");
         //JLabel lKmComeback = new JLabel("Km llegada:");
+        JLabel lFolio = new JLabel("Folio:");
         JLabel lOperVoluntary = new JLabel("Operador voluntario:");
         JLabel lParamedicVoluntary = new JLabel("Paramedico voluntario:");
         JLabel lOper = new JLabel("Operador:");
@@ -473,6 +476,8 @@ public class ctrData extends JPanel implements ActionListener {
         //this.add(lKmComeback);
         //this.add(tKmComeback);
         this.add(mBarBase);
+        this.add(lFolio);
+        this.add(tFolio);
         this.add(lOper);
         this.add(mBarOper);
         this.add(lParamedic);
@@ -612,30 +617,29 @@ public class ctrData extends JPanel implements ActionListener {
                     case "Boca":
                         mBase.setText(e.getActionCommand());
                         break;
-                    case " + ": //------------------------------------------------------------------------------------------
-                        String preLPatient = aPatient.getText();
-                        preLPatient += "Estado: " + status + " \tsexo: " + sex + "\tedad: " + tAgeOld.getText()
-                                + "\tNumFRAP: " + tNumFrap.getText() + " \tNombre: " + tNamePatient.getText() + " "
-                                + tLastNamePatient.getText() + " " + tLastName2Patient.getText() + "\n";
-                        String[] arrayPatient = new String[7];
-                        arrayPatient[0] = tNamePatient.getText();
-                        arrayPatient[1] = tLastNamePatient.getText();
-                        arrayPatient[2] = tLastName2Patient.getText();
-                        int ageOld = 0;
-                        if (!tAgeOld.getText().equals("") && tAgeOld.getText() != null) {
-                            ageOld = Integer.valueOf(tAgeOld.getText());
-                        }
-                        arrayPatient[3] = ageOld + "";
-                        arrayPatient[4] = sex;
-                        arrayPatient[5] = status;
-                        arrayPatient[6] = tNumFrap.getText();
-                        patient.add(arrayPatient);
-                        aPatient.setText(preLPatient);
-                        break;
                     default:
                         mTransfer.setText(e.getActionCommand());
                 }
             }
+        } else if (e.getActionCommand().equals(" + ")) {//------------------------------------------------------------------------------------------
+            String preLPatient = aPatient.getText();
+            preLPatient += "Estado: " + status + " \tsexo: " + sex + "\tedad: " + tAgeOld.getText()
+                    + "\tNumFRAP: " + tNumFrap.getText() + " \tNombre: " + tNamePatient.getText() + " "
+                    + tLastNamePatient.getText() + " " + tLastName2Patient.getText() + "\n";
+            String[] arrayPatient = new String[7];
+            arrayPatient[0] = tNamePatient.getText();
+            arrayPatient[1] = tLastNamePatient.getText();
+            arrayPatient[2] = tLastName2Patient.getText();
+            int ageOld = 0;
+            if (!tAgeOld.getText().equals("") && tAgeOld.getText() != null) {
+                ageOld = Integer.valueOf(tAgeOld.getText());
+            }
+            arrayPatient[3] = ageOld + "";
+            arrayPatient[4] = sex;
+            arrayPatient[5] = status;
+            arrayPatient[6] = tNumFrap.getText();
+            patient.add(arrayPatient);
+            aPatient.setText(preLPatient);
         } else {
             bTime.setPreferredSize(new Dimension(windowX / 13, 30));
             switch (classTime) {
@@ -724,7 +728,7 @@ public class ctrData extends JPanel implements ActionListener {
                     String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
                             tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
                             mTransfer.getText(), priority, alive, deads, idParamedic, idOper,
-                            idAmbulance, idRadioOper, tOperVoluntary.getText(), tParamedicVoluntary.getText(),
+                            idRadioOper, idAmbulance, mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
                             timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText());
                     System.out.println("insert= " + em);
                     if (em.toCharArray()[0] == 'E' && em.toCharArray()[1] == 'M') {
@@ -754,7 +758,6 @@ public class ctrData extends JPanel implements ActionListener {
                         System.out.println("ctrData/ActionPerformed: error# " + em);
                     }
                     break;
-
             }
         }
     }

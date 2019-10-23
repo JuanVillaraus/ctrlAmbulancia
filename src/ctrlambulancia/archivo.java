@@ -166,7 +166,7 @@ public class archivo {
 
     public void writeExcelData(String dir, String nameSheet, String[][] data) {
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet spreadsheet = workbook.createSheet(nameSheet);
+        XSSFSheet worksheet = workbook.createSheet(nameSheet);
 
         //poner negrita a la cabecera
         CellStyle style = workbook.createCellStyle();
@@ -176,15 +176,16 @@ public class archivo {
 
         //generar los datos para el documento
         for (int i = 0; i < data.length; i++) {
-            XSSFRow row = spreadsheet.createRow(i);//se crea las filas
+            XSSFRow row = worksheet.createRow(i);//se crea las filas
             for (int j = 0; j < data[0].length; j++) {
                 if (i == 0) {//para la cabecera
                     XSSFCell cell = row.createCell(j);//se crea las celdas para la cabecera, junto con la posición
                     cell.setCellStyle(style); // se añade el style crea anteriormente 
-                    cell.setCellValue(data[i][j]);//se añade el contenido				
+                    cell.setCellValue(data[i][j]);//se añade el contenido
                 } else {//para el contenido
                     XSSFCell cell = row.createCell(j);//se crea las celdas para la contenido, junto con la posición
                     cell.setCellValue(data[i][j]); //se añade el contenido
+                    worksheet.autoSizeColumn(j);
                 }
             }
         }

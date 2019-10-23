@@ -44,6 +44,7 @@ public class Interface extends JFrame implements ActionListener {
     JMenu mRadioOper = new JMenu("Elegir opción");
     JMenu mParamedic = new JMenu("Elegir opción");
     JMenu mAmbulance = new JMenu("Elegir opción");
+    JMenu mBase = new JMenu("Base de salida");
     int folio = 0;
     ConxDB db = new ConxDB();
     //String[] data;
@@ -51,7 +52,7 @@ public class Interface extends JFrame implements ActionListener {
     public Interface() {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(400, 500);
+        this.setSize(400, 530);
         //this.setExtendedState(MAXIMIZED_BOTH);
         this.setVisible(true);
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
@@ -81,6 +82,17 @@ public class Interface extends JFrame implements ActionListener {
         JMenuBar mBarRadioOper = new JMenuBar();
         JMenuBar mBarParamedic = new JMenuBar();
         JMenuBar mBarAmbulance = new JMenuBar();
+        JMenuBar mBarBase = new JMenuBar();
+        JMenuItem iBase1 = new JMenuItem("Centro");
+        JMenuItem iBase2 = new JMenuItem("Norte");
+        JMenuItem iBase3 = new JMenuItem("Boca");
+        iBase1.addActionListener(this);
+        iBase2.addActionListener(this);
+        iBase3.addActionListener(this);
+        mBase.add(iBase1);
+        mBase.add(iBase2);
+        mBase.add(iBase3);
+        mBarBase.add(mBase);
 
         menuUpdate();
         mBarOper.add(mOper);
@@ -91,6 +103,7 @@ public class Interface extends JFrame implements ActionListener {
         mRadioOper.setPreferredSize(new Dimension(330, 20));
         mParamedic.setPreferredSize(new Dimension(330, 20));
         mAmbulance.setPreferredSize(new Dimension(330, 20));
+        mBase.setPreferredSize(new Dimension(330, 20));
         tKmAmbulance.setEditable(false);
         tKmAmbulance.setHorizontalAlignment((int) JTextField.CENTER_ALIGNMENT);
 
@@ -102,6 +115,7 @@ public class Interface extends JFrame implements ActionListener {
         mainPanel.add(mBarAmbulance);
         mainPanel.add(lKmAmbulance);
         mainPanel.add(tKmAmbulance);
+        mainPanel.add(mBarBase);
         mainPanel.add(lOperVoluntary);
         mainPanel.add(tOperVoluntary);
         mainPanel.add(lParamedicVoluntary);
@@ -144,8 +158,8 @@ public class Interface extends JFrame implements ActionListener {
                 ctrTime cT = new ctrTime(time.format(calendario.getTime()), String.valueOf(folio));
                 tabData tab = new tabData();
                 cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, tab, db,
-                        mAmbulance.getText(), tKmAmbulance.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(), mOper.getText(),
-                        mParamedic.getText(), mRadioOper.getText(), tApplicant.getText());
+                        mAmbulance.getText(), tKmAmbulance.getText(), mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(), 
+                        mOper.getText(), mParamedic.getText(), mRadioOper.getText(), tApplicant.getText());
                 emergency.setLayout(new BorderLayout());
                 emergency.add(tab, BorderLayout.NORTH);
                 emergency.add(cD, BorderLayout.CENTER);
@@ -185,6 +199,11 @@ public class Interface extends JFrame implements ActionListener {
                 consult.setExtendedState(MAXIMIZED_BOTH);
                 con = new Consulta(consult, db);
                 consult.add(con);
+                break;
+            case "Centro":
+            case "Norte":
+            case "Boca":
+                mBase.setText(e.getActionCommand());
                 break;
             default:
                 char[] cadena = e.getActionCommand().toCharArray();
