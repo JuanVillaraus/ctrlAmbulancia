@@ -8,15 +8,15 @@ package ctrlambulancia;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-//import org.apache.poi.hssf.usermodel.*;
+import java.util.logging.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xwpf.usermodel.*;
 
 /**
  *
  * @author Sistemas
  */
-
 public class archivo {
 
     String info = "";
@@ -163,7 +163,6 @@ public class archivo {
 //        }
 //        System.out.println("createworkbook.xls created!");
 //    }
-
     public void writeExcelData(String dir, String nameSheet, String[][] data) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet worksheet = workbook.createSheet(nameSheet);
@@ -201,12 +200,31 @@ public class archivo {
             fileOuS.flush();
             fileOuS.close();
             System.out.println("Archivo Creado");
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void writeWordData(String dir, String parrafo) {
+        XWPFDocument document = new XWPFDocument();
+
+        //Write the Document in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(dir));
+
+            //create Paragraph
+            XWPFParagraph paragraph = document.createParagraph();
+            XWPFRun run = paragraph.createRun();
+            run.setText(parrafo);
+
+            document.write(out);
+            out.close();
+        } catch (IOException ex) {
+            Logger.getLogger(archivo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("written successfully");
     }
 }

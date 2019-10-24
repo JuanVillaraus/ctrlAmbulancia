@@ -226,10 +226,16 @@ public class Consulta extends JPanel implements ActionListener {
             switch (mOptionSearch.getText()) {
                 case "Opción para Buscar":
                     if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
-                        sEmergency = db.consultEmergency();
+                        sEmergency = "bla bla bla";//db.consultEmergency();
                         tMain.setText(sEmergency);
                         try {
                             a.escribirTxt("resource/Emergencia.txt", sEmergency);
+                            String parrafo = "At tutorialspoint.com, we strive hard to "
+                                    + "provide quality tutorials for self-learning "
+                                    + "purpose in the domains of Academics, Information "
+                                    + "Technology, Management and Computer Programming "
+                                    + "Languages.";
+                            a.writeWordData("resource/wordExample.docx", parrafo);
                         } catch (IOException ex) {
                             Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -253,9 +259,9 @@ public class Consulta extends JPanel implements ActionListener {
                                 a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + ".txt", sEmergency);
 //                                String[][] data = db.reportExcel(tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59");
 //                                a.writeExcelData("resource/reporte.xlsx", "hoja1", data);
-                                a.writeExcelData("resource/reporte " + tDateOpen.getText() + ".xlsx", "hoja1", 
+                                a.writeExcelData("resource/reporte " + tDateOpen.getText() + ".xlsx", "hoja1",
                                         db.reportExcel(tDateOpen.getText()
-                                        + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+                                                + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -267,9 +273,9 @@ public class Consulta extends JPanel implements ActionListener {
                         try {
                             a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " "
                                     + tDateClose.getText() + ".txt", sEmergency);
-                            a.writeExcelData("resource/reporte " + tDateOpen.getText() + " " + tDateClose.getText() 
+                            a.writeExcelData("resource/reporte " + tDateOpen.getText() + " " + tDateClose.getText()
                                     + ".xlsx", "hoja1", db.reportExcel(tDateOpen.getText()
-                                    + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+                                            + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                         } catch (IOException ex) {
                             Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                         }
