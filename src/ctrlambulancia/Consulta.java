@@ -230,12 +230,11 @@ public class Consulta extends JPanel implements ActionListener {
                         tMain.setText(sEmergency);
                         try {
                             a.escribirTxt("resource/Emergencia.txt", sEmergency);
-                            String parrafo = "At tutorialspoint.com, we strive hard to "
-                                    + "provide quality tutorials for self-learning "
-                                    + "purpose in the domains of Academics, Information "
-                                    + "Technology, Management and Computer Programming "
-                                    + "Languages.";
-                            a.writeWordData("resource/wordExample.docx", parrafo);
+                            String[] data = new String[29];
+                            for (int i = 0; i < 29; i++) {
+                                data[i] = "pendiente";
+                            }
+                            a.writeWordData("resource/wordExample.docx", data);
                         } catch (IOException ex) {
                             Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -257,8 +256,6 @@ public class Consulta extends JPanel implements ActionListener {
                             tMain.setText(sEmergency);
                             try {
                                 a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + ".txt", sEmergency);
-//                                String[][] data = db.reportExcel(tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-//                                a.writeExcelData("resource/reporte.xlsx", "hoja1", data);
                                 a.writeExcelData("resource/reporte " + tDateOpen.getText() + ".xlsx", "hoja1",
                                         db.reportExcel(tDateOpen.getText()
                                                 + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
