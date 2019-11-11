@@ -234,7 +234,7 @@ public class Consulta extends JPanel implements ActionListener {
                             for (int i = 0; i < 29; i++) {
                                 data[i] = "pendiente";
                             }
-                            a.writeWordData("resource/wordExample.docx", data);
+                            //a.writeWordData("resource/wordExample.docx", data);
                         } catch (IOException ex) {
                             Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                         }

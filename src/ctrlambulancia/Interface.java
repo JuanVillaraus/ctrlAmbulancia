@@ -10,11 +10,14 @@ package ctrlambulancia;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 //import java.awt.event.ComponentAdapter;
 //import java.awt.event.ComponentEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 //import java.sql.*;
 
@@ -50,93 +53,101 @@ public class Interface extends JFrame implements ActionListener {
     //String[] data;
 
     public Interface() {
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(400, 530);
-        //this.setExtendedState(MAXIMIZED_BOTH);
-        this.setVisible(true);
-        this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
-                (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-        this.setTitle("Sistemas de Control de Ambulancias");
+        try {
+            String user = System.getProperty("user.home");
+            System.out.println("user");
+            archivo a = new archivo();
+            a.escribirTxt(user + "/Documents/CtrlAmb/example.txt", "example");
+            this.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.setSize(400, 530);
+            //this.setExtendedState(MAXIMIZED_BOTH);
+            this.setVisible(true);
+            this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
+                    (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
+            this.setTitle("Sistemas de Control de Ambulancias");
 
-        RealTime rt = new RealTime();
-        rt.settTime(tTime);
-        rt.start();
-        JPanel mainPanel = new JPanel();
-        JPanel pTime = new JPanel();
+            RealTime rt = new RealTime();
+            rt.settTime(tTime);
+            rt.start();
+            JPanel mainPanel = new JPanel();
+            JPanel pTime = new JPanel();
 
-        JLabel lAmbulance = new JLabel("Ambulancia");
-        JLabel lKmAmbulance = new JLabel("Km de la Ambulancia");
-        JLabel lOperVoluntary = new JLabel("Operador Voluntario");
-        JLabel lParamedicVoluntary = new JLabel("Paramedico Voluntario");
-        JLabel lOper = new JLabel("Operador");
-        JLabel lRadioOper = new JLabel("Radio Operador");
-        JLabel lParamedic = new JLabel("Paramedico");
-        JLabel lApplicant = new JLabel("Solicitante");
-        JButton bEmergency = new JButton("Emergencia");
-        JButton bReport = new JButton("Reporte");
-        JButton bAdmin = new JButton("Admin");
-        tTime.setEditable(false);
-        tTime.setHorizontalAlignment(JTextField.CENTER);
-        JMenuBar mBarOper = new JMenuBar();
-        JMenuBar mBarRadioOper = new JMenuBar();
-        JMenuBar mBarParamedic = new JMenuBar();
-        JMenuBar mBarAmbulance = new JMenuBar();
-        JMenuBar mBarBase = new JMenuBar();
-        JMenuItem iBase1 = new JMenuItem("Centro");
-        JMenuItem iBase2 = new JMenuItem("Norte");
-        JMenuItem iBase3 = new JMenuItem("Boca");
-        iBase1.addActionListener(this);
-        iBase2.addActionListener(this);
-        iBase3.addActionListener(this);
-        mBase.add(iBase1);
-        mBase.add(iBase2);
-        mBase.add(iBase3);
-        mBarBase.add(mBase);
+            JLabel lAmbulance = new JLabel("Ambulancia");
+            JLabel lKmAmbulance = new JLabel("Km de la Ambulancia");
+            JLabel lOperVoluntary = new JLabel("Operador Voluntario");
+            JLabel lParamedicVoluntary = new JLabel("Paramedico Voluntario");
+            JLabel lOper = new JLabel("Operador");
+            JLabel lRadioOper = new JLabel("Radio Operador");
+            JLabel lParamedic = new JLabel("Paramedico");
+            JLabel lApplicant = new JLabel("Solicitante");
+            JButton bEmergency = new JButton("Emergencia");
+            JButton bReport = new JButton("Reporte");
+            JButton bAdmin = new JButton("Admin");
+            tTime.setEditable(false);
+            tTime.setHorizontalAlignment(JTextField.CENTER);
+            JMenuBar mBarOper = new JMenuBar();
+            JMenuBar mBarRadioOper = new JMenuBar();
+            JMenuBar mBarParamedic = new JMenuBar();
+            JMenuBar mBarAmbulance = new JMenuBar();
+            JMenuBar mBarBase = new JMenuBar();
+            JMenuItem iBase1 = new JMenuItem("Centro");
+            JMenuItem iBase2 = new JMenuItem("Norte");
+            JMenuItem iBase3 = new JMenuItem("Boca");
+            iBase1.addActionListener(this);
+            iBase2.addActionListener(this);
+            iBase3.addActionListener(this);
+            mBase.add(iBase1);
+            mBase.add(iBase2);
+            mBase.add(iBase3);
+            mBarBase.add(mBase);
 
-        menuUpdate();
-        mBarOper.add(mOper);
-        mBarRadioOper.add(mRadioOper);
-        mBarParamedic.add(mParamedic);
-        mBarAmbulance.add(mAmbulance);
-        mOper.setPreferredSize(new Dimension(330, 20));
-        mRadioOper.setPreferredSize(new Dimension(330, 20));
-        mParamedic.setPreferredSize(new Dimension(330, 20));
-        mAmbulance.setPreferredSize(new Dimension(330, 20));
-        mBase.setPreferredSize(new Dimension(330, 20));
-        tKmAmbulance.setEditable(false);
-        tKmAmbulance.setHorizontalAlignment((int) JTextField.CENTER_ALIGNMENT);
+            menuUpdate();
+            mBarOper.add(mOper);
+            mBarRadioOper.add(mRadioOper);
+            mBarParamedic.add(mParamedic);
+            mBarAmbulance.add(mAmbulance);
+            mOper.setPreferredSize(new Dimension(330, 20));
+            mRadioOper.setPreferredSize(new Dimension(330, 20));
+            mParamedic.setPreferredSize(new Dimension(330, 20));
+            mAmbulance.setPreferredSize(new Dimension(330, 20));
+            mBase.setPreferredSize(new Dimension(330, 20));
+            tKmAmbulance.setEditable(false);
+            tKmAmbulance.setHorizontalAlignment((int) JTextField.CENTER_ALIGNMENT);
 
-        bEmergency.addActionListener(this);
-        bReport.addActionListener(this);
-        bAdmin.addActionListener(this);
-        mainPanel.add(lAmbulance);
-        //mainPanel.add(tAmbulance);
-        mainPanel.add(mBarAmbulance);
-        mainPanel.add(lKmAmbulance);
-        mainPanel.add(tKmAmbulance);
-        mainPanel.add(mBarBase);
-        mainPanel.add(lOperVoluntary);
-        mainPanel.add(tOperVoluntary);
-        mainPanel.add(lParamedicVoluntary);
-        mainPanel.add(tParamedicVoluntary);
-        mainPanel.add(lOper);
-        //mainPanel.add(tOper);
-        mainPanel.add(mBarOper);
-        mainPanel.add(lParamedic);
-        //mainPanel.add(tParamedic);
-        mainPanel.add(mBarParamedic);
-        mainPanel.add(lRadioOper);
-        //mainPanel.add(tRadioOper);
-        mainPanel.add(mBarRadioOper);
-        mainPanel.add(lApplicant);
-        mainPanel.add(tApplicant);
-        mainPanel.add(bEmergency);
-        mainPanel.add(bReport);
-        mainPanel.add(bAdmin);
-        pTime.add(tTime);
-        this.add(mainPanel);
-        this.add(pTime, BorderLayout.SOUTH);
+            bEmergency.addActionListener(this);
+            bReport.addActionListener(this);
+            bAdmin.addActionListener(this);
+            mainPanel.add(lAmbulance);
+            //mainPanel.add(tAmbulance);
+            mainPanel.add(mBarAmbulance);
+            mainPanel.add(lKmAmbulance);
+            mainPanel.add(tKmAmbulance);
+            mainPanel.add(mBarBase);
+            mainPanel.add(lOperVoluntary);
+            mainPanel.add(tOperVoluntary);
+            mainPanel.add(lParamedicVoluntary);
+            mainPanel.add(tParamedicVoluntary);
+            mainPanel.add(lOper);
+            //mainPanel.add(tOper);
+            mainPanel.add(mBarOper);
+            mainPanel.add(lParamedic);
+            //mainPanel.add(tParamedic);
+            mainPanel.add(mBarParamedic);
+            mainPanel.add(lRadioOper);
+            //mainPanel.add(tRadioOper);
+            mainPanel.add(mBarRadioOper);
+            mainPanel.add(lApplicant);
+            mainPanel.add(tApplicant);
+            mainPanel.add(bEmergency);
+            mainPanel.add(bReport);
+            mainPanel.add(bAdmin);
+            pTime.add(tTime);
+            this.add(mainPanel);
+            this.add(pTime, BorderLayout.SOUTH);
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -158,7 +169,7 @@ public class Interface extends JFrame implements ActionListener {
                 ctrTime cT = new ctrTime(time.format(calendario.getTime()), String.valueOf(folio));
                 tabData tab = new tabData();
                 cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, tab, db,
-                        mAmbulance.getText(), tKmAmbulance.getText(), mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(), 
+                        mAmbulance.getText(), tKmAmbulance.getText(), mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
                         mOper.getText(), mParamedic.getText(), mRadioOper.getText(), tApplicant.getText());
                 emergency.setLayout(new BorderLayout());
                 emergency.add(tab, BorderLayout.NORTH);
@@ -289,8 +300,8 @@ public class Interface extends JFrame implements ActionListener {
             }
         }
     }
-    
-    public void menuAmbulanceUpdate(String employees){        
+
+    public void menuAmbulanceUpdate(String employees) {
         char[] cadena = employees.toCharArray();
         String word = "";
         for (int i = 0; i < employees.length(); i++) {
@@ -304,8 +315,8 @@ public class Interface extends JFrame implements ActionListener {
             }
         }
     }
-    
-    public void menuOperUpdate(String employees){        
+
+    public void menuOperUpdate(String employees) {
         char[] cadena = employees.toCharArray();
         String word = "";
         for (int i = 0; i < employees.length(); i++) {
@@ -319,8 +330,8 @@ public class Interface extends JFrame implements ActionListener {
             }
         }
     }
-    
-    public void menuRadioOperUpdate(String employees){        
+
+    public void menuRadioOperUpdate(String employees) {
         char[] cadena = employees.toCharArray();
         String word = "";
         for (int i = 0; i < employees.length(); i++) {
@@ -334,8 +345,8 @@ public class Interface extends JFrame implements ActionListener {
             }
         }
     }
-    
-    public void menuParamedicUpdate(String employees){        
+
+    public void menuParamedicUpdate(String employees) {
         char[] cadena = employees.toCharArray();
         String word = "";
         for (int i = 0; i < employees.length(); i++) {
