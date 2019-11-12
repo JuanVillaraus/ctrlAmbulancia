@@ -2122,16 +2122,8 @@ public class ConxDB {
 
     public String[][] reportExcel(String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
-//        SimpleDateFormat timeF;
-//        Calendar timeUp;// = Calendar.getInstance();
-//        Calendar timeClose;// = Calendar.getInstance();
         String[] row = new String[18];
-//        Long calTime;
         String id;
-        boolean isDate;
-        String time = "";
-        String date = "";
-        char[] arrayChar;
         row[0] = "No";
         row[1] = "FECHA";
         row[2] = "AMB";
@@ -2163,42 +2155,10 @@ public class ConxDB {
                 id = rs.getInt("PK_ID_EMERGENCIA") + "";
                 System.out.println("id: " + id);
                 row[0] = id;
-                row[1] = rs.getString("HORA_LLAMADA_EMERGENCIA");
-                arrayChar = row[1].toCharArray();
-                date = "";
-                time = "";
-                isDate = true;
-                for (int i = 0; i < arrayChar.length; i++) {
-                    if (arrayChar[i] == ' ') {
-                        isDate = false;
-                    } else {
-                        if (isDate) {
-                            date += arrayChar[i];
-                        } else {
-                            time += arrayChar[i];
-                        }
-                    }
-                }
-                row[1] = date;
+                row[1] = divTimeFull(rs.getString("HORA_LLAMADA_EMERGENCIA"), false);
                 row[2] = consultNumAmbulance(rs.getInt("ID_AMBULANCIA_EMERGENCIA"));
-                row[3] = time;
-                row[4] = rs.getString("HORA_BASE_EMERGENCIA");
-                arrayChar = row[4].toCharArray();
-                date = "";
-                time = "";
-                isDate = true;
-                for (int i = 0; i < arrayChar.length; i++) {
-                    if (arrayChar[i] == ' ') {
-                        isDate = false;
-                    } else {
-                        if (isDate) {
-                            date += arrayChar[i];
-                        } else {
-                            time += arrayChar[i];
-                        }
-                    }
-                }
-                row[4] = time;
+                row[3] = divTimeFull(rs.getString("HORA_LLAMADA_EMERGENCIA"), true);
+                row[4] = divTimeFull(rs.getString("HORA_BASE_EMERGENCIA"), true);
                 row[5] = rs.getString("BASE_EMERGENCIA");
                 row[6] = rs.getString("TRAUMA_TIPO_PACIENTE");
                 row[7] = rs.getString("MOTIVO_ENFERMO_PACIENTE");
@@ -2209,23 +2169,7 @@ public class ConxDB {
                 row[12] = rs.getString("COL_EMERGENCIA");
                 row[13] = consultNameOper(rs.getInt("ID_OPERADOR_EMERGENCIA"));
                 row[14] = consultNameParamedic(rs.getInt("ID_PARAMEDICO_EMERGENCIA"));
-                row[15] = rs.getString("HORA_SALIDA_EMERGENCIA");
-                arrayChar = row[15].toCharArray();
-                date = "";
-                time = "";
-                isDate = true;
-                for (int i = 0; i < arrayChar.length; i++) {
-                    if (arrayChar[i] == ' ') {
-                        isDate = false;
-                    } else {
-                        if (isDate) {
-                            date += arrayChar[i];
-                        } else {
-                            time += arrayChar[i];
-                        }
-                    }
-                }
-                row[15] = subTime(time, row[4]);
+                row[15] = subTime(divTimeFull(rs.getString("HORA_SALIDA_EMERGENCIA"), true), row[4]);
                 row[16] = rs.getString("NUM_FRAP_PACIENTE");
                 row[17] = "pendiente";
                 System.out.println("pull done");
@@ -2333,8 +2277,32 @@ public class ConxDB {
         }
     }
 
+    public String divTimeFull(String timeFull, Boolean isTime) {//metodo para dividir la hora de la fecha, su segundo parametro espera un boolean donde pregunta si lo que quieres es la hora
+        boolean isDate;
+        String time = "";
+        String date = "";
+        char[] arrayChar = timeFull.toCharArray();
+        isDate = true;
+        for (int i = 0; i < arrayChar.length; i++) {
+            if (arrayChar[i] == ' ') {
+                isDate = false;
+            } else {
+                if (isDate) {
+                    date += arrayChar[i];
+                } else {
+                    time += arrayChar[i];
+                }
+            }
+        }
+        if (isTime) {
+            return time;
+        } else {
+            return date;
+        }
+    }
+
     public String subTime(String time1, String time2) {
-        System.out.println("time: " + time2 + "-" + time1);
+//        System.out.println("time: " + time2 + "-" + time1);
         String time = "";
         String catchTime;
         int seg = 0, min = 0, hor = 0, tipeTime;
@@ -2370,7 +2338,7 @@ public class ConxDB {
             }
         }
         seg = Integer.valueOf(catchTime);
-        System.out.println("time2: " + hor + ":" + min + ":" + seg);
+//        System.out.println("time2: " + hor + ":" + min + ":" + seg);
 
         tipeTime = 0;
         catchTime = "";
@@ -2379,11 +2347,11 @@ public class ConxDB {
             if (arrayChar[i] == ':') {
                 switch (tipeTime) {
                     case 0:
-                        System.out.print("time1: " + catchTime);
+//                        System.out.print("time1: " + catchTime);
                         hor -= Integer.valueOf(catchTime);
                         break;
                     case 1:
-                        System.out.print(":" + catchTime);
+//                        System.out.print(":" + catchTime);
                         min -= Integer.valueOf(catchTime);
                         break;
                 }
@@ -2403,7 +2371,7 @@ public class ConxDB {
                 }
             }
         }
-        System.out.print(":" + catchTime);
+//        System.out.print(":" + catchTime);
         seg -= Integer.valueOf(catchTime);
         if (seg < 0) {
             seg += 60;
@@ -2425,7 +2393,7 @@ public class ConxDB {
             time += "0";
         }
         time += seg;
-        System.out.println("\nsubTime: " + time);
+//        System.out.println("\nsubTime: " + time);
         return time;
     }
 }

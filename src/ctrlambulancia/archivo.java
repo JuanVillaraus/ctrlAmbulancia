@@ -215,13 +215,13 @@ public class archivo {
 
     public void replaceWordData(String dir, String name, String[][] data) {
         String mdoc = System.getProperty("user.home");
-        System.out.println("replaceWordData");
+//        System.out.println("replaceWordData");
         XWPFDocument doc;
         try {
             try {
                 doc = new XWPFDocument(OPCPackage.open(dir));
                 for (int i = 0; i < data.length; i++) {
-                    System.out.println("data: " + data[i][0] + "\t" + data[i][1]);
+//                    System.out.println("data: " + data[i][0] + "\t" + data[i][1]);
                     for (XWPFParagraph p : doc.getParagraphs()) {
                         List<XWPFRun> runs = p.getRuns();
                         if (runs != null) {
@@ -230,7 +230,7 @@ public class archivo {
                                 if (text != null && text.contains(data[i][0])) {
                                     text = text.replace(data[i][0], data[i][1]);
                                     r.setText(text, 0);
-                                    System.out.println("change: " + text);
+//                                    System.out.println("change: " + text);
                                 }
                             }
                         }
@@ -244,7 +244,7 @@ public class archivo {
                                         if (text.contains(data[i][0])) {
                                             text = text.replace(data[i][0], data[i][1]);
                                             r.setText(text, 0);
-                                            System.out.println("change: " + text);
+//                                            System.out.println("change: " + text);
                                         }
                                     }
                                 }

@@ -21,6 +21,7 @@ public class ctrData extends JPanel implements ActionListener {
     tabData tab;
     SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
     SimpleDateFormat timeFull = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
     ConxDB db;
     int classTime = 1;
     JTextField tDir = new JTextField(30);
@@ -699,8 +700,8 @@ public class ctrData extends JPanel implements ActionListener {
                     timeComeback = timeFull.format(calendario.getTime());
                     tTimeComeback.setText(time.format(calendario.getTime()));
                     bTime.setText("Hora");
-                    bTime.setEnabled(false);
-                    emergency.dispose();
+//                    bTime.setEnabled(false);
+//                    emergency.dispose();
                     int obstetricoMonthes = 0;
                     if (!tab.tObstetricoMonthes.getText().equals("") && tab.tObstetricoMonthes.getText() != null) {
                         obstetricoMonthes = Integer.valueOf(tab.tObstetricoMonthes.getText());
@@ -757,6 +758,73 @@ public class ctrData extends JPanel implements ActionListener {
                     } else {
                         System.out.println("ctrData/ActionPerformed: error# " + em);
                     }
+                    archivo a = new archivo();
+                    String user = System.getProperty("user.home");
+                    String[][] data = new String[31][2];
+                    data[0][0] = "date";
+                    data[1][0] = "tiket";
+                    data[2][0] = "dir";
+                    data[3][0] = "between";
+                    data[4][0] = "sector";
+                    data[5][0] = "zone";
+                    data[6][0] = "callmain";
+                    data[7][0] = "service";
+                    data[8][0] = "priority";
+                    data[9][0] = "ambulance";
+                    data[10][0] = "base";
+                    data[11][0] = "Timecall";
+                    data[12][0] = "Timedeparture";
+                    data[13][0] = "Timearrival";
+                    data[14][0] = "Timetransfer";
+                    data[15][0] = "Timehospital";
+                    data[16][0] = "Timecomeback";
+                    data[17][0] = "Calldeparture";
+                    data[18][0] = "Departurearrival";
+                    data[19][0] = "Arrivaltransfer";
+                    data[20][0] = "Transferhospital";
+                    data[21][0] = "Hospitalcomeback";
+                    data[22][0] = "alive";
+                    data[23][0] = "dead";
+                    data[24][0] = "sex";
+                    data[25][0] = "age";
+                    data[26][0] = "transfer";
+                    data[27][0] = "denominacion";
+                    data[28][0] = "note";
+                    data[29][0] = "telephone";
+                    data[30][0] = "radiooper";
+                    data[0][1] = date.format(calendario.getTime());
+                    data[1][1] = tFolio.getText();
+                    data[2][1] = tDir.getText();
+                    data[3][1] = tEntre.getText();
+                    data[4][1] = tCol.getText();
+                    data[5][1] = tDel.getText();
+                    data[6][1] = "";
+                    data[7][1] = tab.mTrauma.getText();
+                    data[8][1] = "";
+                    data[9][1] = mAmbulance.getText();
+                    data[10][1] = mBase.getText();
+                    data[11][1] = db.divTimeFull(timeCall, true);
+                    data[12][1] = db.divTimeFull(timeDeparture, true);
+                    data[13][1] = db.divTimeFull(timeArrival, true);
+                    data[14][1] = db.divTimeFull(timeTransfer, true);
+                    data[15][1] = db.divTimeFull(timeHospital, true);
+                    data[16][1] = db.divTimeFull(timeComeback, true);
+                    data[17][1] = db.subTime(data[11][1], data[12][1]);
+                    data[18][1] = db.subTime(data[12][1], data[13][1]);
+                    data[19][1] = db.subTime(data[13][1], data[14][1]);
+                    data[20][1] = db.subTime(data[14][1], data[15][1]);
+                    data[21][1] = db.subTime(data[15][1], data[16][1]);
+                    data[22][1] = tAlive.getText();
+                    data[23][1] = tDeads.getText();
+                    data[24][1] = sex;
+                    data[25][1] = tAgeOld.getText();
+                    data[26][1] = mTransfer.getText();
+                    data[27][1] = "";
+                    data[28][1] = tNote.getText();
+                    data[29][1] = "";
+                    data[30][1] = mOper.getText();
+                    a.replaceWordData("resource/formatoCtrlAmb.docx", System.getProperty("user.home") 
+                            + "/Documents/CtrlAmb/example.docx", data);
                     break;
             }
         }
