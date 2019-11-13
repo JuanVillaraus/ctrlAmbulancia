@@ -21,15 +21,12 @@ public class ctrTime extends JPanel {
 
     Calendar calendario = new GregorianCalendar();
     SimpleDateFormat date;
-    JTextField tFolio = new JTextField(10);
 
-    public ctrTime(String sTimeCall, String folio) {
-        tFolio.setText(folio);
+    public ctrTime(String sTimeCall) {
         RealTime rt = new RealTime();
         JLabel lDate = new JLabel("Fecha:");
         JLabel lTime = new JLabel("Hora:");
         JLabel lTimeCall = new JLabel("Hora de llamada:");
-        JLabel lFolio = new JLabel("Folio:");
         JTextField tDate = new JTextField(10);
         JTextField tTime = new JTextField(10);
         rt.settTime(tTime);
@@ -46,24 +43,19 @@ public class ctrTime extends JPanel {
         tDate.setEditable(false);
         tTime.setEditable(false);
         tTimeCall.setEditable(false);
-        tFolio.setEditable(false);
         lDate.setHorizontalAlignment(JTextField.RIGHT);
         lTime.setHorizontalAlignment(JTextField.RIGHT);
         lTimeCall.setHorizontalAlignment(JTextField.RIGHT);
-        lFolio.setHorizontalAlignment(JTextField.RIGHT);
         tDate.setHorizontalAlignment(JTextField.CENTER);
         tTime.setHorizontalAlignment(JTextField.CENTER);
         tTimeCall.setHorizontalAlignment(JTextField.CENTER);
-        tFolio.setHorizontalAlignment(JTextField.CENTER);
         this.add(lDate);
         this.add(tDate);
         this.add(lTime);
         this.add(tTime);
         this.add(lTimeCall);
         this.add(tTimeCall);
-        this.add(lFolio);
-        this.add(tFolio);
-        setLayout(new GridLayout(1, 8));
+        setLayout(new GridLayout(1, 7));
         rt.start();
     }
 }

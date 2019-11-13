@@ -2120,7 +2120,7 @@ public class ConxDB {
         return null;
     }
 
-    public String[][] reportExcel(String dateOpen, String dateClose) {
+    public String[][] reportEmergency(String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
         String id;
@@ -2171,7 +2171,154 @@ public class ConxDB {
                 row[14] = consultNameParamedic(rs.getInt("ID_PARAMEDICO_EMERGENCIA"));
                 row[15] = subTime(divTimeFull(rs.getString("HORA_SALIDA_EMERGENCIA"), true), row[4]);
                 row[16] = rs.getString("NUM_FRAP_PACIENTE");
-                row[17] = "pendiente";
+                row[17] = "";
+                System.out.println("pull done");
+                list.add(row);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
+        }
+        String[][] data = new String[list.size()][18];
+        for (int i = 0;
+                i < data.length;
+                i++) {
+            for (int j = 0; j < data[0].length; j++) {
+                System.out.print(list.get(i)[j] + "\t");
+                data[i][j] = list.get(i)[j];
+            }
+            System.out.println();
+        }
+        return data;
+    }
+
+    public String[][] reportAmbulance(int idAmbulance) {
+        ArrayList<String[]> list = new ArrayList<String[]>();
+        String[] row = new String[18];
+        String id;
+        row[0] = "No";
+        row[1] = "FECHA";
+        row[2] = "AMB";
+        row[3] = "SALIDA";
+        row[4] = "REGRESO";
+        row[5] = "ASIGNACIÓN";
+        row[6] = "TRAUMA";
+        row[7] = "CLINICO";
+        row[8] = "RESCATE";
+        row[9] = "RESULTADO";
+        row[10] = "HOSPITAL";
+        row[11] = "FOLIO PAGADO";
+        row[12] = "UBICACIÓN";
+        row[13] = "OPERADOR";
+        row[14] = "PARAMEDICO";
+        row[15] = "T. DE RESPUESTA";
+        row[16] = "FRAP";
+        row[17] = "ENTREGO";
+        list.add(row);
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"EMERGENCIA\" "
+                    + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
+                    + "WHERE \"ID_AMBULANCIA_EMERGENCIA\" = '" + idAmbulance + "' ");
+            while (rs.next()) {
+                row = new String[18];
+                id = rs.getInt("PK_ID_EMERGENCIA") + "";
+                System.out.println("id: " + id);
+                row[0] = id;
+                row[1] = divTimeFull(rs.getString("HORA_LLAMADA_EMERGENCIA"), false);
+                row[2] = consultNumAmbulance(rs.getInt("ID_AMBULANCIA_EMERGENCIA"));
+                row[3] = divTimeFull(rs.getString("HORA_LLAMADA_EMERGENCIA"), true);
+                row[4] = divTimeFull(rs.getString("HORA_BASE_EMERGENCIA"), true);
+                row[5] = rs.getString("BASE_EMERGENCIA");
+                row[6] = rs.getString("TRAUMA_TIPO_PACIENTE");
+                row[7] = rs.getString("MOTIVO_ENFERMO_PACIENTE");
+                row[8] = "";
+                row[9] = rs.getString("RESULTADO_EMERGENCIA");
+                row[10] = rs.getString("TRASLADO_EMERGENCIA");
+                row[11] = rs.getString("FOLIO_EMERGENCIA");
+                row[12] = rs.getString("COL_EMERGENCIA");
+                row[13] = consultNameOper(rs.getInt("ID_OPERADOR_EMERGENCIA"));
+                row[14] = consultNameParamedic(rs.getInt("ID_PARAMEDICO_EMERGENCIA"));
+                row[15] = subTime(divTimeFull(rs.getString("HORA_SALIDA_EMERGENCIA"), true), row[4]);
+                row[16] = rs.getString("NUM_FRAP_PACIENTE");
+                row[17] = "";
+                System.out.println("pull done");
+                list.add(row);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
+        }
+        String[][] data = new String[list.size()][18];
+        for (int i = 0;
+                i < data.length;
+                i++) {
+            for (int j = 0; j < data[0].length; j++) {
+                System.out.print(list.get(i)[j] + "\t");
+                data[i][j] = list.get(i)[j];
+            }
+            System.out.println();
+        }
+        return data;
+    }
+
+    public String[][] reportAmbulance(int idAmbulance, String dateOpen, String dateClose) {
+        ArrayList<String[]> list = new ArrayList<String[]>();
+        String[] row = new String[18];
+        String id;
+        row[0] = "No";
+        row[1] = "FECHA";
+        row[2] = "AMB";
+        row[3] = "SALIDA";
+        row[4] = "REGRESO";
+        row[5] = "ASIGNACIÓN";
+        row[6] = "TRAUMA";
+        row[7] = "CLINICO";
+        row[8] = "RESCATE";
+        row[9] = "RESULTADO";
+        row[10] = "HOSPITAL";
+        row[11] = "FOLIO PAGADO";
+        row[12] = "UBICACIÓN";
+        row[13] = "OPERADOR";
+        row[14] = "PARAMEDICO";
+        row[15] = "T. DE RESPUESTA";
+        row[16] = "FRAP";
+        row[17] = "ENTREGO";
+        list.add(row);
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"EMERGENCIA\" "
+                    + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
+                    + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' "
+                    + "AND \"ID_AMBULANCIA_EMERGENCIA\" = '" + idAmbulance + "' ");
+            while (rs.next()) {
+                row = new String[18];
+                id = rs.getInt("PK_ID_EMERGENCIA") + "";
+                System.out.println("id: " + id);
+                row[0] = id;
+                row[1] = divTimeFull(rs.getString("HORA_LLAMADA_EMERGENCIA"), false);
+                row[2] = consultNumAmbulance(rs.getInt("ID_AMBULANCIA_EMERGENCIA"));
+                row[3] = divTimeFull(rs.getString("HORA_LLAMADA_EMERGENCIA"), true);
+                row[4] = divTimeFull(rs.getString("HORA_BASE_EMERGENCIA"), true);
+                row[5] = rs.getString("BASE_EMERGENCIA");
+                row[6] = rs.getString("TRAUMA_TIPO_PACIENTE");
+                row[7] = rs.getString("MOTIVO_ENFERMO_PACIENTE");
+                row[8] = "";
+                row[9] = rs.getString("RESULTADO_EMERGENCIA");
+                row[10] = rs.getString("TRASLADO_EMERGENCIA");
+                row[11] = rs.getString("FOLIO_EMERGENCIA");
+                row[12] = rs.getString("COL_EMERGENCIA");
+                row[13] = consultNameOper(rs.getInt("ID_OPERADOR_EMERGENCIA"));
+                row[14] = consultNameParamedic(rs.getInt("ID_PARAMEDICO_EMERGENCIA"));
+                row[15] = subTime(divTimeFull(rs.getString("HORA_SALIDA_EMERGENCIA"), true), row[4]);
+                row[16] = rs.getString("NUM_FRAP_PACIENTE");
+                row[17] = "";
                 System.out.println("pull done");
                 list.add(row);
             }
@@ -2380,6 +2527,9 @@ public class ConxDB {
         if (min < 0) {
             min += 60;
             hor--;
+        }
+        if (hor < 0) {
+            hor += 24;
         }
         if (hor < 10 && hor >= 0) {
             time += "0";

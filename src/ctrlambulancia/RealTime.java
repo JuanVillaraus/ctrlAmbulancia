@@ -31,7 +31,7 @@ public class RealTime extends Thread {
     SimpleDateFormat date, time;
 
     public void run() {
-        time = new SimpleDateFormat("hh:mm:ss");
+        time = new SimpleDateFormat("HH:mm:ss");
         while (true) {
             Calendar calendario = new GregorianCalendar();
             tTime.setText(time.format(calendario.getTime()));

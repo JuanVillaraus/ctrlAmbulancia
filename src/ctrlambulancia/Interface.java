@@ -48,7 +48,6 @@ public class Interface extends JFrame implements ActionListener {
     JMenu mParamedic = new JMenu("Elegir opción");
     JMenu mAmbulance = new JMenu("Elegir opción");
     JMenu mBase = new JMenu("Base de salida");
-    int folio = 0;
     ConxDB db = new ConxDB();
     //String[] data;
 
@@ -155,26 +154,29 @@ public class Interface extends JFrame implements ActionListener {
         //System.out.println("event " + e.getActionCommand());
         switch (e.getActionCommand()) {
             case "Emergencia":
-                folio++;
-                emergency = new JFrame("Emergencia Folio:" + String.valueOf(folio));
-                emergency.setSize(1600, 500);
-                emergency.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - emergency.getWidth() / 2,
-                        (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - emergency.getHeight() / 2);
-                emergency.setFocusable(true);
-                emergency.setExtendedState(MAXIMIZED_BOTH);
-                emergency.setVisible(true);
-                emergency.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
-                time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                Calendar calendario = new GregorianCalendar();
-                ctrTime cT = new ctrTime(time.format(calendario.getTime()), String.valueOf(folio));
-                tabData tab = new tabData();
-                cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, tab, db,
-                        mAmbulance.getText(), tKmAmbulance.getText(), mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
-                        mOper.getText(), mParamedic.getText(), mRadioOper.getText(), tApplicant.getText());
-                emergency.setLayout(new BorderLayout());
-                emergency.add(tab, BorderLayout.NORTH);
-                emergency.add(cD, BorderLayout.CENTER);
-                emergency.add(cT, BorderLayout.SOUTH);
+                if (mAmbulance.getText().equals("Elegir opción")) {
+                    JOptionPane.showMessageDialog(null, "Debe elegir una ambulancia", "ERROR", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    emergency = new JFrame("Emergencia " + mAmbulance.getText());
+                    emergency.setSize(1600, 500);
+                    emergency.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - emergency.getWidth() / 2,
+                            (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - emergency.getHeight() / 2);
+                    emergency.setFocusable(true);
+                    emergency.setExtendedState(MAXIMIZED_BOTH);
+                    emergency.setVisible(true);
+                    emergency.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
+                    time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Calendar calendario = new GregorianCalendar();
+                    ctrTime cT = new ctrTime(time.format(calendario.getTime()));
+                    tabData tab = new tabData();
+                    cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, tab, db,
+                            mAmbulance.getText(), tKmAmbulance.getText(), mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
+                            mOper.getText(), mParamedic.getText(), mRadioOper.getText(), tApplicant.getText());
+                    emergency.setLayout(new BorderLayout());
+                    emergency.add(tab, BorderLayout.NORTH);
+                    emergency.add(cD, BorderLayout.CENTER);
+                    emergency.add(cT, BorderLayout.SOUTH);
+                }
                 break;
             case "Admin":
                 JPanel pPass = new JPanel();

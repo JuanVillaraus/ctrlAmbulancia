@@ -19,8 +19,8 @@ public class ctrData extends JPanel implements ActionListener {
 
     JFrame emergency;
     tabData tab;
-    SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
-    SimpleDateFormat timeFull = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+    SimpleDateFormat timeFull = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
     ConxDB db;
     int classTime = 1;
@@ -168,7 +168,7 @@ public class ctrData extends JPanel implements ActionListener {
         }
         word = "";
         cadena = sRadioOper.toCharArray();
-        if (cadena[0] == 'R' && cadena[1] == 'P') {
+        if (cadena[0] == 'R' && cadena[1] == 'O') {
             for (int i = 3; i < cadena.length; i++) {
                 if (cadena[i] == ' ') {
                     this.idRadioOper = Integer.valueOf(word);
@@ -346,6 +346,11 @@ public class ctrData extends JPanel implements ActionListener {
         lOperVoluntary.setPreferredSize(new Dimension(170, 50));
         lParamedicVoluntary.setPreferredSize(new Dimension(170, 50));
         lNote.setPreferredSize(new Dimension(100, 50));
+        bTime.setPreferredSize(new Dimension(windowX / 13, 30));
+        mResultado.setPreferredSize(new Dimension(150, 30));
+        mPriorityTransfer.setPreferredSize(new Dimension(150, 30));
+        mTransfer.setPreferredSize(new Dimension(150, 30));
+        mBase.setPreferredSize(new Dimension(150, 30));
         lDir.setHorizontalAlignment(SwingConstants.RIGHT);
         lRadioOper.setHorizontalAlignment(SwingConstants.RIGHT);
         lAlive.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -365,30 +370,39 @@ public class ctrData extends JPanel implements ActionListener {
         lParamedicVoluntary.setHorizontalAlignment(SwingConstants.RIGHT);
         lNote.setHorizontalAlignment(SwingConstants.RIGHT);
         //lPatient.setHorizontalAlignment(SwingConstants.RIGHT);
-        multSingle.setEnabled(false);
-        multGroup.setEnabled(false);
-        sexM.setEnabled(false);
-        sexF.setEnabled(false);
-        rAlive.setEnabled(false);
-        rDeads.setEnabled(false);
-        tTimeCall.setText(sTimeCall);
-        tTimeDeparture.setText("00:00:00");
-        tTimeArrival.setText("00:00:00");
-        tTimeTransfer.setText("00:00:00");
-        tTimeHospital.setText("00:00:00");
-        tTimeComeback.setText("00:00:00");
-        tTimeCall.setEditable(false);
-        tTimeDeparture.setEditable(false);
-        tTimeArrival.setEditable(false);
-        tTimeTransfer.setEditable(false);
-        tTimeHospital.setEditable(false);
-        tTimeComeback.setEditable(false);
         tTimeCall.setHorizontalAlignment(JTextField.CENTER);
         tTimeDeparture.setHorizontalAlignment(JTextField.CENTER);
         tTimeArrival.setHorizontalAlignment(JTextField.CENTER);
         tTimeTransfer.setHorizontalAlignment(JTextField.CENTER);
         tTimeHospital.setHorizontalAlignment(JTextField.CENTER);
         tTimeComeback.setHorizontalAlignment(JTextField.CENTER);
+        mResultado.setHorizontalAlignment(SwingConstants.CENTER);
+        mResultado.setHorizontalTextPosition(JTextField.CENTER);
+        iFalseAlarm.setHorizontalAlignment(JTextField.CENTER);
+        lTimeCall.setHorizontalAlignment(JTextField.RIGHT);
+        lTimeDeparture.setHorizontalAlignment(JTextField.RIGHT);
+        lTimeArrival.setHorizontalAlignment(JTextField.RIGHT);
+        lTimeTransfer.setHorizontalAlignment(JTextField.RIGHT);
+        lTimeHospital.setHorizontalAlignment(JTextField.RIGHT);
+        lTimeComeback.setHorizontalAlignment(JTextField.RIGHT);
+        tTimeDeparture.setText("00:00:00");
+        tTimeArrival.setText("00:00:00");
+        tTimeTransfer.setText("00:00:00");
+        tTimeHospital.setText("00:00:00");
+        tTimeComeback.setText("00:00:00");
+        tTimeCall.setText(sTimeCall);
+        multSingle.setEnabled(false);
+        multGroup.setEnabled(false);
+        sexM.setEnabled(false);
+        sexF.setEnabled(false);
+        rAlive.setEnabled(false);
+        rDeads.setEnabled(false);
+        tTimeCall.setEditable(false);
+        tTimeDeparture.setEditable(false);
+        tTimeArrival.setEditable(false);
+        tTimeTransfer.setEditable(false);
+        tTimeHospital.setEditable(false);
+        tTimeComeback.setEditable(false);
         mPriorityTransfer.setEnabled(false);
         mTransfer.setEnabled(false);
         tAlive.setEditable(false);
@@ -398,27 +412,9 @@ public class ctrData extends JPanel implements ActionListener {
         tNamePatient.setEditable(false);
         tLastNamePatient.setEditable(false);
         tLastName2Patient.setEditable(false);
-        bTime.setPreferredSize(new Dimension(windowX / 13, 30));
-        mResultado.setPreferredSize(new Dimension(150, 30));
-        mPriorityTransfer.setPreferredSize(new Dimension(150, 30));
-        mTransfer.setPreferredSize(new Dimension(150, 30));
-        mBase.setPreferredSize(new Dimension(150, 30));
-        mResultado.setHorizontalAlignment(SwingConstants.CENTER);
-        mResultado.setHorizontalTextPosition(JTextField.CENTER);
-        iFalseAlarm.setHorizontalAlignment(JTextField.CENTER);
+        mAmbulance.setEnabled(false);
 
         this.setLayout(new FlowLayout());
-        //this.setLayout(new BorderLayout());
-        //pPatient.setLayout(new FlowLayout()); 
-        //pDir.setLayout(new FlowLayout());
-        //pDir.setLayout(new BorderLayout());
-
-        lTimeCall.setHorizontalAlignment(JTextField.RIGHT);
-        lTimeDeparture.setHorizontalAlignment(JTextField.RIGHT);
-        lTimeArrival.setHorizontalAlignment(JTextField.RIGHT);
-        lTimeTransfer.setHorizontalAlignment(JTextField.RIGHT);
-        lTimeHospital.setHorizontalAlignment(JTextField.RIGHT);
-        lTimeComeback.setHorizontalAlignment(JTextField.RIGHT);
 
         pDir.add(lDir);
         pDir.add(tDir);
@@ -540,9 +536,10 @@ public class ctrData extends JPanel implements ActionListener {
             if (e.getActionCommand().toCharArray()[0] == 'P' && e.getActionCommand().toCharArray()[1] == 'r') {
                 mPriorityTransfer.setText(e.getActionCommand());
             } else if (cadena[2] == '#') {
+                String word;
                 switch (command) {
                     case "AB":
-                        String word = "";
+                        word = "";
                         for (int i = 3; i < cadena.length; i++) {
                             if (cadena[i] == ' ') {
                                 tKmDeparture.setText(String.valueOf(db.consultAmbulanceKm(Integer.valueOf(word))));
@@ -552,15 +549,63 @@ public class ctrData extends JPanel implements ActionListener {
                             }
                         }
                         mAmbulance.setText(e.getActionCommand());
+                        word = "";
+                        cadena = e.getActionCommand().toCharArray();
+                        if (cadena[0] == 'A' && cadena[1] == 'B') {
+                            for (int i = 3; i < cadena.length; i++) {
+                                if (cadena[i] == ' ') {
+                                    this.idAmbulance = Integer.valueOf(word);
+                                    i = cadena.length;
+                                } else {
+                                    word += cadena[i];
+                                }
+                            }
+                        }
                         break;
                     case "OP":
                         mOper.setText(e.getActionCommand());
+                        word = "";
+                        cadena = e.getActionCommand().toCharArray();
+                        if (cadena[0] == 'O' && cadena[1] == 'P') {
+                            for (int i = 3; i < cadena.length; i++) {
+                                if (cadena[i] == ' ') {
+                                    this.idOper = Integer.valueOf(word);
+                                    i = cadena.length;
+                                } else {
+                                    word += cadena[i];
+                                }
+                            }
+                        }
                         break;
                     case "RO":
                         mRadioOper.setText(e.getActionCommand());
+                        word = "";
+                        cadena = e.getActionCommand().toCharArray();
+                        if (cadena[0] == 'R' && cadena[1] == 'O') {
+                            for (int i = 3; i < cadena.length; i++) {
+                                if (cadena[i] == ' ') {
+                                    this.idRadioOper = Integer.valueOf(word);
+                                    i = cadena.length;
+                                } else {
+                                    word += cadena[i];
+                                }
+                            }
+                        }
                         break;
                     case "PM":
                         mParamedic.setText(e.getActionCommand());
+                        word = "";
+                        cadena = e.getActionCommand().toCharArray();
+                        if (cadena[0] == 'P' && cadena[1] == 'M') {
+                            for (int i = 3; i < cadena.length; i++) {
+                                if (cadena[i] == ' ') {
+                                    this.idParamedic = Integer.valueOf(word);
+                                    i = cadena.length;
+                                } else {
+                                    word += cadena[i];
+                                }
+                            }
+                        }
                         break;
                 }
             } else {
@@ -709,6 +754,7 @@ public class ctrData extends JPanel implements ActionListener {
                     String sPatient = "";
                     String obstetrico = "";
                     String trauma = "";
+                    int idEmergency = 0;
 
                     int alive = 0;
                     if (tAlive.getText().equals("") && tAlive.getText() == null) {
@@ -738,7 +784,7 @@ public class ctrData extends JPanel implements ActionListener {
                         for (int i = 3; i < cadena.length; i++) {
                             word += cadena[i];
                         }
-                        int idEmergency = Integer.valueOf(word);
+                        idEmergency = Integer.valueOf(word);
                         if (mResultado.getText().equals("Traslado")) {
                             for (int m = 0; m < patient.size(); m++) {
                                 if (!tab.mObstetrico.getText().equals("Tipo de obstetrico")) {
@@ -800,7 +846,7 @@ public class ctrData extends JPanel implements ActionListener {
                     data[5][1] = tDel.getText();
                     data[6][1] = "";
                     data[7][1] = tab.mTrauma.getText();
-                    data[8][1] = "";
+                    data[8][1] = mPriorityTransfer.getText();
                     data[9][1] = mAmbulance.getText();
                     data[10][1] = mBase.getText();
                     data[11][1] = db.divTimeFull(timeCall, true);
@@ -823,8 +869,9 @@ public class ctrData extends JPanel implements ActionListener {
                     data[28][1] = tNote.getText();
                     data[29][1] = "";
                     data[30][1] = mOper.getText();
-                    a.replaceWordData("resource/formatoCtrlAmb.docx", System.getProperty("user.home") 
-                            + "/Documents/CtrlAmb/example.docx", data);
+
+                    a.replaceWordData("resource/formatoCtrlAmb.docx", System.getProperty("user.home")
+                            + "/Documents/CtrlAmb/Emergencia#" + idEmergency + ".docx", data);
                     break;
             }
         }
