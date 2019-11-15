@@ -223,6 +223,7 @@ public class Consulta extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().getClass().getSimpleName().equals("JButton")) {
             String sEmergency;
+            tMain.setText("");
             switch (mOptionSearch.getText()) {
                 case "Opción para Buscar":
                     if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
@@ -290,7 +291,7 @@ public class Consulta extends JPanel implements ActionListener {
                             tMain.setText(sEmergency);
                             try {
                                 a.escribirTxt("resource/Emergencias " + tDir.getText() + ".txt", sEmergency);
-                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ubicación: "
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ubicación "
                                         + tDir.getText() + ".xlsx", "hoja1", db.reportDir(tDir.getText()));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
@@ -303,7 +304,7 @@ public class Consulta extends JPanel implements ActionListener {
                                 try {
                                     a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
                                             + tDateClose.getText() + ".txt", sEmergency);
-                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ubicación: "
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ubicación "
                                             + tDir.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1", db.reportDir(tDir.getText(),
                                                     tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
@@ -316,7 +317,7 @@ public class Consulta extends JPanel implements ActionListener {
                                 try {
                                     a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
                                             + tDateOpen.getText() + ".txt", sEmergency);
-                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ubicación: "
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ubicación "
                                             + tDir.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1", db.reportDir(tDir.getText(),
                                                     tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
@@ -330,7 +331,7 @@ public class Consulta extends JPanel implements ActionListener {
                             try {
                                 a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
                                         + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ubicación: "
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ubicación "
                                         + tDir.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
                                         db.reportDir(tDir.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                             } catch (IOException ex) {
@@ -551,6 +552,8 @@ public class Consulta extends JPanel implements ActionListener {
                             tMain.setText(sEmergency);
                             try {
                                 a.escribirTxt("resource/Emergencias con " + mOper.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                        + mOper.getText() + ".xlsx", "hoja1", db.reportOper(idOper));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -562,6 +565,9 @@ public class Consulta extends JPanel implements ActionListener {
                                 try {
                                     a.escribirTxt("resource/Emergencia con " + mOper.getText() + " del "
                                             + tDateClose.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                            + mOper.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+                                            db.reportOper(idOper, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -572,6 +578,9 @@ public class Consulta extends JPanel implements ActionListener {
                                 try {
                                     a.escribirTxt("resource/Emergencia con " + mOper.getText() + " del "
                                             + tDateOpen.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                            + mOper.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+                                            db.reportOper(idOper, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -583,6 +592,9 @@ public class Consulta extends JPanel implements ActionListener {
                             try {
                                 a.escribirTxt("resource/Emergencia Operador con " + mOper.getText() + " del "
                                         + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                        + mOper.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+                                        db.reportOper(idOper, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -610,6 +622,8 @@ public class Consulta extends JPanel implements ActionListener {
                             tMain.setText(sEmergency);
                             try {
                                 a.escribirTxt("resource/Emergencias con " + mParamedic.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                        + mParamedic.getText() + ".xlsx", "hoja1", db.reportParamedic(idParamedic));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -621,6 +635,9 @@ public class Consulta extends JPanel implements ActionListener {
                                 try {
                                     a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
                                             + tDateClose.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                            + mParamedic.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+                                            db.reportParamedic(idParamedic, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -631,6 +648,9 @@ public class Consulta extends JPanel implements ActionListener {
                                 try {
                                     a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
                                             + tDateOpen.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                            + mParamedic.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+                                            db.reportParamedic(idParamedic, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -642,6 +662,9 @@ public class Consulta extends JPanel implements ActionListener {
                             try {
                                 a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
                                         + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                        + mParamedic.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+                                        db.reportParamedic(idParamedic, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -657,7 +680,9 @@ public class Consulta extends JPanel implements ActionListener {
                             sEmergency = db.consultEmergencyOperVoluntary(tName.getText());
                             tMain.setText(sEmergency);
                             try {
-                                a.escribirTxt("resource/Emergencias con " + tName.getText() + ".txt", sEmergency);
+                                a.escribirTxt("resource/Emergencias Radio Operador Voluntario " + tName.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Radio Operador Voluntario "
+                                        + tName.getText() + ".xlsx", "hoja1", db.reportOperVoluntary(tName.getText()));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -667,8 +692,11 @@ public class Consulta extends JPanel implements ActionListener {
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                 tMain.setText(sEmergency);
                                 try {
-                                    a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                    a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
                                             + tDateClose.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Radio Operador Voluntario "
+                                            + tName.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+                                            db.reportOperVoluntary(tName.getText(), tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -677,8 +705,11 @@ public class Consulta extends JPanel implements ActionListener {
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                 tMain.setText(sEmergency);
                                 try {
-                                    a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                    a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
                                             + tDateOpen.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Radio Operador Voluntario "
+                                            + tName.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+                                            db.reportOperVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -688,8 +719,11 @@ public class Consulta extends JPanel implements ActionListener {
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
                             tMain.setText(sEmergency);
                             try {
-                                a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
                                         + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Radio Operador Voluntario "
+                                        + tName.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+                                        db.reportOperVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -705,7 +739,9 @@ public class Consulta extends JPanel implements ActionListener {
                             sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText());
                             tMain.setText(sEmergency);
                             try {
-                                a.escribirTxt("resource/Emergencias con " + tName.getText() + ".txt", sEmergency);
+                                a.escribirTxt("resource/Emergencias Paramedico Voluntario " + tName.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Paramedico Voluntario "
+                                        + tName.getText() + ".xlsx", "hoja1", db.reportParamedicVoluntary(tName.getText()));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -715,8 +751,11 @@ public class Consulta extends JPanel implements ActionListener {
                                         tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                 tMain.setText(sEmergency);
                                 try {
-                                    a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                    a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
                                             + tDateClose.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Paramedico Voluntario "
+                                            + tName.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+                                            db.reportParamedicVoluntary(tName.getText(), tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -725,8 +764,11 @@ public class Consulta extends JPanel implements ActionListener {
                                         tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                 tMain.setText(sEmergency);
                                 try {
-                                    a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                    a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
                                             + tDateOpen.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Paramedico Voluntario "
+                                            + tName.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+                                            db.reportParamedicVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -736,8 +778,11 @@ public class Consulta extends JPanel implements ActionListener {
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
                             tMain.setText(sEmergency);
                             try {
-                                a.escribirTxt("resource/Emergencia con " + tName.getText() + " del "
+                                a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
                                         + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Paramedico Voluntario "
+                                        + tName.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+                                        db.reportParamedicVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -765,6 +810,8 @@ public class Consulta extends JPanel implements ActionListener {
                             tMain.setText(sEmergency);
                             try {
                                 a.escribirTxt("resource/Emergencias con " + mRadioOper.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                        + mRadioOper.getText() + ".xlsx", "hoja1", db.reportRadioOper(idRadioOper));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -774,8 +821,11 @@ public class Consulta extends JPanel implements ActionListener {
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                 tMain.setText(sEmergency);
                                 try {
-                                    a.escribirTxt("resource/Emergencia Radio Operador #" + idRadioOper
+                                    a.escribirTxt("resource/Emergencia con " + mRadioOper.getText()
                                             + " del " + tDateClose.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                            + mRadioOper.getText() + " del " + " " + tDateClose.getText() + ".xlsx", "hoja1",
+                                            db.reportRadioOper(idRadioOper, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -784,8 +834,11 @@ public class Consulta extends JPanel implements ActionListener {
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                 tMain.setText(sEmergency);
                                 try {
-                                    a.escribirTxt("resource/Emergencia Radio Operador #" + idRadioOper
+                                    a.escribirTxt("resource/Emergencia con " + mRadioOper.getText()
                                             + " del " + tDateOpen.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                            + mRadioOper.getText() + " del " + tDateOpen.getText() + " " + ".xlsx", "hoja1",
+                                            db.reportRadioOper(idRadioOper, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -795,8 +848,11 @@ public class Consulta extends JPanel implements ActionListener {
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
                             tMain.setText(sEmergency);
                             try {
-                                a.escribirTxt("resource/Emergencia Operador #" + idRadioOper + " del "
+                                a.escribirTxt("resource/Emergencia con " + mRadioOper.getText() + " del "
                                         + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte "
+                                        + mRadioOper.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+                                        db.reportRadioOper(idRadioOper, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                             } catch (IOException ex) {
                                 Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -823,7 +879,7 @@ public class Consulta extends JPanel implements ActionListener {
                             sEmergency = db.consultEmergencyAmbulance(idAmbulance);
                             tMain.setText(sEmergency);
                             try {
-                                a.escribirTxt("resource/Emergencias con " + mAmbulance.getText() + ".txt", sEmergency);
+                                a.escribirTxt("resource/Emergencias Ambulancia #" + db.consultNumAmbulance(idAmbulance) + ".txt", sEmergency);
                                 a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ambulancia #"
                                         + db.consultNumAmbulance(idAmbulance) + ".xlsx", "hoja1", db.reportAmbulance(idAmbulance));
                             } catch (IOException ex) {
@@ -846,13 +902,13 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyAmbulance(idAmbulance, tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ambulancia #"
-                                        + db.consultNumAmbulance(idAmbulance) + " " + tDateOpen.getText() + ".xlsx", "hoja1",
-                                        db.reportAmbulance(idAmbulance, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                                 tMain.setText(sEmergency);
                                 try {
-                                    a.escribirTxt("resource/Emergencia Ambulancia #" + idAmbulance + " del "
+                                    a.escribirTxt("resource/Emergencia Ambulancia #" + db.consultNumAmbulance(idAmbulance) + " del "
                                             + tDateOpen.getText() + ".txt", sEmergency);
+                                    a.writeExcelData(System.getProperty("user.home") + "/Documents/CtrlAmb/reporte Ambulancia #"
+                                            + db.consultNumAmbulance(idAmbulance) + " " + tDateOpen.getText() + ".xlsx", "hoja1",
+                                            db.reportAmbulance(idAmbulance, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
                                 } catch (IOException ex) {
                                     Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                                 }

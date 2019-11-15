@@ -151,24 +151,7 @@ public class archivo {
             System.err.println("SOY SAVE: No se encontro el archivo " + dir);
         }
     }
-
-//    public void writeExcelData(String dir, String nameSheet, String[] data) {
-//        //create blank workbook
-//        HSSFWorkbook workbook = new HSSFWorkbook();
-//        HSSFSheet spreadsheet = workbook.createSheet(nameSheet);
-//        try {
-//            HSSFRow row = spreadsheet.createRow(0);
-//            Cell cell = row.createCell(0);
-//            String result = data[0] + " " + data[1] + " " + data[2];
-//            cell.setCellValue(result);
-//            FileOutputStream out = new FileOutputStream(new File(dir));
-//            workbook.write(out);
-//            out.close();
-//        } catch (Exception e) {
-//            System.out.println("Error: " + e);
-//        }
-//        System.out.println("createworkbook.xls created!");
-//    }
+    
     public void writeExcelData(String dir, String nameSheet, String[][] data) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet worksheet = workbook.createSheet(nameSheet);
@@ -179,6 +162,7 @@ public class archivo {
         font.setBold(true);
         style.setFont(font);
 
+        System.out.println("\nwriteExcelData");
         //generar los datos para el documento
         for (int i = 0; i < data.length; i++) {
             XSSFRow row = worksheet.createRow(i);//se crea las filas
@@ -192,7 +176,9 @@ public class archivo {
                     cell.setCellValue(data[i][j]); //se añade el contenido
                     worksheet.autoSizeColumn(j);
                 }
+                System.out.print(data[i][j]+"\t");
             }
+            System.out.println("");
         }
 
         File file;

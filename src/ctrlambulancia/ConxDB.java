@@ -1617,7 +1617,7 @@ public class ConxDB {
             ResultSet rs = st.executeQuery(""
                     + "SELECT * "
                     + "FROM \"EMERGENCIA\" "
-                    + "WHERE \"DIR_EMERGENCIA\"= '" + dir + "';");
+                    + "WHERE \"COL_EMERGENCIA\"= '" + dir + "';");
             while (rs.next()) {
                 int idEmergency = rs.getInt("PK_ID_EMERGENCIA");
 //                String dir = rs.getString("DIR_EMERGENCIA");
@@ -2119,7 +2119,7 @@ public class ConxDB {
         }
         return null;
     }
-    
+
     public String[][] reportIdEmergency(int id) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -2191,7 +2191,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportEmergency() {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -2483,7 +2483,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportOper(int idOper) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -2556,7 +2556,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportOper(int idOper, String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -2630,7 +2630,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportRadioOper(int idRadioOper) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -2703,6 +2703,7 @@ public class ConxDB {
         }
         return data;
     }
+
     public String[][] reportRadioOper(int idRadioOper, String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -2776,7 +2777,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportParamedic(int idParamedic) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -2849,7 +2850,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportParamedic(int idParamedic, String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -2923,7 +2924,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportParamedicVoluntary(String paramedicVoluntary) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -2996,7 +2997,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportParamedicVoluntary(String paramedicVoluntary, String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3070,7 +3071,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportOperVoluntary(String operVoluntary) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3143,7 +3144,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportOperVoluntary(String operVoluntary, String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3217,7 +3218,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportPriorityTransfer(int priorityTransfer) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3290,7 +3291,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportPriorityTransfer(int priorityTransfer, String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3364,7 +3365,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportTransfer(String transfer) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3437,7 +3438,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportTransfer(String transfer, String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3511,7 +3512,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportResultado(String resultado) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3584,7 +3585,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportResultado(String resultado, String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3658,7 +3659,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportDir(String dir) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
@@ -3720,9 +3721,7 @@ public class ConxDB {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
         String[][] data = new String[list.size()][18];
-        for (int i = 0;
-                i < data.length;
-                i++) {
+        for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[0].length; j++) {
                 System.out.print(list.get(i)[j] + "\t");
                 data[i][j] = list.get(i)[j];
@@ -3731,7 +3730,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] reportDir(String dir, String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[18];
