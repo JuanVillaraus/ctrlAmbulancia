@@ -81,6 +81,8 @@ public class ctrData extends JPanel implements ActionListener {
     int idRadioOper = 0;
     int idPatient = 0;
     ArrayList<String[]> patient = new ArrayList<String[]>();
+    String tipeCallmain = "";
+    String callmain = "";
     String sTimeCall;
     String sex = "";
     String status = "";
@@ -105,7 +107,7 @@ public class ctrData extends JPanel implements ActionListener {
 
     public ctrData(String sTimeCall, int windowX, JFrame emergency, tabData tab, ConxDB db, String sAmbulance, String sKmAmbulance,
             String sBase, String sOperVoluntary, String sParamedicVoluntary, String sOper, String sParamedic,
-            String sRadioOper, String sApplicant) {
+            String sRadioOper, String sApplicant, String tipeCallmain, String callmain) {
         this.timeCall = sTimeCall;
         this.windowX = windowX;
         this.emergency = emergency;
@@ -178,6 +180,10 @@ public class ctrData extends JPanel implements ActionListener {
                 }
             }
         }
+        if (!tipeCallmain.equals("llamada recibida")) {
+            this.tipeCallmain = tipeCallmain;
+        }
+        this.callmain = callmain;
 
         JLabel lSpace0 = new JLabel("");
         JLabel lSpace1 = new JLabel("");
@@ -686,6 +692,13 @@ public class ctrData extends JPanel implements ActionListener {
             arrayPatient[6] = tNumFrap.getText();
             patient.add(arrayPatient);
             aPatient.setText(preLPatient);
+            groupSex.clearSelection();
+            groupStatus.clearSelection();
+            tAgeOld.setText("");
+            tNumFrap.setText("");
+            tNamePatient.setText("");
+            tLastNamePatient.setText("");
+            tLastName2Patient.setText("");
         } else {
             bTime.setPreferredSize(new Dimension(windowX / 13, 30));
             switch (classTime) {
@@ -745,8 +758,6 @@ public class ctrData extends JPanel implements ActionListener {
                     timeComeback = timeFull.format(calendario.getTime());
                     tTimeComeback.setText(time.format(calendario.getTime()));
                     bTime.setText("Hora");
-//                    bTime.setEnabled(false);
-//                    emergency.dispose();
                     int obstetricoMonthes = 0;
                     if (!tab.tObstetricoMonthes.getText().equals("") && tab.tObstetricoMonthes.getText() != null) {
                         obstetricoMonthes = Integer.valueOf(tab.tObstetricoMonthes.getText());
@@ -776,7 +787,7 @@ public class ctrData extends JPanel implements ActionListener {
                             tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
                             mTransfer.getText(), priority, alive, deads, idParamedic, idOper,
                             idRadioOper, idAmbulance, mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
-                            timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText());
+                            timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText(), tipeCallmain, callmain);
                     System.out.println("insert= " + em);
                     if (em.toCharArray()[0] == 'E' && em.toCharArray()[1] == 'M') {
                         String word = "";
@@ -844,7 +855,7 @@ public class ctrData extends JPanel implements ActionListener {
                     data[3][1] = tEntre.getText();
                     data[4][1] = tCol.getText();
                     data[5][1] = tDel.getText();
-                    data[6][1] = "";
+                    data[6][1] = tipeCallmain + " " + callmain;
                     data[7][1] = tab.mTrauma.getText();
                     data[8][1] = mPriorityTransfer.getText();
                     data[9][1] = mAmbulance.getText();
@@ -872,6 +883,9 @@ public class ctrData extends JPanel implements ActionListener {
 
                     a.replaceWordData("resource/formatoCtrlAmb.docx", System.getProperty("user.home")
                             + "/Documents/CtrlAmb/Emergencia#" + idEmergency + ".docx", data);
+                    
+//                    bTime.setEnabled(false);
+//                    emergency.dispose();
                     break;
             }
         }

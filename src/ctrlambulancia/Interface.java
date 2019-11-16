@@ -34,20 +34,19 @@ public class Interface extends JFrame implements ActionListener {
     JFrame emergency;
     JFrame admin;
     JFrame consult;
-    JTextField tAmbulance = new JTextField(30);
-    JTextField tKmAmbulance = new JTextField(30);
-    JTextField tOperVoluntary = new JTextField(30);
-    JTextField tParamedicVoluntary = new JTextField(30);
-    JTextField tOper = new JTextField(30);
-    JTextField tRadioOper = new JTextField(30);
-    JTextField tParamedic = new JTextField(30);
-    JTextField tApplicant = new JTextField(30);
-    JTextField tTime = new JTextField(10);
-    JMenu mOper = new JMenu("Elegir opción");
-    JMenu mRadioOper = new JMenu("Elegir opción");
-    JMenu mParamedic = new JMenu("Elegir opción");
-    JMenu mAmbulance = new JMenu("Elegir opción");
+    JTextField tKmAmbulance = new JTextField(30);//Kilometros recorridos de la ambulancia
+    JTextField tOperVoluntary = new JTextField(30);//Operador voluntario
+    JTextField tParamedicVoluntary = new JTextField(30);//Paramedico voluntario
+    JTextField tApplicant = new JTextField(30);//Solicitante
+    JTextField tTipeCallmain = new JTextField(30);//llamada del solicitante
+    JTextField tCallmain = new JTextField(30);//llamada del solicitante
+    JTextField tTime = new JTextField(10);//hora en tiempo real
+    JMenu mOper = new JMenu("Elegir opción");//menu operadores
+    JMenu mRadioOper = new JMenu("Elegir opción");//menu radio operadores
+    JMenu mParamedic = new JMenu("Elegir opción");//menu paramedicos
+    JMenu mAmbulance = new JMenu("Elegir opción");//menu ambulancias
     JMenu mBase = new JMenu("Base de salida");
+    JMenu mCallmain = new JMenu("llamada recibida");
     ConxDB db = new ConxDB();
     //String[] data;
 
@@ -59,7 +58,7 @@ public class Interface extends JFrame implements ActionListener {
             a.escribirTxt(user + "/Documents/CtrlAmb/example.txt", "example");
             this.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setSize(400, 530);
+            this.setSize(400, 560);
             //this.setExtendedState(MAXIMIZED_BOTH);
             this.setVisible(true);
             this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
@@ -73,7 +72,7 @@ public class Interface extends JFrame implements ActionListener {
             JPanel pTime = new JPanel();
 
             JLabel lAmbulance = new JLabel("Ambulancia");
-            JLabel lKmAmbulance = new JLabel("Km de la Ambulancia");
+            JLabel lKmAmbulance = new JLabel("Millas de la Ambulancia");
             JLabel lOperVoluntary = new JLabel("Operador Voluntario");
             JLabel lParamedicVoluntary = new JLabel("Paramedico Voluntario");
             JLabel lOper = new JLabel("Operador");
@@ -90,16 +89,42 @@ public class Interface extends JFrame implements ActionListener {
             JMenuBar mBarParamedic = new JMenuBar();
             JMenuBar mBarAmbulance = new JMenuBar();
             JMenuBar mBarBase = new JMenuBar();
+            JMenuBar mBarCallmain = new JMenuBar();
             JMenuItem iBase1 = new JMenuItem("Centro");
             JMenuItem iBase2 = new JMenuItem("Norte");
             JMenuItem iBase3 = new JMenuItem("Boca");
+            JMenuItem iCallmain1 = new JMenuItem("Tel particular");
+            JMenuItem iCallmain2 = new JMenuItem("Tel celular");
+            JMenuItem iCallmain3 = new JMenuItem("Presentado");
+            JMenuItem iCallmain4 = new JMenuItem("Quien hizo la llamada");
+            JMenuItem iCallmain5 = new JMenuItem("Casetar");
+            JMenuItem iCallmain6 = new JMenuItem("Radio");
+            JMenuItem iCallmain7 = new JMenuItem("Pre base");
+            JMenuItem iCallmain8 = new JMenuItem("otros");
             iBase1.addActionListener(this);
             iBase2.addActionListener(this);
             iBase3.addActionListener(this);
+            iCallmain1.addActionListener(this);
+            iCallmain2.addActionListener(this);
+            iCallmain3.addActionListener(this);
+            iCallmain4.addActionListener(this);
+            iCallmain5.addActionListener(this);
+            iCallmain6.addActionListener(this);
+            iCallmain7.addActionListener(this);
+            iCallmain8.addActionListener(this);
             mBase.add(iBase1);
             mBase.add(iBase2);
             mBase.add(iBase3);
             mBarBase.add(mBase);
+            mCallmain.add(iCallmain1);
+            mCallmain.add(iCallmain2);
+            mCallmain.add(iCallmain3);
+            mCallmain.add(iCallmain4);
+            mCallmain.add(iCallmain5);
+            mCallmain.add(iCallmain6);
+            mCallmain.add(iCallmain7);
+            mCallmain.add(iCallmain8);            
+            mBarCallmain.add(mCallmain);
 
             menuUpdate();
             mBarOper.add(mOper);
@@ -111,8 +136,21 @@ public class Interface extends JFrame implements ActionListener {
             mParamedic.setPreferredSize(new Dimension(330, 20));
             mAmbulance.setPreferredSize(new Dimension(330, 20));
             mBase.setPreferredSize(new Dimension(330, 20));
+            iBase1.setPreferredSize(new Dimension(330, 20));
+            iBase2.setPreferredSize(new Dimension(330, 20));
+            iBase3.setPreferredSize(new Dimension(330, 20));
+            mCallmain.setPreferredSize(new Dimension(330, 20));
+            iCallmain1.setPreferredSize(new Dimension(330, 20));
+            iCallmain2.setPreferredSize(new Dimension(330, 20));
+            iCallmain3.setPreferredSize(new Dimension(330, 20));
+            iCallmain4.setPreferredSize(new Dimension(330, 20));
+            iCallmain5.setPreferredSize(new Dimension(330, 20));
+            iCallmain6.setPreferredSize(new Dimension(330, 20));
+            iCallmain7.setPreferredSize(new Dimension(330, 20));
+            iCallmain8.setPreferredSize(new Dimension(330, 20));
             tKmAmbulance.setEditable(false);
             tKmAmbulance.setHorizontalAlignment((int) JTextField.CENTER_ALIGNMENT);
+            tTipeCallmain.setVisible(false);
 
             bEmergency.addActionListener(this);
             bReport.addActionListener(this);
@@ -128,16 +166,15 @@ public class Interface extends JFrame implements ActionListener {
             mainPanel.add(lParamedicVoluntary);
             mainPanel.add(tParamedicVoluntary);
             mainPanel.add(lOper);
-            //mainPanel.add(tOper);
             mainPanel.add(mBarOper);
             mainPanel.add(lParamedic);
-            //mainPanel.add(tParamedic);
             mainPanel.add(mBarParamedic);
             mainPanel.add(lRadioOper);
-            //mainPanel.add(tRadioOper);
             mainPanel.add(mBarRadioOper);
             mainPanel.add(lApplicant);
             mainPanel.add(tApplicant);
+            mainPanel.add(mBarCallmain);
+            mainPanel.add(tCallmain);
             mainPanel.add(bEmergency);
             mainPanel.add(bReport);
             mainPanel.add(bAdmin);
@@ -154,6 +191,20 @@ public class Interface extends JFrame implements ActionListener {
         //System.out.println("event " + e.getActionCommand());
         switch (e.getActionCommand()) {
             case "Emergencia":
+//                JPanel pKm = new JPanel();
+//                    JTextField tKm = new JTextField(8);
+//                    pKm.add(new JLabel("Millas:"));
+//                    pKm.add(tKm);
+//                    int kmAmbulance = 0;
+//                    do {
+//                        if (0 == JOptionPane.showConfirmDialog(null, pKm, "Millas", JOptionPane.DEFAULT_OPTION)) {
+////                            kmAmbulance = Integer.parseInt(tKmDeparture.getText());
+//                            kmAmbulance = Integer.parseInt(tKm.getText());
+//                        } else {
+//                            JOptionPane.showMessageDialog(null, "error", "ERROR", JOptionPane.WARNING_MESSAGE);
+//                        }
+//                    } while (kmAmbulance <= 0);
+                    
                 if (mAmbulance.getText().equals("Elegir opción")) {
                     JOptionPane.showMessageDialog(null, "Debe elegir una ambulancia", "ERROR", JOptionPane.WARNING_MESSAGE);
                 } else {
@@ -171,7 +222,7 @@ public class Interface extends JFrame implements ActionListener {
                     tabData tab = new tabData();
                     cD = new ctrData(time.format(calendario.getTime()), Toolkit.getDefaultToolkit().getScreenSize().width, emergency, tab, db,
                             mAmbulance.getText(), tKmAmbulance.getText(), mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
-                            mOper.getText(), mParamedic.getText(), mRadioOper.getText(), tApplicant.getText());
+                            mOper.getText(), mParamedic.getText(), mRadioOper.getText(), tApplicant.getText(), mCallmain.getText(), tCallmain.getText());
                     emergency.setLayout(new BorderLayout());
                     emergency.add(tab, BorderLayout.NORTH);
                     emergency.add(cD, BorderLayout.CENTER);
@@ -218,6 +269,18 @@ public class Interface extends JFrame implements ActionListener {
             case "Boca":
                 mBase.setText(e.getActionCommand());
                 break;
+            case "Tel particular":
+            case "Tel celular":
+            case "Presentado":
+            case "Quien hizo la llamada":
+            case "Caseta":
+            case "Radio":
+            case "Pres base":
+                mCallmain.setText(e.getActionCommand());
+                tTipeCallmain.setVisible(false);
+            case "Otro":
+                mCallmain.setText(e.getActionCommand());
+                tTipeCallmain.setVisible(true);
             default:
                 char[] cadena = e.getActionCommand().toCharArray();
                 String command = "" + cadena[0] + cadena[1];
@@ -257,6 +320,7 @@ public class Interface extends JFrame implements ActionListener {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mOper.add(iEmployees);
                 iEmployees.addActionListener(this);
+                iEmployees.setPreferredSize(new Dimension(330, 20));
                 word = "";
             } else {
                 word += cadena[i];
@@ -270,6 +334,7 @@ public class Interface extends JFrame implements ActionListener {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mRadioOper.add(iEmployees);
                 iEmployees.addActionListener(this);
+                iEmployees.setPreferredSize(new Dimension(330, 20));
                 word = "";
             } else {
                 word += cadena[i];
@@ -283,6 +348,7 @@ public class Interface extends JFrame implements ActionListener {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mParamedic.add(iEmployees);
                 iEmployees.addActionListener(this);
+                iEmployees.setPreferredSize(new Dimension(330, 20));
                 word = "";
             } else {
                 word += cadena[i];
@@ -296,6 +362,7 @@ public class Interface extends JFrame implements ActionListener {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mAmbulance.add(iEmployees);
                 iEmployees.addActionListener(this);
+                iEmployees.setPreferredSize(new Dimension(330, 20));
                 word = "";
             } else {
                 word += cadena[i];
@@ -311,6 +378,7 @@ public class Interface extends JFrame implements ActionListener {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mAmbulance.add(iEmployees);
                 iEmployees.addActionListener(this);
+                iEmployees.setPreferredSize(new Dimension(330, 20));
                 word = "";
             } else {
                 word += cadena[i];
@@ -326,6 +394,7 @@ public class Interface extends JFrame implements ActionListener {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mOper.add(iEmployees);
                 iEmployees.addActionListener(this);
+                iEmployees.setPreferredSize(new Dimension(330, 20));
                 word = "";
             } else {
                 word += cadena[i];
@@ -341,6 +410,7 @@ public class Interface extends JFrame implements ActionListener {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mRadioOper.add(iEmployees);
                 iEmployees.addActionListener(this);
+                iEmployees.setPreferredSize(new Dimension(330, 20));
                 word = "";
             } else {
                 word += cadena[i];
@@ -356,6 +426,7 @@ public class Interface extends JFrame implements ActionListener {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mParamedic.add(iEmployees);
                 iEmployees.addActionListener(this);
+                iEmployees.setPreferredSize(new Dimension(330, 20));
                 word = "";
             } else {
                 word += cadena[i];

@@ -222,15 +222,17 @@ public class ConxDB {
     public String insertEmergency(String dir, String entre, String ref, String col, String del, String nameApplicant,
             String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic, int idOper,
             int idRadioOper, int idAmbulance, String base, String operVoluntary, String paramedicVoluntary, String timeCall,
-            String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note) {
+            String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note, 
+            String tipeCallmain, String callmain) {
         String query = "INSERT INTO \"EMERGENCIA\"(\"DIR_EMERGENCIA\", \"ENTRE_EMERGENCIA\", \"REF_EMERGENCIA\", \"COL_EMERGENCIA\", "
                 + "\"DEL_EMERGENCIA\", \"NOMBRE_SOLICITANTE_EMERGENCIA\", \"RESULTADO_EMERGENCIA\", \"TRASLADO_EMERGENCIA\", "
                 + "\"PRIORIDAD_TRASLADO_EMERGENCIA\", \"NUMERO_PACIENTES_EMERGENCIA\", \"NUMERO_MUERTOS_EMERGENCIA\", "
                 + "\"ID_PARAMEDICO_EMERGENCIA\", \"ID_OPERADOR_EMERGENCIA\", \"ID_RADIO_OPERADOR_EMERGENCIA\", "
                 + "\"ID_AMBULANCIA_EMERGENCIA\", \"BASE_EMERGENCIA\", \"OPERADOR_VOLUNTARIO_EMERGENCIA\", \"PARAMEDICO_VOLUNTARIO_EMERGENCIA\", "
                 + "\"HORA_LLAMADA_EMERGENCIA\", \"HORA_SALIDA_EMERGENCIA\", \"HORA_LLEGADA_EMERGENCIA\", \"HORA_TRASLADO_EMERGENCIA\", "
-                + "\"HORA_HOSPITAL_EMERGENCIA\", \"HORA_BASE_EMERGENCIA\", \"OBSERVACION_EMERGENCIA\") "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "\"HORA_HOSPITAL_EMERGENCIA\", \"HORA_BASE_EMERGENCIA\", \"OBSERVACION_EMERGENCIA\", \"LLAMADA_RECIBIDA_EMERGENCIA\", "
+                + "\"NUMERO_LLAMADA_RECIBIDA_EMERGENCIA\") "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, dir);
@@ -258,6 +260,8 @@ public class ConxDB {
             pst.setTimestamp(23, Timestamp.valueOf(timeHospital));
             pst.setTimestamp(24, Timestamp.valueOf(timeComeback));
             pst.setString(25, note);
+            pst.setString(26, tipeCallmain);
+            pst.setString(27, callmain);
             pst.executeUpdate();
             Long id = null;
             ResultSet rs = pst.getGeneratedKeys();
