@@ -81,11 +81,41 @@ public class ConxDB {
                 id = rs.getLong(1);
             }
             return ("AB#" + id);
-//            return ("successfully completed");
         } catch (SQLException ex) {
             System.err.println("ConxDB/insertOper$\n" + ex.getClass().getName() + "\n" + ex.getMessage());
             return (ex.getMessage());
         }
+    }
+    
+//    public String insertAmbulanceKm(int id, int km) {
+//        String query = "UPDATE \"AMBULANCIA\" "
+//                + "SET \"KM_AMBULANCIA\" = ? "
+//                + "WHERE \"PK_ID_AMBULANCIA\" = ?";
+// 
+//        int affectedrows = 0;
+// 
+//        try (PreparedStatement pst = c.prepareStatement(query)) {
+// 
+//            pst.setInt(1, km);
+//            pst.setInt(2, id);
+// 
+//            pst.executeUpdate();
+// 
+//        } catch (SQLException ex) {
+//            System.out.println(ex.getMessage());
+//        }
+        
+//        String query = "INSERT INTO \"AMBULANCIA\"(\"NUMERO_AMBULANCIA\", \"KM_AMBULANCIA\") VALUES(?, ?)";//---------------------------------------------
+//
+//        try (PreparedStatement pst = c.prepareStatement(query)) {
+//
+//            pst.setInt(1, km);
+//            pst.executeUpdate();
+//            return ("successfully completed");
+//        } catch (SQLException ex) {
+//            System.err.println("ConxDB/insertOper$\n" + ex.getClass().getName() + "\n" + ex.getMessage());
+//            return (ex.getMessage());
+//        }
     }
 
     public String insertOper(String name, String lastName, String lastName2) {

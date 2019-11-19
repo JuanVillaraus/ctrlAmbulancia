@@ -1,0 +1,28 @@
+[EM#18]
+Dirección: Formando hogar 		entre: JP Silva con Raz y Guzman
+Referencia: frente al tecno
+Colonia: Formando hogar 		Delegación: Veracruz Boca
+Nombre del solicitante: Santiago
+Resultado: Traslado
+Traslado: CRUZ ROJA		Prioridad: 1
+Vivos: 1		Muertos: 0
+Paciente[69]: Valeria Martinez Sanchez
+Edad: 23
+Sexo: Fem
+Estado: Vivo
+FRAP: 326184
+Trauma: 2C
+Paramedico: #1	Nombre: Carlos Salinas de Gortari
+Paramedico voluntario: : Toño
+Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: Pepe
+RadioOperador: #1	Nombre: Vicente Fox Quesada
+Ambulancia: id:1	Numero: 147	Base: Norte
+hora de la llamada: 2019-11-16 10:52:01
+hora de la salida: 2019-11-16 10:54:40
+hora de la llegada: 2019-11-16 10:54:42
+hora de la traslado: 2019-11-16 10:55:01
+hora de la hospital: 2000-01-01 00:00:00
+hora de la base: 2019-11-16 10:55:06
+Observaciones: nsajdnja aisjdkasd ikajsdkas kiajsdkas
+

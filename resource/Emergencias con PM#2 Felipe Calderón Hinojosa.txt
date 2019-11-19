@@ -1,0 +1,148 @@
+[EM#7]
+Dirección: cuauhtemoc 		entre: circunvalación
+Referencia: un oxxo
+Colonia: centro 		Delegación: 
+Nombre del solicitante: anonimo
+Resultado: Tranf por tercero
+Traslado: Hospital a transferir		Prioridad: 0
+Vivos: 0		Muertos: 0
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : Pepe
+Operador: #1	Nombre: Enrique Peña Nieto
+Operador voluntario: Sofia
+RadioOperador: #0	Nombre: null
+Ambulancia: id:3	Numero: 236	Base: null
+hora de la llamada: 2019-09-28 10:59:48
+hora de la salida: 2019-09-28 11:00:15
+hora de la llegada: 2019-09-28 11:00:25
+hora de la traslado: 2019-09-28 11:00:31
+hora de la hospital: 2000-01-01 00:00:00
+hora de la base: 2019-09-28 11:00:38
+Observaciones: 
+
+[EM#8]
+Dirección: Cuautemoc 		entre: cortes y juan soto
+Referencia: oxxo
+Colonia: centro 		Delegación: veracruz-boca del rio
+Nombre del solicitante: Roberto
+Resultado: Traslado
+Traslado: CRUZ ROJA		Prioridad: 2
+Vivos: 1		Muertos: 0
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : 
+Operador: #1	Nombre: Enrique Peña Nieto
+Operador voluntario: 
+RadioOperador: #0	Nombre: null
+Ambulancia: id:5	Numero: 956	Base: null
+hora de la llamada: 2019-10-01 04:13:12
+hora de la salida: 2019-10-01 04:15:00
+hora de la llegada: 2019-10-01 04:15:11
+hora de la traslado: 2019-10-01 04:19:34
+hora de la hospital: 2019-10-01 04:19:39
+hora de la base: 2019-10-01 04:19:42
+Observaciones: pskdfoijdsaokfk		qjjbwjefbwij	jfwjendfjwsndf++
+sdfskdf
+dsfksdfnskdfnks
+
+[EM#11]
+Dirección: Carlos Cruz 		entre: Calle 12 y Calle 13
+Referencia: Soriana
+Colonia: Positos y Rivera 		Delegación: 
+Nombre del solicitante: Luis
+Resultado: Traslado
+Traslado: MILITAR		Prioridad: 2
+Vivos: 2		Muertos: 1
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : Paco
+Operador: #3	Nombre: Enrique Peña Nieto
+Operador voluntario: Hugo
+RadioOperador: #0	Nombre: null
+Ambulancia: id:3	Numero: 236	Base: null
+hora de la llamada: 2019-10-09 04:21:28
+hora de la salida: 2019-10-09 04:24:00
+hora de la llegada: 2019-10-09 04:24:00
+hora de la traslado: 2019-10-09 04:24:01
+hora de la hospital: 2019-10-09 04:24:01
+hora de la base: 2019-10-09 04:24:03
+Observaciones: 
+
+[EM#16]
+Dirección: Cauhtemoc 		entre: Cortes y Juan Soto
+Referencia: un oxxo
+Colonia: Centro 		Delegación: Veracruz-Boca del rio
+Nombre del solicitante: Carlos
+Resultado: Traslado
+Traslado: NAVAL		Prioridad: 3
+Vivos: 3		Muertos: 0
+Paciente[63]: Pedro  Castillo  Sanchez
+Edad: 23
+Sexo: Mas
+Estado: Vivo
+FRAP: 4287
+Trauma: 5
+Paciente[64]: Silvia Castillo  Sanchez
+Edad: 18
+Sexo: Fem
+Estado: Vivo
+FRAP: 4288
+Trauma: 5
+Paciente[65]: Vsdfas sdfsd sdfsdfsdf
+Edad: 42
+Sexo: Fem
+Estado: Vivo
+FRAP: 4288
+Trauma: 5
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : 
+Operador: #2	Nombre: Enrique Peña Nieto
+Operador voluntario: 
+RadioOperador: #1	Nombre: Vicente Fox Quesada
+Ambulancia: id:3	Numero: 236	Base: Norte
+hora de la llamada: 2019-11-15 16:48:58
+hora de la salida: 2019-11-15 16:52:37
+hora de la llegada: 2019-11-15 16:52:43
+hora de la traslado: 2019-11-15 16:52:48
+hora de la hospital: 2019-11-15 16:52:55
+hora de la base: 2019-11-15 16:52:57
+Observaciones: 
+
+[EM#17]
+Dirección: Cauhtemoc 		entre: Cortes y Juan Soto
+Referencia: un oxxo
+Colonia: Centro 		Delegación: Veracruz-Boca del rio
+Nombre del solicitante: Carlos
+Resultado: Traslado
+Traslado: NAVAL		Prioridad: 3
+Vivos: 3		Muertos: 0
+Paciente[66]: Pedro  Castillo  Sanchez
+Edad: 23
+Sexo: Mas
+Estado: Vivo
+FRAP: 4287
+Trauma: 5
+Paciente[67]: Silvia Castillo  Sanchez
+Edad: 18
+Sexo: Fem
+Estado: Vivo
+FRAP: 4288
+Trauma: 5
+Paciente[68]: Vsdfas sdfsd sdfsdfsdf
+Edad: 42
+Sexo: Fem
+Estado: Vivo
+FRAP: 4288
+Trauma: 5
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : 
+Operador: #2	Nombre: Enrique Peña Nieto
+Operador voluntario: 
+RadioOperador: #1	Nombre: Vicente Fox Quesada
+Ambulancia: id:3	Numero: 236	Base: Norte
+hora de la llamada: 2019-11-15 16:48:58
+hora de la salida: 2019-11-15 16:52:37
+hora de la llegada: 2019-11-15 16:52:43
+hora de la traslado: 2019-11-15 16:52:48
+hora de la hospital: 2019-11-15 16:52:55
+hora de la base: 2019-11-15 16:56:51
+Observaciones: 
+

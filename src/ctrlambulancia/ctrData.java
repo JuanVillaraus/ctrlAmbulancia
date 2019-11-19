@@ -7,8 +7,11 @@ package ctrlambulancia;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -754,7 +757,6 @@ public class ctrData extends JPanel implements ActionListener {
                     classTime++;
                     break;
                 case 5:
-                    System.out.println("case 5");
                     timeComeback = timeFull.format(calendario.getTime());
                     tTimeComeback.setText(time.format(calendario.getTime()));
                     bTime.setText("Hora");
@@ -783,6 +785,25 @@ public class ctrData extends JPanel implements ActionListener {
                     if (!mPriorityTransfer.getText().equals("Prioridad del traslado")) {
                         priority = Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]);
                     }
+                    JPanel pKm = new JPanel();
+                    JTextField tKm = new JTextField(8);
+                    pKm.add(new JLabel("Millas:"));
+                    pKm.add(tKm);
+                    int kmAmbulance = 0;
+                    do {
+                        if (0 == JOptionPane.showConfirmDialog(null, pKm, "Millas", JOptionPane.DEFAULT_OPTION)) {
+                            try {
+                                kmAmbulance = Integer.parseInt(tKm.getText());
+                            } catch (NumberFormatException ex) {
+                                tKm.setText("");
+                                kmAmbulance = 0;
+                                JOptionPane.showMessageDialog(null, "No es un número\n" + ex, "ERROR", JOptionPane.WARNING_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Debe introducir las millas de ambulancia al llegar a la base",
+                                    "ERROR", JOptionPane.WARNING_MESSAGE);
+                        }
+                    } while (kmAmbulance == 0);
                     String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
                             tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
                             mTransfer.getText(), priority, alive, deads, idParamedic, idOper,
@@ -883,7 +904,12 @@ public class ctrData extends JPanel implements ActionListener {
 
                     a.replaceWordData("resource/formatoCtrlAmb.docx", System.getProperty("user.home")
                             + "/Documents/CtrlAmb/Emergencia#" + idEmergency + ".docx", data);
-                    
+                    try {
+                        Runtime.getRuntime().exec("cmd /c start " + System.getProperty("user.home")
+                                + "\\Documents\\CtrlAmb\\Emergencia#" + idEmergency + ".docx");
+                    } catch (IOException ex) {
+                        Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 //                    bTime.setEnabled(false);
 //                    emergency.dispose();
                     break;

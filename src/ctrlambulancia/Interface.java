@@ -123,7 +123,7 @@ public class Interface extends JFrame implements ActionListener {
             mCallmain.add(iCallmain5);
             mCallmain.add(iCallmain6);
             mCallmain.add(iCallmain7);
-            mCallmain.add(iCallmain8);            
+            mCallmain.add(iCallmain8);
             mBarCallmain.add(mCallmain);
 
             menuUpdate();
@@ -191,20 +191,6 @@ public class Interface extends JFrame implements ActionListener {
         //System.out.println("event " + e.getActionCommand());
         switch (e.getActionCommand()) {
             case "Emergencia":
-//                JPanel pKm = new JPanel();
-//                    JTextField tKm = new JTextField(8);
-//                    pKm.add(new JLabel("Millas:"));
-//                    pKm.add(tKm);
-//                    int kmAmbulance = 0;
-//                    do {
-//                        if (0 == JOptionPane.showConfirmDialog(null, pKm, "Millas", JOptionPane.DEFAULT_OPTION)) {
-////                            kmAmbulance = Integer.parseInt(tKmDeparture.getText());
-//                            kmAmbulance = Integer.parseInt(tKm.getText());
-//                        } else {
-//                            JOptionPane.showMessageDialog(null, "error", "ERROR", JOptionPane.WARNING_MESSAGE);
-//                        }
-//                    } while (kmAmbulance <= 0);
-                    
                 if (mAmbulance.getText().equals("Elegir opción")) {
                     JOptionPane.showMessageDialog(null, "Debe elegir una ambulancia", "ERROR", JOptionPane.WARNING_MESSAGE);
                 } else {

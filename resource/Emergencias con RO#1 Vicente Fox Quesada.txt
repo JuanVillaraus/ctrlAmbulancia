@@ -1,0 +1,108 @@
+[EM#16]
+Dirección: Cauhtemoc 		entre: Cortes y Juan Soto
+Referencia: un oxxo
+Colonia: Centro 		Delegación: Veracruz-Boca del rio
+Nombre del solicitante: Carlos
+Resultado: Traslado
+Traslado: NAVAL		Prioridad: 3
+Vivos: 3		Muertos: 0
+Paciente[63]: Pedro  Castillo  Sanchez
+Edad: 23
+Sexo: Mas
+Estado: Vivo
+FRAP: 4287
+Trauma: 5
+Paciente[64]: Silvia Castillo  Sanchez
+Edad: 18
+Sexo: Fem
+Estado: Vivo
+FRAP: 4288
+Trauma: 5
+Paciente[65]: Vsdfas sdfsd sdfsdfsdf
+Edad: 42
+Sexo: Fem
+Estado: Vivo
+FRAP: 4288
+Trauma: 5
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : 
+Operador: #2	Nombre: Enrique Peña Nieto
+Operador voluntario: 
+RadioOperador: #1	Nombre: Vicente Fox Quesada
+Ambulancia: id:3	Numero: 236	Base: Norte
+hora de la llamada: 2019-11-15 16:48:58
+hora de la salida: 2019-11-15 16:52:37
+hora de la llegada: 2019-11-15 16:52:43
+hora de la traslado: 2019-11-15 16:52:48
+hora de la hospital: 2019-11-15 16:52:55
+hora de la base: 2019-11-15 16:52:57
+Observaciones: 
+
+[EM#17]
+Dirección: Cauhtemoc 		entre: Cortes y Juan Soto
+Referencia: un oxxo
+Colonia: Centro 		Delegación: Veracruz-Boca del rio
+Nombre del solicitante: Carlos
+Resultado: Traslado
+Traslado: NAVAL		Prioridad: 3
+Vivos: 3		Muertos: 0
+Paciente[66]: Pedro  Castillo  Sanchez
+Edad: 23
+Sexo: Mas
+Estado: Vivo
+FRAP: 4287
+Trauma: 5
+Paciente[67]: Silvia Castillo  Sanchez
+Edad: 18
+Sexo: Fem
+Estado: Vivo
+FRAP: 4288
+Trauma: 5
+Paciente[68]: Vsdfas sdfsd sdfsdfsdf
+Edad: 42
+Sexo: Fem
+Estado: Vivo
+FRAP: 4288
+Trauma: 5
+Paramedico: #2	Nombre: Felipe Calderón Hinojosa
+Paramedico voluntario: : 
+Operador: #2	Nombre: Enrique Peña Nieto
+Operador voluntario: 
+RadioOperador: #1	Nombre: Vicente Fox Quesada
+Ambulancia: id:3	Numero: 236	Base: Norte
+hora de la llamada: 2019-11-15 16:48:58
+hora de la salida: 2019-11-15 16:52:37
+hora de la llegada: 2019-11-15 16:52:43
+hora de la traslado: 2019-11-15 16:52:48
+hora de la hospital: 2019-11-15 16:52:55
+hora de la base: 2019-11-15 16:56:51
+Observaciones: 
+
+[EM#18]
+Dirección: Av. Miguel Angel de Quevedo 		entre: JP Silva con Raz y Guzman
+Referencia: frente al tecno
+Colonia: Formando hogar 		Delegación: Veracruz Boca
+Nombre del solicitante: Santiago
+Resultado: Traslado
+Traslado: CRUZ ROJA		Prioridad: 1
+Vivos: 1		Muertos: 0
+Paciente[69]: Valeria Martinez Sanchez
+Edad: 23
+Sexo: Fem
+Estado: Vivo
+FRAP: 326184
+Trauma: 2C
+Paramedico: #1	Nombre: Carlos Salinas de Gortari
+Paramedico voluntario: : Toño
+Operador: #1	Nombre: Andres Manuel Lopez Obrador
+Operador voluntario: Pepe
+RadioOperador: #1	Nombre: Vicente Fox Quesada
+Ambulancia: id:1	Numero: 147	Base: Norte
+hora de la llamada: 2019-11-16 10:52:01
+hora de la salida: 2019-11-16 10:54:40
+hora de la llegada: 2019-11-16 10:54:42
+hora de la traslado: 2019-11-16 10:55:01
+hora de la hospital: 2000-01-01 00:00:00
+hora de la base: 2019-11-16 10:55:06
+Observaciones: nsajdnja aisjdkasd ikajsdkas kiajsdkas
+
