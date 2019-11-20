@@ -34,7 +34,7 @@ public class admin extends JPanel implements ActionListener {
     JLabel lLastName = new JLabel("Apellido Paterno");
     JLabel lLastName2 = new JLabel("Apellido Materno");
     JLabel lNumAmbulance = new JLabel("Numero de Ambulancia");
-    JLabel lKmAmbulance = new JLabel("Km de la Ambulancia");
+    JLabel lKmAmbulance = new JLabel("Millas de la Ambulancia");
     JLabel lId = new JLabel("ID");
     //JLabel alert = new JLabel("Alert");
     JTextField tName = new JTextField(30);
@@ -44,7 +44,7 @@ public class admin extends JPanel implements ActionListener {
     JTextField tKmAmbulance = new JTextField(30);
     JTextField tId = new JTextField(10);
     JTextField alert = new JTextField(10);
-    JTextArea aConsult = new JTextArea("bla bla bla \n bla bla \n bla");
+    JTextArea aConsult = new JTextArea("");
     //JTable tConsult = new JTable(10,4);
     //JScrollPane sConsult = new JScrollPane(tConsult, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
     JScrollPane sConsult = new JScrollPane(aConsult);
@@ -57,21 +57,22 @@ public class admin extends JPanel implements ActionListener {
         JMenuBar mBarTipeJob = new JMenuBar();
         JMenuItem iInsert = new JMenuItem("Agregar");
         JMenuItem iDelete = new JMenuItem("Eliminar");
-        JMenuItem iConsult = new JMenuItem("Consultar");
+//        JMenuItem iConsult = new JMenuItem("Consultar");
         JMenuItem iOper = new JMenuItem("Operador");
         JMenuItem iParamedic = new JMenuItem("Paramedico");
         JMenuItem iRadioOper = new JMenuItem("Radio Operador");
         JMenuItem iAmbulance = new JMenuItem("Ambulancia");
         mOption.add(iInsert);
         mOption.add(iDelete);
-        mOption.add(iConsult);
+//        mOption.add(iConsult);
         mBarOption.add(mOption);
         mTipeJob.add(iOper);
         mTipeJob.add(iParamedic);
         mTipeJob.add(iRadioOper);
         mTipeJob.add(iAmbulance);
         mBarTipeJob.add(mTipeJob);
-        mTipeJob.setVisible(false);
+        mTipeJob.setVisible(true);
+        mOption.setVisible(true);
         lName.setVisible(false);
         tName.setVisible(false);
         lLastName.setVisible(false);
@@ -91,7 +92,7 @@ public class admin extends JPanel implements ActionListener {
         alert.setEditable(false);
         iInsert.addActionListener(this);
         iDelete.addActionListener(this);
-        iConsult.addActionListener(this);
+//        iConsult.addActionListener(this);
         iOper.addActionListener(this);
         iParamedic.addActionListener(this);
         iRadioOper.addActionListener(this);
@@ -107,17 +108,17 @@ public class admin extends JPanel implements ActionListener {
         //sc.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         JPanel pAlert = new JPanel(new GridLayout(1, 1));
-        JPanel pOption = new JPanel(new GridLayout(1, 1));
+        JPanel pJobOption = new JPanel(new GridLayout(1, 1));
         //mInsert.setHorizontalAlignment(SwingConstants.CENTER);
         mOption.setHorizontalTextPosition(JTextField.CENTER);
         mTipeJob.setHorizontalTextPosition(JTextField.CENTER);
         alert.setHorizontalAlignment(JTextField.CENTER);
         lId.setHorizontalAlignment(JTextField.RIGHT);
 
-        pOption.add(mBarOption);
-        window.add(pOption, BorderLayout.NORTH);
+        pJobOption.add(mBarTipeJob);
+        window.add(pJobOption, BorderLayout.NORTH);
         this.setLayout(new FlowLayout());
-        this.add(mBarTipeJob);
+        this.add(mBarOption);
         this.add(lName);
         this.add(tName);
         this.add(lLastName);
@@ -132,16 +133,13 @@ public class admin extends JPanel implements ActionListener {
         this.add(lId);
         this.add(tId);
         this.add(bDelete);
-        //this.add(aConsult);
         this.add(sConsult, BorderLayout.CENTER);
-        //this.add(bConsult);
         pAlert.add(alert);
         window.add(pAlert, BorderLayout.SOUTH);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //System.out.println("Admin/ActionPerformed$ Event: " + e.getActionCommand());
         if (e.getSource().getClass().getSimpleName().equals("JButton")) {
             switch (mOption.getText()) {
                 case "Agregar":
@@ -173,7 +171,7 @@ public class admin extends JPanel implements ActionListener {
                                 resultDB = db.insertOper(tName.getText(), tLastName.getText(), tLastName2.getText());
                                 if (resultDB.toCharArray()[0] == 'O' && resultDB.toCharArray()[1] == 'P') {
                                     alert.setText("El operador ha sido agregado exitosamente");
-                                    frameMain.menuOperUpdate(resultDB + " " + tName.getText() + " " 
+                                    frameMain.menuOperUpdate(resultDB + " " + tName.getText() + " "
                                             + tLastName.getText() + " " + tLastName2.getText() + "\n");
                                     tName.setText(null);
                                     tLastName.setText(null);
@@ -193,7 +191,7 @@ public class admin extends JPanel implements ActionListener {
                                 resultDB = db.insertParamedic(tName.getText(), tLastName.getText(), tLastName2.getText());
                                 if (resultDB.toCharArray()[0] == 'P' && resultDB.toCharArray()[1] == 'M') {
                                     alert.setText("El paramedico ha sido agregado exitosamente");
-                                    frameMain.menuParamedicUpdate(resultDB + " " + tName.getText() + " " 
+                                    frameMain.menuParamedicUpdate(resultDB + " " + tName.getText() + " "
                                             + tLastName.getText() + " " + tLastName2.getText() + "\n");
                                     tName.setText(null);
                                     tLastName.setText(null);
@@ -213,7 +211,7 @@ public class admin extends JPanel implements ActionListener {
                                 resultDB = db.insertRadioOper(tName.getText(), tLastName.getText(), tLastName2.getText());
                                 if (resultDB.toCharArray()[0] == 'R' && resultDB.toCharArray()[1] == 'P') {
                                     alert.setText("El paramedico ha sido agregado exitosamente");
-                                    frameMain.menuRadioOperUpdate(resultDB + " " + tName.getText() + " " 
+                                    frameMain.menuRadioOperUpdate(resultDB + " " + tName.getText() + " "
                                             + tLastName.getText() + " " + tLastName2.getText() + "\n");
                                     tName.setText(null);
                                     tLastName.setText(null);
@@ -286,74 +284,11 @@ public class admin extends JPanel implements ActionListener {
                     break;
             }
         } else {
-            mTipeJob.setText(e.getActionCommand());
             switch (e.getActionCommand()) {
                 case "Agregar":
                     mOption.setText(e.getActionCommand());
-                    mTipeJob.setText("Opción");
-                    mTipeJob.setVisible(true);
-                    lName.setVisible(false);
-                    tName.setVisible(false);
-                    lLastName.setVisible(false);
-                    tLastName.setVisible(false);
-                    lLastName2.setVisible(false);
-                    tLastName2.setVisible(false);
-                    lNumAmbulance.setVisible(false);
-                    tNumAmbulance.setVisible(false);
-                    lKmAmbulance.setVisible(false);
-                    tKmAmbulance.setVisible(false);
-                    bInsert.setVisible(false);
-                    lId.setVisible(false);
-                    tId.setVisible(false);
-                    bDelete.setVisible(false);
-                    sConsult.setVisible(false);
-                    bConsult.setVisible(false);
-                    break;
-                case "Eliminar":
-                    mOption.setText(e.getActionCommand());
-                    mTipeJob.setText("Opción");
-                    mTipeJob.setVisible(true);
-                    lName.setVisible(false);
-                    tName.setVisible(false);
-                    lLastName.setVisible(false);
-                    tLastName.setVisible(false);
-                    lLastName2.setVisible(false);
-                    tLastName2.setVisible(false);
-                    lNumAmbulance.setVisible(false);
-                    tNumAmbulance.setVisible(false);
-                    lKmAmbulance.setVisible(false);
-                    tKmAmbulance.setVisible(false);
-                    bInsert.setVisible(false);
-                    lId.setVisible(false);
-                    tId.setVisible(false);
-                    bDelete.setVisible(false);
-                    sConsult.setVisible(false);
-                    bConsult.setVisible(false);
-                    break;
-                case "Consultar":
-                    mOption.setText(e.getActionCommand());
-                    mTipeJob.setText("Opción");
-                    mTipeJob.setVisible(true);
-                    lName.setVisible(false);
-                    tName.setVisible(false);
-                    lLastName.setVisible(false);
-                    tLastName.setVisible(false);
-                    lLastName2.setVisible(false);
-                    tLastName2.setVisible(false);
-                    lNumAmbulance.setVisible(false);
-                    tNumAmbulance.setVisible(false);
-                    lKmAmbulance.setVisible(false);
-                    tKmAmbulance.setVisible(false);
-                    bInsert.setVisible(false);
-                    lId.setVisible(false);
-                    tId.setVisible(false);
-                    bDelete.setVisible(false);
-                    sConsult.setVisible(false);
-                    bConsult.setVisible(false);
-                    break;
-                case "Ambulancia":
-                    switch (mOption.getText()) {
-                        case "Agregar":
+                    switch (mTipeJob.getText()) {
+                        case "Ambulancia":
                             lName.setVisible(false);
                             tName.setVisible(false);
                             lLastName.setVisible(false);
@@ -368,56 +303,10 @@ public class admin extends JPanel implements ActionListener {
                             lId.setVisible(false);
                             tId.setVisible(false);
                             bDelete.setVisible(false);
-                            sConsult.setVisible(false);
-                            bConsult.setVisible(false);
                             break;
-                        case "Eliminar":
-                            lName.setVisible(false);
-                            tName.setVisible(false);
-                            lLastName.setVisible(false);
-                            tLastName.setVisible(false);
-                            lLastName2.setVisible(false);
-                            tLastName2.setVisible(false);
-                            lNumAmbulance.setVisible(false);
-                            tNumAmbulance.setVisible(false);
-                            lKmAmbulance.setVisible(false);
-                            tKmAmbulance.setVisible(false);
-                            bInsert.setVisible(false);
-                            lId.setVisible(true);
-                            tId.setVisible(true);
-                            bDelete.setVisible(true);
-                            sConsult.setVisible(false);
-                            bConsult.setVisible(false);
-                            break;
-                        case "Consultar":
-                            lName.setVisible(false);
-                            tName.setVisible(false);
-                            lLastName.setVisible(false);
-                            tLastName.setVisible(false);
-                            lLastName2.setVisible(false);
-                            tLastName2.setVisible(false);
-                            lNumAmbulance.setVisible(false);
-                            tNumAmbulance.setVisible(false);
-                            lKmAmbulance.setVisible(false);
-                            tKmAmbulance.setVisible(false);
-                            bInsert.setVisible(false);
-                            lId.setVisible(false);
-                            tId.setVisible(false);
-                            bDelete.setVisible(false);
-                            sConsult.setVisible(true);
-                            bConsult.setVisible(false);
-                            aConsult.setText("Ambulancia:\n" + db.consultAmbulance());
-                            aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
-                            //aConsult.setPreferredSize(new Dimension(window, 300));
-                            //sc.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                            break;
-                    }
-                    break;
-                case "Operador":
-                case "Paramedico":
-                case "Radio Operador":
-                    switch (mOption.getText()) {
-                        case "Agregar":
+                        case "Operador":
+                        case "Paramedico":
+                        case "Radio Operador":
                             lName.setVisible(true);
                             tName.setVisible(true);
                             lLastName.setVisible(true);
@@ -432,48 +321,60 @@ public class admin extends JPanel implements ActionListener {
                             lId.setVisible(false);
                             tId.setVisible(false);
                             bDelete.setVisible(false);
-                            sConsult.setVisible(false);
-                            bConsult.setVisible(false);
                             break;
-                        case "Eliminar":
-                            lName.setVisible(false);
-                            tName.setVisible(false);
-                            lLastName.setVisible(false);
-                            tLastName.setVisible(false);
-                            lLastName2.setVisible(false);
-                            tLastName2.setVisible(false);
-                            lNumAmbulance.setVisible(false);
-                            tNumAmbulance.setVisible(false);
-                            lKmAmbulance.setVisible(false);
-                            tKmAmbulance.setVisible(false);
-                            bInsert.setVisible(false);
-                            lId.setVisible(true);
-                            tId.setVisible(true);
-                            bDelete.setVisible(true);
-                            sConsult.setVisible(false);
-                            bConsult.setVisible(false);
+                    }
+                    break;
+                case "Eliminar":
+                    mOption.setText(e.getActionCommand());
+                    lName.setVisible(false);
+                    tName.setVisible(false);
+                    lLastName.setVisible(false);
+                    tLastName.setVisible(false);
+                    lLastName2.setVisible(false);
+                    tLastName2.setVisible(false);
+                    lNumAmbulance.setVisible(false);
+                    tNumAmbulance.setVisible(false);
+                    lKmAmbulance.setVisible(false);
+                    tKmAmbulance.setVisible(false);
+                    bInsert.setVisible(false);
+                    lId.setVisible(true);
+                    tId.setVisible(true);
+                    bDelete.setVisible(true);
+                    break;
+                case "Ambulancia":
+                case "Operador":
+                case "Paramedico":
+                case "Radio Operador":
+                    mTipeJob.setText(e.getActionCommand());
+                    mOption.setText("Opción");
+                    sConsult.setVisible(true);
+                    aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
+                    lName.setVisible(false);
+                    tName.setVisible(false);
+                    lLastName.setVisible(false);
+                    tLastName.setVisible(false);
+                    lLastName2.setVisible(false);
+                    tLastName2.setVisible(false);
+                    lNumAmbulance.setVisible(false);
+                    tNumAmbulance.setVisible(false);
+                    lKmAmbulance.setVisible(false);
+                    tKmAmbulance.setVisible(false);
+                    bInsert.setVisible(false);
+                    lId.setVisible(false);
+                    tId.setVisible(false);
+                    bDelete.setVisible(false);
+                    switch (mTipeJob.getText()) {
+                        case "Ambulancia":
+                            aConsult.setText("Ambulancia:\n" + db.consultAmbulance());
                             break;
-                        case "Consultar":
-                            switch (e.getActionCommand()) {
-                                case "Operador":
-                                    sConsult.setVisible(true);
-                                    aConsult.setText("Operador:\n" + db.consultOper());
-                                    aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
-                                    //aConsult.setPreferredSize(new Dimension(window, 300));
-                                    break;
-                                case "Paramedico":
-                                    sConsult.setVisible(true);
-                                    aConsult.setText("Paramedico:\n" + db.consultParamedic());
-                                    aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
-                                    //aConsult.setPreferredSize(new Dimension(window, 300));
-                                    break;
-                                case "Radio Operador":
-                                    sConsult.setVisible(true);
-                                    aConsult.setText("Radio Operador:\n" + db.consultRadioOper());
-                                    aConsult.setPreferredSize(new Dimension(window.getWidth() - 50, 300));
-                                    //aConsult.setPreferredSize(new Dimension(window, 300));
-                                    break;
-                            }
+                        case "Operador":
+                            aConsult.setText("Operador:\n" + db.consultOper());
+                            break;
+                        case "Paramedico":
+                            aConsult.setText("Paramedico:\n" + db.consultParamedic());
+                            break;
+                        case "Radio Operador":
+                            aConsult.setText("Radio Operador:\n" + db.consultRadioOper());
                             break;
                     }
                     break;

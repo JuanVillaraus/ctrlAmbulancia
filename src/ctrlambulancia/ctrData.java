@@ -218,7 +218,7 @@ public class ctrData extends JPanel implements ActionListener {
         JLabel lStatus = new JLabel("Estado:");
         JLabel lNumPatient = new JLabel("Numero de paciente CRM:");
         JLabel lAmbulance = new JLabel("Ambulancia:");
-        JLabel lKmDeparture = new JLabel("Km salida:");
+        JLabel lKmDeparture = new JLabel("Millas:");
         //JLabel lKmComeback = new JLabel("Km llegada:");
         JLabel lFolio = new JLabel("Folio:");
         JLabel lOperVoluntary = new JLabel("Operador voluntario:");
@@ -676,7 +676,7 @@ public class ctrData extends JPanel implements ActionListener {
                         mTransfer.setText(e.getActionCommand());
                 }
             }
-        } else if (e.getActionCommand().equals(" + ")) {//------------------------------------------------------------------------------------------
+        } else if (e.getActionCommand().equals(" + ")) {
             String preLPatient = aPatient.getText();
             preLPatient += "Estado: " + status + " \tsexo: " + sex + "\tedad: " + tAgeOld.getText()
                     + "\tNumFRAP: " + tNumFrap.getText() + " \tNombre: " + tNamePatient.getText() + " "
@@ -706,14 +706,10 @@ public class ctrData extends JPanel implements ActionListener {
             bTime.setPreferredSize(new Dimension(windowX / 13, 30));
             switch (classTime) {
                 case 1:
-                    if (tDir.getText().equals("") || tCol.getText().equals("")) {
-                        JOptionPane.showMessageDialog(null, "La dirección y colonia son requisitos para que la ambulancia pueda salir");
-                    } else {
-                        timeDeparture = timeFull.format(calendario.getTime());
-                        tTimeDeparture.setText(time.format(calendario.getTime()));
-                        bTime.setText("Hora llegada");
-                        classTime++;
-                    }
+                    timeDeparture = timeFull.format(calendario.getTime());
+                    tTimeDeparture.setText(time.format(calendario.getTime()));
+                    bTime.setText("Hora llegada");
+                    classTime++;
                     break;
                 case 2:
                     timeArrival = timeFull.format(calendario.getTime());
@@ -768,6 +764,7 @@ public class ctrData extends JPanel implements ActionListener {
                     String obstetrico = "";
                     String trauma = "";
                     int idEmergency = 0;
+                    int kmTraveled = 0;
 
                     int alive = 0;
                     if (tAlive.getText().equals("") && tAlive.getText() == null) {
@@ -804,11 +801,19 @@ public class ctrData extends JPanel implements ActionListener {
                                     "ERROR", JOptionPane.WARNING_MESSAGE);
                         }
                     } while (kmAmbulance == 0);
+                    kmTraveled = kmAmbulance - db.consultAmbulanceKm(idAmbulance);
+                    String errorKm = db.insertAmbulanceKm(idAmbulance, kmAmbulance);
+                    if (!errorKm.equals("done")) {
+                        JOptionPane.showMessageDialog(null, errorKm, "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Millas recorridas: " + kmTraveled, "", JOptionPane.INFORMATION_MESSAGE);
+                    }
                     String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
                             tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
                             mTransfer.getText(), priority, alive, deads, idParamedic, idOper,
                             idRadioOper, idAmbulance, mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
-                            timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText(), tipeCallmain, callmain);
+                            timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital, timeComeback, tNote.getText(),
+                            tipeCallmain, callmain, kmTraveled);
                     System.out.println("insert= " + em);
                     if (em.toCharArray()[0] == 'E' && em.toCharArray()[1] == 'M') {
                         String word = "";
@@ -902,11 +907,9 @@ public class ctrData extends JPanel implements ActionListener {
                     data[29][1] = "";
                     data[30][1] = mOper.getText();
 
-                    a.replaceWordData("resource/formatoCtrlAmb.docx", System.getProperty("user.home")
-                            + "/Documents/CtrlAmb/Emergencia#" + idEmergency + ".docx", data);
+                    a.replaceWordData("resource/formatoCtrlAmb.docx", "C:/CtrlAmb/Emergencia#" + idEmergency + ".docx", data);
                     try {
-                        Runtime.getRuntime().exec("cmd /c start " + System.getProperty("user.home")
-                                + "\\Documents\\CtrlAmb\\Emergencia#" + idEmergency + ".docx");
+                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\Emergencia#" + idEmergency + ".docx");
                     } catch (IOException ex) {
                         Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                     }

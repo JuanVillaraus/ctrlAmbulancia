@@ -12,12 +12,9 @@ import java.util.List;
 import java.util.logging.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.sl.draw.geom.Path;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
-import org.apache.xmlbeans.impl.xb.ltgfmt.TestCase.Files;
 
 /**
  *
@@ -162,7 +159,6 @@ public class archivo {
         font.setBold(true);
         style.setFont(font);
 
-        System.out.println("\nwriteExcelData");
         //generar los datos para el documento
         for (int i = 0; i < data.length; i++) {
             XSSFRow row = worksheet.createRow(i);//se crea las filas
@@ -176,9 +172,7 @@ public class archivo {
                     cell.setCellValue(data[i][j]); //se añade el contenido
                     worksheet.autoSizeColumn(j);
                 }
-                System.out.print(data[i][j]+"\t");
             }
-            System.out.println("");
         }
 
         File file;
@@ -186,12 +180,10 @@ public class archivo {
         try (FileOutputStream fileOuS = new FileOutputStream(file)) {
             if (file.exists()) {// si el archivo existe se elimina
                 file.delete();
-                System.out.println("Archivo eliminado");
             }
             workbook.write(fileOuS);
             fileOuS.flush();
             fileOuS.close();
-            System.out.println("Archivo Creado");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

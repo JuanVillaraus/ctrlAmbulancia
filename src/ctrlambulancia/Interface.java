@@ -188,12 +188,11 @@ public class Interface extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //System.out.println("event " + e.getActionCommand());
         switch (e.getActionCommand()) {
             case "Emergencia":
                 if (mAmbulance.getText().equals("Elegir opción")) {
                     JOptionPane.showMessageDialog(null, "Debe elegir una ambulancia", "ERROR", JOptionPane.WARNING_MESSAGE);
-                } else {
+                } else {                    
                     emergency = new JFrame("Emergencia " + mAmbulance.getText());
                     emergency.setSize(1600, 500);
                     emergency.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - emergency.getWidth() / 2,
@@ -213,6 +212,19 @@ public class Interface extends JFrame implements ActionListener {
                     emergency.add(tab, BorderLayout.NORTH);
                     emergency.add(cD, BorderLayout.CENTER);
                     emergency.add(cT, BorderLayout.SOUTH);
+                    
+                    mAmbulance.setText("Elegir opción");
+                    mOper.setText("Elegir opción");
+                    mRadioOper.setText("Elegir opción");
+                    mParamedic.setText("Elegir opción");
+                    mBase.setText("Base de salida");
+                    mCallmain.setText("llamada recibida");
+                    tKmAmbulance.setText(null);
+                    tOperVoluntary.setText(null);
+                    tParamedicVoluntary.setText(null);
+                    tApplicant.setText(null);
+                    tTipeCallmain.setText(null);
+                    tCallmain.setText(null);
                 }
                 break;
             case "Admin":
@@ -232,7 +244,6 @@ public class Interface extends JFrame implements ActionListener {
                         admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
                                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
                         admin.add(new admin(admin, db, this));
-                        //int p = JOptionPane.showConfirmDialog(null, new admin(db), "Admin",JOptionPane.DEFAULT_OPTION);
                     } else {
                         JOptionPane.showMessageDialog(null, "El user o pass son incorrectos", "ERROR", JOptionPane.WARNING_MESSAGE);
                     }
