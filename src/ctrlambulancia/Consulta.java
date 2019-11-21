@@ -27,12 +27,12 @@ public class Consulta extends JPanel implements ActionListener {
     JTextField tDateOpen = new JTextField(6);
     JTextField tDateClose = new JTextField(6);
     JTextField tDir = new JTextField(30);
-    JTextField tId = new JTextField(8);
+    JTextField tFrap = new JTextField(8);
     JTextField tName = new JTextField(20);
     JTextArea tMain = new JTextArea();
     JLabel lDateOpen = new JLabel("Fecha de:");
     JLabel lDateClose = new JLabel("hasta:");
-    JLabel lId = new JLabel("ID:");
+    JLabel lFrap = new JLabel("ID:");
     JLabel lDir = new JLabel("Ubicación:");
     JButton bSearch = new JButton("Buscar");
     JMenu mResultado = new JMenu("seleccione una opción");
@@ -49,7 +49,7 @@ public class Consulta extends JPanel implements ActionListener {
         JMenuBar mBarOptionSearch = new JMenuBar();
         JMenuItem iOption1 = new JMenuItem("Reporte Emergencia");
         JMenuItem iOption2 = new JMenuItem("Paciente");
-        JMenuItem iOptionSearch1 = new JMenuItem("ID");
+        JMenuItem iOptionSearch1 = new JMenuItem("FRAP");
         JMenuItem iOptionSearch2 = new JMenuItem("Ubicación");
         JMenuItem iOptionSearch3 = new JMenuItem("Resultado");
         JMenuItem iOptionSearch4 = new JMenuItem("Traslado");
@@ -60,6 +60,7 @@ public class Consulta extends JPanel implements ActionListener {
         JMenuItem iOptionSearch9 = new JMenuItem("Paramedico Voluntario");
         JMenuItem iOptionSearch10 = new JMenuItem("Radio Operador");
         JMenuItem iOptionSearch11 = new JMenuItem("Ambulancia");
+        JMenuItem iOptionSearch12 = new JMenuItem("Paciente");
 
         JMenuBar mBarResultado = new JMenuBar();
         JMenuBar mBarPriorityTransfer = new JMenuBar();
@@ -149,6 +150,7 @@ public class Consulta extends JPanel implements ActionListener {
         iOptionSearch9.addActionListener(this);
         iOptionSearch10.addActionListener(this);
         iOptionSearch11.addActionListener(this);
+        iOptionSearch12.addActionListener(this);
         bSearch.addActionListener(this);
         mOption.add(iOption1);
         mOption.add(iOption2);
@@ -163,13 +165,14 @@ public class Consulta extends JPanel implements ActionListener {
         mOptionSearch.add(iOptionSearch9);
         mOptionSearch.add(iOptionSearch10);
         mOptionSearch.add(iOptionSearch11);
+        mOptionSearch.add(iOptionSearch12);
         mBarOption.add(mOption);
         mBarOptionSearch.add(mOptionSearch);
         mOption.setPreferredSize(new Dimension(150, 30));
         mOptionSearch.setPreferredSize(new Dimension(150, 30));
         tMain.setPreferredSize(new Dimension(window.getWidth() - 50, 600));
-        lId.setVisible(false);
-        tId.setVisible(false);
+        lFrap.setVisible(false);
+        tFrap.setVisible(false);
         tName.setVisible(false);
         mResultado.setVisible(false);
         mPriorityTransfer.setVisible(false);
@@ -198,8 +201,8 @@ public class Consulta extends JPanel implements ActionListener {
 
         //top.add(mBarOption);
         top.add(mBarOptionSearch);
-        top.add(lId);
-        top.add(tId);
+        top.add(lFrap);
+        top.add(tFrap);
         top.add(tName);
         top.add(mBarResultado);
         top.add(mBarPriorityTransfer);
@@ -273,8 +276,7 @@ public class Consulta extends JPanel implements ActionListener {
                         try {
 //                            a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " "
 //                                    + tDateClose.getText() + ".txt", sEmergency);
-                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                    + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+                            a.writeExcelData("C:/CtrlAmb/reporte " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
                                     db.reportEmergency(tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
                             Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
                         } catch (IOException ex) {
@@ -282,9 +284,18 @@ public class Consulta extends JPanel implements ActionListener {
                         }
                     }
                     break;
-                case "ID":
-//                    tMain.setText(db.consultEmergency(Integer.valueOf(tId.getText())));
-                    tMain.setText("pendiente");
+                case "FRAP":
+//                    sEmergency = db.consultEmergency();
+//                    tMain.setText(sEmergency);
+                    try {
+//                            a.escribirTxt("resource/Emergencia.txt", sEmergency);
+                        a.writeExcelData("C:/CtrlAmb/reporte FRAP " + tFrap.getText() + ".xlsx",
+                                "hoja1", db.reportFrap(Integer.valueOf(tFrap.getText())));
+                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" FRAP " + tFrap.getText() + "\".xlsx");
+                    } catch (IOException ex) {
+                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                        tMain.setText("error: " + ex);
+                    }
                     break;
                 case "Ubicación":
                     if (tDir.getText() == null || tDir.getText().equals("")) {
@@ -1001,17 +1012,27 @@ public class Consulta extends JPanel implements ActionListener {
                         }
                     }
                     break;
+                case "Paciente":
+                    sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText());
+                    tMain.setText(sEmergency);
+                    try {
+//                                a.escribirTxt("resource/Emergencias Paramedico Voluntario " + tName.getText() + ".txt", sEmergency);
+                        a.writeExcelData("C:/CtrlAmb/reporte Paciente " + tName.getText() + ".xlsx", "hoja1", db.reportPatient(tName.getText()));
+                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paciente " + tName.getText() + "\".xlsx");
+                    } catch (IOException ex) {
+                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
             }
         } else {
             switch (e.getActionCommand()) {
                 case "Reporte Emergencia":
-                case "Paciente":
                     mOption.setText(e.getActionCommand());
                     break;
-                case "ID":
+                case "FRAP":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(true);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(true);
                     tName.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1023,11 +1044,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(false);
+                    tDateOpen.setVisible(false);
+                    lDateClose.setVisible(false);
+                    tDateClose.setVisible(false);
                     break;
                 case "Ubicación":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(true);
@@ -1039,11 +1064,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "Resultado":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1055,11 +1084,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "Traslado":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1071,11 +1104,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "Prioridad del traslado":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1087,11 +1124,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "Operador":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1103,11 +1144,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "Paramedico":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1119,11 +1164,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(true);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "Operador Voluntario":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(true);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1135,11 +1184,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "Paramedico Voluntario":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(true);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1151,11 +1204,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "Radio Operador":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1167,11 +1224,15 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(false);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "Ambulancia":
                     mOptionSearch.setText(e.getActionCommand());
-                    lId.setVisible(false);
-                    tId.setVisible(false);
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
                     tName.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
@@ -1183,6 +1244,30 @@ public class Consulta extends JPanel implements ActionListener {
                     mParamedic.setVisible(false);
                     mAmbulance.setVisible(true);
                     bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
+                    break;
+                case "Paciente":
+                    mOptionSearch.setText(e.getActionCommand());
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
+                    tName.setVisible(true);
+                    lDir.setVisible(false);
+                    tDir.setVisible(false);
+                    mResultado.setVisible(false);
+                    mPriorityTransfer.setVisible(false);
+                    mTransfer.setVisible(false);
+                    mOper.setVisible(false);
+                    mRadioOper.setVisible(false);
+                    mParamedic.setVisible(false);
+                    mAmbulance.setVisible(false);
+                    bSearch.setVisible(true);
+                    lDateOpen.setVisible(false);
+                    tDateOpen.setVisible(false);
+                    lDateClose.setVisible(false);
+                    tDateClose.setVisible(false);
                     break;
                 case "Falsa alarma":
                 case "No encontrado":

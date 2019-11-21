@@ -218,7 +218,7 @@ public class ctrData extends JPanel implements ActionListener {
         JLabel lStatus = new JLabel("Estado:");
         JLabel lNumPatient = new JLabel("Numero de paciente CRM:");
         JLabel lAmbulance = new JLabel("Ambulancia:");
-        JLabel lKmDeparture = new JLabel("Millas:");
+        JLabel lKmDeparture = new JLabel("Km:");
         //JLabel lKmComeback = new JLabel("Km llegada:");
         JLabel lFolio = new JLabel("Folio:");
         JLabel lOperVoluntary = new JLabel("Operador voluntario:");
@@ -784,11 +784,11 @@ public class ctrData extends JPanel implements ActionListener {
                     }
                     JPanel pKm = new JPanel();
                     JTextField tKm = new JTextField(8);
-                    pKm.add(new JLabel("Millas:"));
+                    pKm.add(new JLabel("Km:"));
                     pKm.add(tKm);
                     int kmAmbulance = 0;
                     do {
-                        if (0 == JOptionPane.showConfirmDialog(null, pKm, "Millas", JOptionPane.DEFAULT_OPTION)) {
+                        if (0 == JOptionPane.showConfirmDialog(null, pKm, "Km", JOptionPane.DEFAULT_OPTION)) {
                             try {
                                 kmAmbulance = Integer.parseInt(tKm.getText());
                             } catch (NumberFormatException ex) {
@@ -806,7 +806,7 @@ public class ctrData extends JPanel implements ActionListener {
                     if (!errorKm.equals("done")) {
                         JOptionPane.showMessageDialog(null, errorKm, "ERROR", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Millas recorridas: " + kmTraveled, "", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Km recorridas: " + kmTraveled, "", JOptionPane.INFORMATION_MESSAGE);
                     }
                     String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
                             tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
@@ -882,7 +882,16 @@ public class ctrData extends JPanel implements ActionListener {
                     data[4][1] = tCol.getText();
                     data[5][1] = tDel.getText();
                     data[6][1] = tipeCallmain + " " + callmain;
-                    data[7][1] = tab.mTrauma.getText();
+                    switch (tab.mTrauma.getText()) {
+                        case "Tipo de Trauma":
+                            data[7][1] = "";
+                            break;
+                        case "Otro":
+                            data[7][1] = tab.tOther.getText();
+                            break;
+                        default:
+                            data[7][1] = tab.mTrauma.getText();
+                    }
                     data[8][1] = mPriorityTransfer.getText();
                     data[9][1] = mAmbulance.getText();
                     data[10][1] = mBase.getText();
@@ -895,8 +904,13 @@ public class ctrData extends JPanel implements ActionListener {
                     data[17][1] = db.subTime(data[11][1], data[12][1]);
                     data[18][1] = db.subTime(data[12][1], data[13][1]);
                     data[19][1] = db.subTime(data[13][1], data[14][1]);
-                    data[20][1] = db.subTime(data[14][1], data[15][1]);
-                    data[21][1] = db.subTime(data[15][1], data[16][1]);
+                    if (data[15][1].equals("0:00:00")) {
+                        data[20][1] = "";
+                        data[21][1] = db.subTime(data[14][1], data[16][1]);
+                    } else {
+                        data[20][1] = db.subTime(data[14][1], data[15][1]);
+                        data[21][1] = db.subTime(data[15][1], data[16][1]);
+                    }
                     data[22][1] = tAlive.getText();
                     data[23][1] = tDeads.getText();
                     data[24][1] = sex;
@@ -913,8 +927,8 @@ public class ctrData extends JPanel implements ActionListener {
                     } catch (IOException ex) {
                         Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                     }
-//                    bTime.setEnabled(false);
-//                    emergency.dispose();
+                    bTime.setEnabled(false);
+                    emergency.dispose();
                     break;
             }
         }

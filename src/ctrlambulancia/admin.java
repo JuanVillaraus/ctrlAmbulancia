@@ -34,7 +34,7 @@ public class admin extends JPanel implements ActionListener {
     JLabel lLastName = new JLabel("Apellido Paterno");
     JLabel lLastName2 = new JLabel("Apellido Materno");
     JLabel lNumAmbulance = new JLabel("Numero de Ambulancia");
-    JLabel lKmAmbulance = new JLabel("Millas de la Ambulancia");
+    JLabel lKmAmbulance = new JLabel("Km de la Ambulancia");
     JLabel lId = new JLabel("ID");
     //JLabel alert = new JLabel("Alert");
     JTextField tName = new JTextField(30);
@@ -156,7 +156,7 @@ public class admin extends JPanel implements ActionListener {
                                     tNumAmbulance.setText(null);
                                     tKmAmbulance.setText(null);
                                     alert.setBackground(Color.GREEN);
-                                    System.out.println("result " + resultDB);
+                                    aConsult.setText("Ambulancia:\n" + db.consultAmbulance());
                                 } else {
                                     alert.setText(resultDB);
                                     alert.setBackground(Color.RED);
@@ -177,6 +177,7 @@ public class admin extends JPanel implements ActionListener {
                                     tLastName.setText(null);
                                     tLastName2.setText(null);
                                     alert.setBackground(Color.GREEN);
+                                    aConsult.setText("Operador:\n" + db.consultOper());
                                 } else {
                                     alert.setText(resultDB);
                                     alert.setBackground(Color.RED);
@@ -197,6 +198,7 @@ public class admin extends JPanel implements ActionListener {
                                     tLastName.setText(null);
                                     tLastName2.setText(null);
                                     alert.setBackground(Color.GREEN);
+                                    aConsult.setText("Paramedico:\n" + db.consultParamedic());
                                 } else {
                                     alert.setText(resultDB);
                                     alert.setBackground(Color.RED);
@@ -209,7 +211,7 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setBackground(Color.RED);
                             } else {
                                 resultDB = db.insertRadioOper(tName.getText(), tLastName.getText(), tLastName2.getText());
-                                if (resultDB.toCharArray()[0] == 'R' && resultDB.toCharArray()[1] == 'P') {
+                                if (resultDB.toCharArray()[0] == 'R' && resultDB.toCharArray()[1] == 'O') {
                                     alert.setText("El paramedico ha sido agregado exitosamente");
                                     frameMain.menuRadioOperUpdate(resultDB + " " + tName.getText() + " "
                                             + tLastName.getText() + " " + tLastName2.getText() + "\n");
@@ -217,6 +219,7 @@ public class admin extends JPanel implements ActionListener {
                                     tLastName.setText(null);
                                     tLastName2.setText(null);
                                     alert.setBackground(Color.GREEN);
+                                    aConsult.setText("Radio Operador:\n" + db.consultRadioOper());
                                 } else {
                                     alert.setText(resultDB);
                                     alert.setBackground(Color.RED);

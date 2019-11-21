@@ -24,6 +24,7 @@ public class tabData extends JTabbedPane implements ActionListener {
     JTextField tMedicamento = new JTextField(10);
     JTextField tEventoPrevio = new JTextField(10);
     JTextField tObstetricoMonthes = new JTextField(5);
+    JTextField tOther = new JTextField(10);
 
     public tabData() {
         JPanel pTrauma = new JPanel();
@@ -50,6 +51,7 @@ public class tabData extends JTabbedPane implements ActionListener {
         JMenuItem i5a = new JMenuItem("5A");
         JMenuItem i13a = new JMenuItem("13A");
         JMenuItem iint14 = new JMenuItem("INT 14");
+        JMenuItem iOther = new JMenuItem("Otro");
         JMenuItem iPregnat = new JMenuItem("Embarazada");
         JMenuItem iAbortion = new JMenuItem("Aborto");
         JMenuItem iHemorrhage = new JMenuItem("Sangrando");
@@ -68,6 +70,7 @@ public class tabData extends JTabbedPane implements ActionListener {
         i5a.addActionListener(this);
         i13a.addActionListener(this);
         iint14.addActionListener(this);
+        iOther.addActionListener(this);
         iPregnat.addActionListener(this);
         iAbortion.addActionListener(this);
         iHemorrhage.addActionListener(this);
@@ -85,6 +88,7 @@ public class tabData extends JTabbedPane implements ActionListener {
         mTrauma.add(i5a);
         mTrauma.add(i13a);
         mTrauma.add(iint14);
+        mTrauma.add(iOther);
         mBarTrauma.add(mTrauma);
         mObstetrico.add(iPregnat);
         mObstetrico.add(iAbortion);
@@ -93,6 +97,7 @@ public class tabData extends JTabbedPane implements ActionListener {
         
         mTrauma.setPreferredSize(new Dimension(150, 30));
         mObstetrico.setPreferredSize(new Dimension(150, 30));
+        tOther.setVisible(false);
 
         JLabel lMotivo = new JLabel("Motivo");
         JLabel lPadecimiento = new JLabel("Padecimiento");
@@ -100,7 +105,7 @@ public class tabData extends JTabbedPane implements ActionListener {
         JLabel lEventoPrevio = new JLabel("Evento previo");
         JLabel lObstetricoMonthes = new JLabel("Meses");
         pTrauma.add(mBarTrauma);
-//        pTrauma.add(nVictimas);
+        pTrauma.add(tOther);
         pEnfermo.add(lMotivo);
         pEnfermo.add(tMotivo);
         pEnfermo.add(lPadecimiento);
@@ -122,18 +127,20 @@ public class tabData extends JTabbedPane implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 //        System.out.println("event: "+e.getActionCommand() +" \t summoner: " +e.getSource().getClass().getSimpleName());
         if (e.getSource().getClass().getSimpleName().toString().equals("JMenuItem")) {
-            switch (e.getActionCommand().toCharArray()[0]) {
-                case 'E':
+            switch (e.getActionCommand()) {
+                case "Embarazada":
+                case "Aborto":
+                case "Sangrando":
                     mObstetrico.setText(e.getActionCommand());
                     break;
-                case 'A':
-                    mObstetrico.setText(e.getActionCommand());
-                    break;
-                case 'S':
-                    mObstetrico.setText(e.getActionCommand());
+                case "Otro":
+                    mTrauma.setText(e.getActionCommand());
+                    tOther.setVisible(true);
                     break;
                 default:
                     mTrauma.setText(e.getActionCommand());
+                    tOther.setVisible(false);
+                    tOther.setText("");
                     break;
             }
         }

@@ -5,4 +5,8 @@ X-COMMENT: Main-Class will be added automatically by build
 Codebase: C:\Users\Sistemas\repository\ctrlAmbulancia\dist
 Permissions: sandbox
 Application-Name: CtrlAmbulancia
+Application-Library-Allowable-Codebase: C:\Users\Sistemas\repository\c
+ trlAmbulancia\dist
+Caller-Allowable-Codebase: C:\Users\Sistemas\repository\ctrlAmbulancia
+ \dist
 
