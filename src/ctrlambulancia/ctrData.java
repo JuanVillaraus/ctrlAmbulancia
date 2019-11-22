@@ -76,7 +76,7 @@ public class ctrData extends JPanel implements ActionListener {
     ButtonGroup groupStatus = new ButtonGroup();
     JTextArea tNote = new JTextArea(5, 30);
     JTextArea aPatient = new JTextArea(1, 30);
-    JPanel pPatient = new JPanel();
+    JPanel pPatient = new JPanel();    
     int windowX = 0;
     int idAmbulance = 0;
     int idParamedic = 0;
@@ -258,6 +258,8 @@ public class ctrData extends JPanel implements ActionListener {
         JMenuItem iBase2 = new JMenuItem("Norte");
         JMenuItem iBase3 = new JMenuItem("Boca");
         JButton bUpPatient = new JButton(" + ");
+        JScrollPane scroll = new JScrollPane();
+        scroll.setViewportView(tNote);
         iFalseAlarm.addActionListener(this);
         iNoFound.addActionListener(this);
         iOtherTransfer.addActionListener(this);
@@ -331,8 +333,6 @@ public class ctrData extends JPanel implements ActionListener {
         mRadioOper.setPreferredSize(new Dimension(250, 20));
         mParamedic.setPreferredSize(new Dimension(250, 20));
         mAmbulance.setPreferredSize(new Dimension(150, 20));
-        tKmDeparture.setEditable(false);
-
         lDir.setPreferredSize(new Dimension(60, 50));
         //lRadioOper.setPreferredSize(new Dimension(120, 50));
         lAlive.setPreferredSize(new Dimension(60, 50));
@@ -399,7 +399,10 @@ public class ctrData extends JPanel implements ActionListener {
         tTimeTransfer.setText("00:00:00");
         tTimeHospital.setText("00:00:00");
         tTimeComeback.setText("00:00:00");
+        tNote.setLineWrap(true); 
+        tNote.setWrapStyleWord(true);
         tTimeCall.setText(sTimeCall);
+        tKmDeparture.setEditable(false);
         multSingle.setEnabled(false);
         multGroup.setEnabled(false);
         sexM.setEnabled(false);
@@ -494,7 +497,7 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(lParamedicVoluntary);
         this.add(tParamedicVoluntary);
         this.add(lNote);
-        this.add(tNote);
+        this.add(scroll, BorderLayout.CENTER);
         pTimeAmbulance.add(bTime);
         pTimeAmbulance.add(lTimeCall);
         pTimeAmbulance.add(tTimeCall);

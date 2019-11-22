@@ -54,11 +54,9 @@ public class Interface extends JFrame implements ActionListener {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(400, 560);
-        //this.setExtendedState(MAXIMIZED_BOTH);
-        this.setVisible(true);
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-        this.setTitle("Sistemas de Control de Ambulancias Beta1.2");
+        this.setTitle("Sist. de Control de Ambulancias Beta1.3");
 
         RealTime rt = new RealTime();
         rt.settTime(tTime);
@@ -176,6 +174,7 @@ public class Interface extends JFrame implements ActionListener {
         pTime.add(tTime);
         this.add(mainPanel);
         this.add(pTime, BorderLayout.SOUTH);
+        this.setVisible(true);
     }
 
     @Override
