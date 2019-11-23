@@ -29,7 +29,7 @@ public class Consulta extends JPanel implements ActionListener {
     JTextField tDir = new JTextField(30);
     JTextField tFrap = new JTextField(8);
     JTextField tName = new JTextField(20);
-    JTextArea tMain = new JTextArea();
+    JTextArea tMain = new JTextArea(40,140);
     JLabel lDateOpen = new JLabel("Fecha de:");
     JLabel lDateClose = new JLabel("hasta:");
     JLabel lFrap = new JLabel("ID:");
@@ -134,8 +134,8 @@ public class Consulta extends JPanel implements ActionListener {
         mBarTransfer.add(mTransfer);
 
         JPanel top = new JPanel();
-        JScrollPane scMain = new JScrollPane(tMain);//, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS ,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scMain.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        JScrollPane scroll = new JScrollPane();
+        scroll.setViewportView(tMain);
 
         iOption1.addActionListener(this);
         iOption2.addActionListener(this);
@@ -170,7 +170,6 @@ public class Consulta extends JPanel implements ActionListener {
         mBarOptionSearch.add(mOptionSearch);
         mOption.setPreferredSize(new Dimension(150, 30));
         mOptionSearch.setPreferredSize(new Dimension(150, 30));
-        tMain.setPreferredSize(new Dimension(window.getWidth() - 50, 600));
         lFrap.setVisible(false);
         tFrap.setVisible(false);
         tName.setVisible(false);
@@ -183,7 +182,8 @@ public class Consulta extends JPanel implements ActionListener {
         mAmbulance.setVisible(false);
         lDir.setVisible(false);
         tDir.setVisible(false);
-//        bSearch.setVisible(false);
+        tMain.setLineWrap(true);
+        tMain.setWrapStyleWord(true);
         menuUpdate();
         mBarOper.add(mOper);
         mBarRadioOper.add(mRadioOper);
@@ -199,7 +199,6 @@ public class Consulta extends JPanel implements ActionListener {
         mResultado.setHorizontalAlignment(SwingConstants.CENTER);
         mResultado.setHorizontalTextPosition(JTextField.CENTER);
 
-        //top.add(mBarOption);
         top.add(mBarOptionSearch);
         top.add(lFrap);
         top.add(tFrap);
@@ -219,7 +218,7 @@ public class Consulta extends JPanel implements ActionListener {
         top.add(tDateClose);
         top.add(bSearch);
         this.add(top, BorderLayout.NORTH);
-        this.add(scMain);
+        this.add(scroll, BorderLayout.CENTER);
     }
 
     @Override
@@ -285,8 +284,6 @@ public class Consulta extends JPanel implements ActionListener {
                     }
                     break;
                 case "FRAP":
-//                    sEmergency = db.consultEmergency();
-//                    tMain.setText(sEmergency);
                     try {
 //                            a.escribirTxt("resource/Emergencia.txt", sEmergency);
                         a.writeExcelData("C:/CtrlAmb/reporte FRAP " + tFrap.getText() + ".xlsx",
