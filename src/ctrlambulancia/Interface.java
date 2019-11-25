@@ -5,21 +5,11 @@
  */
 package ctrlambulancia;
 
-//import javax.swing.JComponent;
-//import static java.awt.SystemColor.window;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-//import java.awt.event.ComponentAdapter;
-//import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 import javax.swing.*;
-//import java.sql.*;
 
 /**
  *
@@ -56,7 +46,7 @@ public class Interface extends JFrame implements ActionListener {
         this.setSize(400, 560);
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-        this.setTitle("Sist. de Control de Ambulancias Beta1.3");
+        this.setTitle("Sist. de Control de Ambulancias Beta1.4");
 
         RealTime rt = new RealTime();
         rt.settTime(tTime);
