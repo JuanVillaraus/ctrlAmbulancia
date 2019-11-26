@@ -29,7 +29,7 @@ public class Consulta extends JPanel implements ActionListener {
     JTextField tDir = new JTextField(30);
     JTextField tFrap = new JTextField(8);
     JTextField tName = new JTextField(20);
-    JTextArea tMain = new JTextArea(40,140);
+    JTextArea tMain = new JTextArea(40, 140);
     JLabel lDateOpen = new JLabel("Fecha de:");
     JLabel lDateClose = new JLabel("hasta:");
     JLabel lFrap = new JLabel("ID:");
@@ -238,6 +238,7 @@ public class Consulta extends JPanel implements ActionListener {
                             Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" historial\".xlsx");
                         } catch (IOException ex) {
                             Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.println("ERROR: " + ex);
                             tMain.setText("error: " + ex);
                         }
                     } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
