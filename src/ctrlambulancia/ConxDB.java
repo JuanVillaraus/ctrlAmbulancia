@@ -87,7 +87,7 @@ public class ConxDB {
         }
     }
 
-    public String insertAmbulanceKm(int id, int km) {
+    public String editAmbulanceKm(int id, int km) {
         String query = "UPDATE \"AMBULANCIA\" "
                 + "SET \"KM_AMBULANCIA\" = ? "
                 + "WHERE \"PK_ID_AMBULANCIA\" = ?";
@@ -390,6 +390,29 @@ public class ConxDB {
                     + "ORDER BY \"PK_ID_AMBULANCIA\" ASC;");
             while (rs.next()) {
                 int id = rs.getInt("PK_ID_AMBULANCIA");
+                String num = rs.getString("NUMERO_AMBULANCIA");
+
+                resp += ("AB#" + id + " Numero:" + num + "\n");
+            }
+
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
+    public String consultAmbulanceNum(int id) {
+        String resp = "";
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"AMBULANCIA\" "
+                    + "WHERE \"PK_ID_AMBULANCIA\"= '" + id + "';");
+            while (rs.next()) {
                 String num = rs.getString("NUMERO_AMBULANCIA");
 
                 resp += ("AB#" + id + " Numero:" + num + "\n");
@@ -934,6 +957,56 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency$\t" + e.getClass().getName() + "\t" + e.getMessage());
             return e.getMessage();
+        }
+    }
+
+    public String[] consultEditEmergency(int idEmergency) {
+        String[] resp = new String[29];
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"EMERGENCIA\" "
+                    + "WHERE \"PK_ID_EMERGENCIA\"= '" + idEmergency + "';");
+            while (rs.next()) {
+                resp[0] = rs.getString("DIR_EMERGENCIA");
+                resp[1] = rs.getString("ENTRE_EMERGENCIA");
+                resp[2] = rs.getString("REF_EMERGENCIA");
+                resp[3] = rs.getString("COL_EMERGENCIA");
+                resp[4] = rs.getString("DEL_EMERGENCIA");
+                resp[5] = rs.getString("NOMBRE_SOLICITANTE_EMERGENCIA");
+                resp[6] = rs.getString("RESULTADO_EMERGENCIA");
+                resp[7] = rs.getString("TRASLADO_EMERGENCIA");
+                resp[8] = String.valueOf(rs.getInt("PRIORIDAD_TRASLADO_EMERGENCIA"));
+                resp[9] = String.valueOf(rs.getInt("NUMERO_PACIENTES_EMERGENCIA"));
+                resp[10] = String.valueOf(rs.getInt("NUMERO_MUERTOS_EMERGENCIA"));
+                resp[11] = String.valueOf(rs.getInt("ID_PARAMEDICO_EMERGENCIA"));
+                resp[12] = String.valueOf(rs.getInt("ID_OPERADOR_EMERGENCIA"));
+                resp[13] = String.valueOf(rs.getInt("ID_RADIO_OPERADOR_EMERGENCIA"));
+                resp[14] = String.valueOf(rs.getInt("ID_AMBULANCIA_EMERGENCIA"));
+                resp[15] = String.valueOf(rs.getInt("KM_RECORRIDO_EMERGENCIA"));
+                resp[16] = rs.getString("BASE_EMERGENCIA");
+                resp[17] = rs.getString("OPERADOR_VOLUNTARIO_EMERGENCIA");
+                resp[18] = rs.getString("PARAMEDICO_VOLUNTARIO_EMERGENCIA");
+                resp[19] = rs.getString("HORA_LLAMADA_EMERGENCIA");
+                resp[20] = rs.getString("HORA_SALIDA_EMERGENCIA");
+                resp[21] = rs.getString("HORA_LLEGADA_EMERGENCIA");
+                resp[22] = rs.getString("HORA_TRASLADO_EMERGENCIA");
+                resp[23] = rs.getString("HORA_HOSPITAL_EMERGENCIA");
+                resp[24] = rs.getString("HORA_BASE_EMERGENCIA");
+                resp[25] = rs.getString("OBSERVACION_EMERGENCIA");
+                resp[26] = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                resp[27] = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                resp[28] = rs.getString("KM_RECORRIDO_EMERGENCIA");
+
+            }
+
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergency$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return resp;
         }
     }
 
@@ -4119,6 +4192,83 @@ public class ConxDB {
         return data;
     }
 
+    public String editEmergency(int id, String dir, String entre, String ref, String col, String del, String nameApplicant,
+            String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic, int idOper,
+            int idRadioOper, int idAmbulance, String base, String operVoluntary, String paramedicVoluntary, String timeCall,
+            String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note,
+            String tipeCallmain, String callmain, int kmTraveled) {
+        String query = "UPDATE \"EMERGENCIA\" "
+                + "SET \"DIR_EMERGENCIA\" = ?, "
+                + " \"ENTRE_EMERGENCIA\" = ?, "
+                + " \"REF_EMERGENCIA\" = ?, "
+                + " \"COL_EMERGENCIA\" = ?, "
+                + " \"DEL_EMERGENCIA\" = ?, "
+                + " \"NOMBRE_SOLICITANTE_EMERGENCIA\" = ?, "
+                + " \"RESULTADO_EMERGENCIA\" = ?, "
+                + " \"TRASLADO_EMERGENCIA\" = ?, "
+                + " \"PRIORIDAD_TRASLADO_EMERGENCIA\" = ?, "
+                + " \"NUMERO_PACIENTES_EMERGENCIA\" = ?, "
+                + " \"NUMERO_MUERTOS_EMERGENCIA\" = ?, "
+                + " \"ID_PARAMEDICO_EMERGENCIA\" = ?, "
+                + " \"ID_OPERADOR_EMERGENCIA\" = ?, "
+                + " \"ID_RADIO_OPERADOR_EMERGENCIA\" = ?, "
+                + " \"ID_AMBULANCIA_EMERGENCIA\" = ?, "
+                + " \"BASE_EMERGENCIA\" = ?, "
+                + " \"OPERADOR_VOLUNTARIO_EMERGENCIA\" = ?, "
+                + " \"PARAMEDICO_VOLUNTARIO_EMERGENCIA\" = ?, "
+                + " \"HORA_LLAMADA_EMERGENCIA\" = ?, "
+                + " \"HORA_SALIDA_EMERGENCIA\" = ?, "
+                + " \"HORA_LLEGADA_EMERGENCIA\" = ?, "
+                + " \"HORA_TRASLADO_EMERGENCIA\" = ?, "
+                + " \"HORA_HOSPITAL_EMERGENCIA\" = ?, "
+                + " \"HORA_BASE_EMERGENCIA\" = ?, "
+                + " \"OBSERVACION_EMERGENCIA\" = ?, "
+                + " \"LLAMADA_RECIBIDA_EMERGENCIA\" = ?, "
+                + " \"NUMERO_LLAMADA_RECIBIDA_EMERGENCIA\" = ?, "
+                + " \"KM_RECORRIDO_EMERGENCIA\" = ? "
+                + "WHERE \"PK_ID_EMERGENCIA\" = ?";
+        try (PreparedStatement pst = c.prepareStatement(query)) {
+            /*int id, String dir, String entre, String ref, String col, String del, String nameApplicant,
+             String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic, int idOper,
+             int idRadioOper, int idAmbulance, String base, String operVoluntary, String paramedicVoluntary, String timeCall,
+             String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note,
+             String tipeCallmain, String callmain, int kmTraveled*/
+            pst.setString(1, dir);
+            pst.setString(2, entre);
+            pst.setString(3, ref);
+            pst.setString(4, col);
+            pst.setString(5, del);
+            pst.setString(6, nameApplicant);
+            pst.setString(7, resultado);
+            pst.setString(8, transfer);
+            pst.setInt(9, priorityTransfer);
+            pst.setInt(10, alive);
+            pst.setInt(11, deads);
+            pst.setInt(12, idParamedic);
+            pst.setInt(13, idOper);
+            pst.setInt(14, idRadioOper);
+            pst.setInt(15, idAmbulance);
+            pst.setString(16, base);
+            pst.setString(17, operVoluntary);
+            pst.setString(18, paramedicVoluntary);
+            pst.setTimestamp(19, Timestamp.valueOf(timeCall));
+            pst.setTimestamp(20, Timestamp.valueOf(timeDeparture));
+            pst.setTimestamp(21, Timestamp.valueOf(timeArrival));
+            pst.setTimestamp(22, Timestamp.valueOf(timeTransfer));
+            pst.setTimestamp(23, Timestamp.valueOf(timeHospital));
+            pst.setTimestamp(24, Timestamp.valueOf(timeComeback));
+            pst.setString(25, note);
+            pst.setString(26, tipeCallmain);
+            pst.setString(27, callmain);
+            pst.setInt(28, kmTraveled);
+            pst.setInt(29, id);
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            return ex.getMessage();
+        }
+        return "done";
+    }
+
     public String deleteAmbulance(int id) {
         String SQL = "DELETE FROM \"AMBULANCIA\" WHERE \"PK_ID_AMBULANCIA\" = ?";
         try (PreparedStatement pstmt = c.prepareStatement(SQL)) {
@@ -4228,7 +4378,7 @@ public class ConxDB {
     }
 
     public String subTime(String time1, String time2) {
-//        System.out.println("time: " + time2 + "-" + time1);
+        System.out.println("time: " + time2 + "-" + time1);
         String time = "";
         String catchTime;
         int seg = 0, min = 0, hor = 0, tipeTime;
@@ -4263,8 +4413,9 @@ public class ConxDB {
                 }
             }
         }
+        System.out.println("catch: " + catchTime);
         seg = Integer.valueOf(catchTime);
-//        System.out.println("time2: " + hor + ":" + min + ":" + seg);
+        System.out.println("time2: " + hor + ":" + min + ":" + seg);
 
         tipeTime = 0;
         catchTime = "";
@@ -4273,11 +4424,11 @@ public class ConxDB {
             if (arrayChar[i] == ':') {
                 switch (tipeTime) {
                     case 0:
-//                        System.out.print("time1: " + catchTime);
+                        System.out.print("time1: " + catchTime);
                         hor -= Integer.valueOf(catchTime);
                         break;
                     case 1:
-//                        System.out.print(":" + catchTime);
+                        System.out.print(":" + catchTime);
                         min -= Integer.valueOf(catchTime);
                         break;
                 }
@@ -4297,7 +4448,7 @@ public class ConxDB {
                 }
             }
         }
-//        System.out.print(":" + catchTime);
+        System.out.print(":" + catchTime);
         seg -= Integer.valueOf(catchTime);
         if (seg < 0) {
             seg += 60;
@@ -4322,7 +4473,7 @@ public class ConxDB {
             time += "0";
         }
         time += seg;
-//        System.out.println("\nsubTime: " + time);
+        System.out.println("\nsubTime: " + time);
         return time;
     }
 }

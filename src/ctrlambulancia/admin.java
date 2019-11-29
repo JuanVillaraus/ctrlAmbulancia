@@ -9,8 +9,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 //import static java.lang.System.in;
 import javax.swing.*;
 
@@ -25,8 +30,8 @@ public class admin extends JPanel implements ActionListener {
     //int window = 1200;
     ConxDB db;
     JButton bInsert = new JButton("Agregar");
+    JButton bEdit = new JButton("Editar");
     JButton bDelete = new JButton("Eliminar");
-    JButton bConsult = new JButton("Consultar");
     String resultDB = null;
     JMenu mTipeJob = new JMenu("Opción");
     JMenu mOption = new JMenu("Opción");
@@ -55,21 +60,24 @@ public class admin extends JPanel implements ActionListener {
         this.frameMain = frameMain;
         JMenuBar mBarOption = new JMenuBar();
         JMenuBar mBarTipeJob = new JMenuBar();
-        JMenuItem iInsert = new JMenuItem("Agregar");
-        JMenuItem iDelete = new JMenuItem("Eliminar");
-//        JMenuItem iConsult = new JMenuItem("Consultar");
+        JMenuItem iOption1 = new JMenuItem("Agregar");
+        JMenuItem iOption2 = new JMenuItem("Editar");
+        JMenuItem iOption3 = new JMenuItem("Eliminar");
         JMenuItem iOper = new JMenuItem("Operador");
         JMenuItem iParamedic = new JMenuItem("Paramedico");
         JMenuItem iRadioOper = new JMenuItem("Radio Operador");
         JMenuItem iAmbulance = new JMenuItem("Ambulancia");
-        mOption.add(iInsert);
-        mOption.add(iDelete);
+        JMenuItem iEmergency = new JMenuItem("Emergencia");
+        mOption.add(iOption1);
+        mOption.add(iOption2);
+        mOption.add(iOption3);
 //        mOption.add(iConsult);
         mBarOption.add(mOption);
         mTipeJob.add(iOper);
         mTipeJob.add(iParamedic);
         mTipeJob.add(iRadioOper);
         mTipeJob.add(iAmbulance);
+        mTipeJob.add(iEmergency);
         mBarTipeJob.add(mTipeJob);
         mTipeJob.setVisible(true);
         mOption.setVisible(true);
@@ -87,17 +95,20 @@ public class admin extends JPanel implements ActionListener {
         tId.setVisible(false);
         sConsult.setVisible(false);
         bInsert.setVisible(false);
+        bEdit.setVisible(false);
         bDelete.setVisible(false);
-        bConsult.setVisible(false);
         alert.setEditable(false);
-        iInsert.addActionListener(this);
-        iDelete.addActionListener(this);
+        iOption1.addActionListener(this);
+        iOption2.addActionListener(this);
+        iOption3.addActionListener(this);
 //        iConsult.addActionListener(this);
         iOper.addActionListener(this);
         iParamedic.addActionListener(this);
         iRadioOper.addActionListener(this);
         iAmbulance.addActionListener(this);
+        iEmergency.addActionListener(this);
         bInsert.addActionListener(this);
+        bEdit.addActionListener(this);
         bDelete.addActionListener(this);
         mOption.setPreferredSize(new Dimension(330, 30));
         mTipeJob.setPreferredSize(new Dimension(330, 30));
@@ -132,6 +143,7 @@ public class admin extends JPanel implements ActionListener {
         this.add(bInsert);
         this.add(lId);
         this.add(tId);
+        this.add(bEdit);
         this.add(bDelete);
         this.add(sConsult, BorderLayout.CENTER);
         pAlert.add(alert);
@@ -228,6 +240,35 @@ public class admin extends JPanel implements ActionListener {
                             break;
                     }
                     break;
+                case "Editar":
+                    switch (mTipeJob.getText()) {
+                        case "Emergencia":
+                            if (tId.getText().equals("")) {
+                                alert.setText("Deben ingresar el ID");
+                                alert.setBackground(Color.RED);
+                            } else {
+                                JFrame emergency = new JFrame("Emergencia " + tId.getText());
+                                emergency.setSize(1600, 500);
+                                emergency.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - emergency.getWidth() / 2,
+                                        (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - emergency.getHeight() / 2);
+                                emergency.setFocusable(true);
+                                emergency.setExtendedState(MAXIMIZED_BOTH);
+                                emergency.setVisible(true);
+                                emergency.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
+                                SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Calendar calendario = new GregorianCalendar();
+                                ctrTime cT = new ctrTime(time.format(calendario.getTime()));
+                                tabData tab = new tabData();
+                                EditEmergency eM = new EditEmergency(Toolkit.getDefaultToolkit().getScreenSize().width,
+                                        emergency, tab, db, Integer.valueOf(tId.getText()));
+                                emergency.setLayout(new BorderLayout());
+                                emergency.add(tab, BorderLayout.NORTH);
+                                emergency.add(eM, BorderLayout.CENTER);
+                                emergency.add(cT, BorderLayout.SOUTH);
+                            }
+                            break;
+                    }
+                    break;
                 case "Eliminar":
                     if (tId.getText().equals("")) {
                         alert.setText("Deben ingresar el ID");
@@ -261,6 +302,12 @@ public class admin extends JPanel implements ActionListener {
                                         + db.consultRadioOper(Integer.valueOf(tId.getText())) + "?", "Alerta!",
                                         JOptionPane.YES_NO_OPTION)) {
                                     resultDB = db.deleteRadioOper(Integer.parseInt(tId.getText()));
+                                }
+                                break;
+                            case "Emergencia":
+                                if (0 == JOptionPane.showConfirmDialog(null, "¿Esta seguro de eliminarlo? ", "Alerta!",
+                                        JOptionPane.YES_NO_OPTION)) {
+                                    resultDB = db.deleteEmergency(Integer.parseInt(tId.getText()));
                                 }
                                 break;
                         }
@@ -306,6 +353,7 @@ public class admin extends JPanel implements ActionListener {
                             lId.setVisible(false);
                             tId.setVisible(false);
                             bDelete.setVisible(false);
+                            bEdit.setVisible(false);
                             break;
                         case "Operador":
                         case "Paramedico":
@@ -324,8 +372,27 @@ public class admin extends JPanel implements ActionListener {
                             lId.setVisible(false);
                             tId.setVisible(false);
                             bDelete.setVisible(false);
+                            bEdit.setVisible(false);
                             break;
                     }
+                    break;
+                case "Editar":
+                    mOption.setText(e.getActionCommand());
+                    lName.setVisible(false);
+                    tName.setVisible(false);
+                    lLastName.setVisible(false);
+                    tLastName.setVisible(false);
+                    lLastName2.setVisible(false);
+                    tLastName2.setVisible(false);
+                    lNumAmbulance.setVisible(false);
+                    tNumAmbulance.setVisible(false);
+                    lKmAmbulance.setVisible(false);
+                    tKmAmbulance.setVisible(false);
+                    bInsert.setVisible(false);
+                    lId.setVisible(true);
+                    tId.setVisible(true);
+                    bDelete.setVisible(false);
+                    bEdit.setVisible(true);
                     break;
                 case "Eliminar":
                     mOption.setText(e.getActionCommand());
@@ -343,11 +410,13 @@ public class admin extends JPanel implements ActionListener {
                     lId.setVisible(true);
                     tId.setVisible(true);
                     bDelete.setVisible(true);
+                    bEdit.setVisible(false);
                     break;
                 case "Ambulancia":
                 case "Operador":
                 case "Paramedico":
                 case "Radio Operador":
+                case "Emergencia":
                     mTipeJob.setText(e.getActionCommand());
                     mOption.setText("Opción");
                     sConsult.setVisible(true);
@@ -366,6 +435,7 @@ public class admin extends JPanel implements ActionListener {
                     lId.setVisible(false);
                     tId.setVisible(false);
                     bDelete.setVisible(false);
+                    bEdit.setVisible(false);
                     switch (mTipeJob.getText()) {
                         case "Ambulancia":
                             aConsult.setText("Ambulancia:\n" + db.consultAmbulance());
@@ -378,6 +448,9 @@ public class admin extends JPanel implements ActionListener {
                             break;
                         case "Radio Operador":
                             aConsult.setText("Radio Operador:\n" + db.consultRadioOper());
+                            break;
+                        case "Emergencia":
+                            aConsult.setText(null);
                             break;
                     }
                     break;

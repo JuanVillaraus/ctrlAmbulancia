@@ -49,6 +49,7 @@ public class Consulta extends JPanel implements ActionListener {
         JMenuBar mBarOptionSearch = new JMenuBar();
         JMenuItem iOption1 = new JMenuItem("Reporte Emergencia");
         JMenuItem iOption2 = new JMenuItem("Paciente");
+        JMenuItem iOptionSearch0 = new JMenuItem("Emergencia");
         JMenuItem iOptionSearch1 = new JMenuItem("FRAP");
         JMenuItem iOptionSearch2 = new JMenuItem("Ubicación");
         JMenuItem iOptionSearch3 = new JMenuItem("Resultado");
@@ -139,6 +140,7 @@ public class Consulta extends JPanel implements ActionListener {
 
         iOption1.addActionListener(this);
         iOption2.addActionListener(this);
+        iOptionSearch0.addActionListener(this);
         iOptionSearch1.addActionListener(this);
         iOptionSearch2.addActionListener(this);
         iOptionSearch3.addActionListener(this);
@@ -154,6 +156,7 @@ public class Consulta extends JPanel implements ActionListener {
         bSearch.addActionListener(this);
         mOption.add(iOption1);
         mOption.add(iOption2);
+        mOptionSearch.add(iOptionSearch0);
         mOptionSearch.add(iOptionSearch1);
         mOptionSearch.add(iOptionSearch2);
         mOptionSearch.add(iOptionSearch3);
@@ -228,6 +231,7 @@ public class Consulta extends JPanel implements ActionListener {
             tMain.setText("");
             switch (mOptionSearch.getText()) {
                 case "Opción para Buscar":
+                case "Emergencia":
                     if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                         sEmergency = db.consultEmergency();
                         tMain.setText(sEmergency);
@@ -1026,6 +1030,26 @@ public class Consulta extends JPanel implements ActionListener {
             switch (e.getActionCommand()) {
                 case "Reporte Emergencia":
                     mOption.setText(e.getActionCommand());
+                    break;
+                case "Emergencia":
+                    mOptionSearch.setText(e.getActionCommand());
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
+                    tName.setVisible(false);
+                    lDir.setVisible(false);
+                    tDir.setVisible(false);
+                    mResultado.setVisible(false);
+                    mPriorityTransfer.setVisible(false);
+                    mTransfer.setVisible(false);
+                    mOper.setVisible(false);
+                    mRadioOper.setVisible(false);
+                    mParamedic.setVisible(false);
+                    mAmbulance.setVisible(false);
+                    bSearch.setVisible(true);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
                     break;
                 case "FRAP":
                     mOptionSearch.setText(e.getActionCommand());
