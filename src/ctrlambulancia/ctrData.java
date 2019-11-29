@@ -51,6 +51,7 @@ public class ctrData extends JPanel implements ActionListener {
     JTextField tParamedicVoluntary = new JTextField(17);
     JTextField tOper = new JTextField(17);
     JTextField tParamedic = new JTextField(17);
+    JTextField tKmUsed = new JTextField(8);
     JTextField tTimeCall = new JTextField(8);
     JTextField tTimeDeparture = new JTextField(8);
     JTextField tTimeArrival = new JTextField(8);
@@ -257,6 +258,7 @@ public class ctrData extends JPanel implements ActionListener {
         JLabel lParamedicVoluntary = new JLabel("Paramedico voluntario:");
         JLabel lOper = new JLabel("Operador:");
         JLabel lParamedic = new JLabel("Paramedico:");
+        JLabel lKmUsed = new JLabel("Km al llegar a base:");
         JLabel lNote = new JLabel("Observacion:");
         JMenuBar mBarResultado = new JMenuBar();
         JMenuBar mBarPriorityTransfer = new JMenuBar();
@@ -371,8 +373,8 @@ public class ctrData extends JPanel implements ActionListener {
         lDeads.setPreferredSize(new Dimension(60, 50));
         lSpace0.setPreferredSize(new Dimension(25, 50));
         lSpace1.setPreferredSize(new Dimension(25, 50));
-        lSpace2.setPreferredSize(new Dimension(100, 50));
-        lSpace9.setPreferredSize(new Dimension(200, 50));
+        lSpace2.setPreferredSize(new Dimension(50, 50));
+        lSpace9.setPreferredSize(new Dimension(100, 50));
         lSex.setPreferredSize(new Dimension(50, 50));
         lAgeOld.setPreferredSize(new Dimension(50, 50));
         lNamePatient.setPreferredSize(new Dimension(65, 50));
@@ -466,7 +468,7 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(tAlive);
         this.add(lDeads);
         this.add(tDeads);
-//        this.add(lSpace2);
+        this.add(lSpace2);
 
         this.add(lPatient);
         this.add(lStatus);
@@ -506,6 +508,8 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(tOperVoluntary);
         this.add(lParamedicVoluntary);
         this.add(tParamedicVoluntary);
+        this.add(lKmUsed);
+        this.add(tKmUsed);
         this.add(lNote);
         this.add(scroll, BorderLayout.CENTER);
         pTimeAmbulance.add(bTime);
@@ -770,41 +774,24 @@ public class ctrData extends JPanel implements ActionListener {
                     if (!mTransfer.getText().equals("Hospital a transferir")) {
                         transfer = mTransfer.getText() + " " + tTransfer.getText();
                     }
-                    JPanel pKm = new JPanel();
-                    JTextField tKm = new JTextField(8);
-                    pKm.add(new JLabel("Km:"));
-                    pKm.add(tKm);
-                    int kmAmbulance = 0;
-                    do {
-                        if (0 == JOptionPane.showConfirmDialog(null, pKm, "Km", JOptionPane.DEFAULT_OPTION)) {
-                            try {
-                                kmAmbulance = Integer.parseInt(tKm.getText());
-                            } catch (NumberFormatException ex) {
-                                tKm.setText("");
-                                kmAmbulance = 0;
-                                JOptionPane.showMessageDialog(null, "No es un número\n" + ex, "ERROR", JOptionPane.WARNING_MESSAGE);
-                            }
+                    if (!tKmUsed.getText().equals("") && tKmUsed.getText() != null) {
+                        kmTraveled = Integer.valueOf(tKmUsed.getText()) - Integer.valueOf(tKmDeparture.getText());
+                        String errorKm = db.editAmbulanceKm(idAmbulance, Integer.valueOf(tKmUsed.getText()));
+                        if (!errorKm.equals("done")) {
+                            JOptionPane.showMessageDialog(null, errorKm, "ERROR", JOptionPane.WARNING_MESSAGE);
                         } else {
-                            JOptionPane.showMessageDialog(null, "Debe introducir los Km de ambulancia al llegar a la base",
-                                    "ERROR", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Km recorridas: " + kmTraveled, "", JOptionPane.INFORMATION_MESSAGE);
                         }
-                    } while (kmAmbulance == 0);
-                    kmTraveled = kmAmbulance - Integer.valueOf(tKmDeparture.getText());
-                    String errorKm = db.editAmbulanceKm(idAmbulance, kmAmbulance);
-                    if (!errorKm.equals("done")) {
-                        JOptionPane.showMessageDialog(null, errorKm, "ERROR", JOptionPane.WARNING_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Km recorridas: " + kmTraveled, "", JOptionPane.INFORMATION_MESSAGE);
                     }
                     String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
                             tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
                             transfer, priority, alive, deads, idParamedic, idOper,
                             idRadioOper, idAmbulance, mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
-                            date.format(calendario.getTime()) + " " + tTimeCall.getText(), 
+                            date.format(calendario.getTime()) + " " + tTimeCall.getText(),
                             date.format(calendario.getTime()) + " " + tTimeDeparture.getText(),
-                            date.format(calendario.getTime()) + " " + tTimeArrival.getText(), 
+                            date.format(calendario.getTime()) + " " + tTimeArrival.getText(),
                             date.format(calendario.getTime()) + " " + tTimeTransfer.getText(),
-                            date.format(calendario.getTime()) + " " + tTimeHospital.getText(), 
+                            date.format(calendario.getTime()) + " " + tTimeHospital.getText(),
                             date.format(calendario.getTime()) + " " + tTimeComeback.getText(),
                             tNote.getText(), tipeCallmain, callmain, kmTraveled);
                     System.out.println("insert= " + em);
@@ -898,7 +885,7 @@ public class ctrData extends JPanel implements ActionListener {
                     data[17][1] = db.subTime(data[11][1], data[12][1]);
                     data[18][1] = db.subTime(data[12][1], data[13][1]);
                     data[19][1] = db.subTime(data[13][1], data[14][1]);
-                    if (data[15][1].equals("00:00:00")||data[15][1].equals("0:00:00")) {
+                    if (data[15][1].equals("00:00:00") || data[15][1].equals("0:00:00")) {
                         data[20][1] = "";
                         data[21][1] = db.subTime(data[14][1], data[16][1]);
                     } else {
