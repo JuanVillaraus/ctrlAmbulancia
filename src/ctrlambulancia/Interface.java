@@ -47,7 +47,7 @@ public class Interface extends JFrame implements ActionListener {
         this.setSize(400, 560);
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-        this.setTitle("Sist. de Control de Ambulancias Beta2.1");
+        this.setTitle("Sist. de Control de Ambulancias Beta2.4");
 
         RealTime rt = new RealTime();
         rt.settTime(tTime);
@@ -210,15 +210,15 @@ public class Interface extends JFrame implements ActionListener {
                 }
                 break;
             case "Admin":
-                JPanel pPass = new JPanel();
-                JTextField tUser = new JTextField(8);
-                JPasswordField tPass = new JPasswordField(8);
-                pPass.add(new JLabel("User:"));
-                pPass.add(tUser);
-                pPass.add(new JLabel("Pass:"));
-                pPass.add(tPass);
-                if (0 == JOptionPane.showConfirmDialog(null, pPass, "login", JOptionPane.DEFAULT_OPTION)) {
-                    if (String.valueOf(tUser.getText()).equals(db.consultAdmin(String.valueOf(tPass.getPassword())))) {
+//                JPanel pPass = new JPanel();
+//                JTextField tUser = new JTextField(8);
+//                JPasswordField tPass = new JPasswordField(8);
+//                pPass.add(new JLabel("User:"));
+//                pPass.add(tUser);
+//                pPass.add(new JLabel("Pass:"));
+//                pPass.add(tPass);
+//                if (0 == JOptionPane.showConfirmDialog(null, pPass, "login", JOptionPane.DEFAULT_OPTION)) {
+//                    if (String.valueOf(tUser.getText()).equals(db.consultAdmin(String.valueOf(tPass.getPassword())))) {
                         admin = new JFrame("Administrador");
                         admin.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
                         admin.setSize(400, 500);
@@ -226,10 +226,10 @@ public class Interface extends JFrame implements ActionListener {
                         admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
                                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
                         admin.add(new admin(admin, db, this));
-                    } else {
-                        JOptionPane.showMessageDialog(null, "El user o pass son incorrectos", "ERROR", JOptionPane.WARNING_MESSAGE);
-                    }
-                }
+//                    } else {
+//                        JOptionPane.showMessageDialog(null, "El user o pass son incorrectos", "ERROR", JOptionPane.WARNING_MESSAGE);
+//                    }
+//                }
                 break;
             case "Reporte":
                 consult = new JFrame("Reporte");

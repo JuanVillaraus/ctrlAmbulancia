@@ -140,10 +140,14 @@ public class EditEmergency extends JPanel implements ActionListener {
         }
         this.tAlive.setText(dataEmergency[9]);
         this.tDeads.setText(dataEmergency[10]);
-        this.mParamedic.setText("PM#" + dataEmergency[11] + " " + db.consultParamedic(Integer.valueOf(dataEmergency[11])));
-        this.mOper.setText("OP#" + dataEmergency[12] + " " + db.consultOper(Integer.valueOf(dataEmergency[12])));
-        this.mRadioOper.setText("RO#" + dataEmergency[13] + " " + db.consultRadioOper(Integer.valueOf(dataEmergency[13])));
-        this.mAmbulance.setText(db.consultAmbulanceNum(Integer.valueOf(dataEmergency[14])));
+        this.idParamedic = Integer.valueOf(dataEmergency[11]);
+        this.mParamedic.setText("PM#" + dataEmergency[11] + " " + db.consultParamedic(idParamedic));
+        this.idOper = Integer.valueOf(dataEmergency[12]);
+        this.mOper.setText("OP#" + dataEmergency[12] + " " + db.consultOper(idOper));
+        this.idRadioOper = Integer.valueOf(dataEmergency[13]);
+        this.mRadioOper.setText("RO#" + dataEmergency[13] + " " + db.consultRadioOper(idRadioOper));
+        this.idAmbulance = Integer.valueOf(dataEmergency[14]);
+        this.mAmbulance.setText(db.consultAmbulanceNum(idAmbulance));
         this.tKmDeparture.setText(String.valueOf(db.consultAmbulanceKm(Integer.valueOf(dataEmergency[15]))));
         this.mBase.setText(dataEmergency[16]);
         this.tOperVoluntary.setText(dataEmergency[17]);
@@ -158,6 +162,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         this.tipeCallmain = dataEmergency[26];
         this.callmain = dataEmergency[27];
         this.kmTraveled = Integer.valueOf(dataEmergency[28]);
+
         JPanel pDir = new JPanel();
         JPanel pTransfer = new JPanel();
         JPanel pTimeAmbulance = new JPanel(new GridLayout(1, 13));
