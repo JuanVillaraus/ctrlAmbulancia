@@ -6,6 +6,7 @@
 package ctrlambulancia;
 
 import java.sql.*;
+import static java.sql.Types.NULL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ public class ConxDB {
         try {
             Class.forName("org.postgresql.Driver");
             this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/CtrlAmbDB", "admincrm", "CRM*1975*dvb");
+//            this.c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/CtrlAmbDB", "postgres", "admin");
             System.out.println("Opened database successfully");
         } catch (ClassNotFoundException | SQLException e) {
             //e.printStackTrace();
@@ -35,6 +37,7 @@ public class ConxDB {
         try {
             Class.forName("org.postgresql.Driver");
             this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/CtrlAmbDB", "admincrm", "CRM*1975*dvb");
+//            this.c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/CtrlAmbDB", "postgres", "admin");
             System.out.println("Opened database successfully");
         } catch (ClassNotFoundException | SQLException e) {
             //e.printStackTrace();
@@ -85,20 +88,6 @@ public class ConxDB {
             System.err.println("ConxDB/insertOper$\n" + ex.getClass().getName() + "\n" + ex.getMessage());
             return (ex.getMessage());
         }
-    }
-
-    public String editAmbulanceKm(int id, int km) {
-        String query = "UPDATE \"AMBULANCIA\" "
-                + "SET \"KM_AMBULANCIA\" = ? "
-                + "WHERE \"PK_ID_AMBULANCIA\" = ?";
-        try (PreparedStatement pst = c.prepareStatement(query)) {
-            pst.setInt(1, km);
-            pst.setInt(2, id);
-            pst.executeUpdate();
-        } catch (SQLException ex) {
-            return ex.getMessage();
-        }
-        return "done";
     }
 
     public String insertOper(String name, String lastName, String lastName2) {
@@ -236,7 +225,7 @@ public class ConxDB {
             String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic, int idOper,
             int idRadioOper, int idAmbulance, String base, String operVoluntary, String paramedicVoluntary, String timeCall,
             String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note,
-            String tipeCallmain, String callmain, int kmTraveled) {
+            String tipeCallmain, String callmain, int kmTraveled, String folio) {
         String query = "INSERT INTO \"EMERGENCIA\"(\"DIR_EMERGENCIA\", \"ENTRE_EMERGENCIA\", \"REF_EMERGENCIA\", \"COL_EMERGENCIA\", "
                 + "\"DEL_EMERGENCIA\", \"NOMBRE_SOLICITANTE_EMERGENCIA\", \"RESULTADO_EMERGENCIA\", \"TRASLADO_EMERGENCIA\", "
                 + "\"PRIORIDAD_TRASLADO_EMERGENCIA\", \"NUMERO_PACIENTES_EMERGENCIA\", \"NUMERO_MUERTOS_EMERGENCIA\", "
@@ -244,8 +233,8 @@ public class ConxDB {
                 + "\"ID_AMBULANCIA_EMERGENCIA\", \"BASE_EMERGENCIA\", \"OPERADOR_VOLUNTARIO_EMERGENCIA\", \"PARAMEDICO_VOLUNTARIO_EMERGENCIA\", "
                 + "\"HORA_LLAMADA_EMERGENCIA\", \"HORA_SALIDA_EMERGENCIA\", \"HORA_LLEGADA_EMERGENCIA\", \"HORA_TRASLADO_EMERGENCIA\", "
                 + "\"HORA_HOSPITAL_EMERGENCIA\", \"HORA_BASE_EMERGENCIA\", \"OBSERVACION_EMERGENCIA\", \"LLAMADA_RECIBIDA_EMERGENCIA\", "
-                + "\"NUMERO_LLAMADA_RECIBIDA_EMERGENCIA\", \"KM_RECORRIDO_EMERGENCIA\") "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "\"NUMERO_LLAMADA_RECIBIDA_EMERGENCIA\", \"KM_RECORRIDO_EMERGENCIA\", \"FOLIO_EMERGENCIA\") "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, dir);
@@ -276,6 +265,7 @@ public class ConxDB {
             pst.setString(26, tipeCallmain);
             pst.setString(27, callmain);
             pst.setInt(28, kmTraveled);
+            pst.setString(29, folio);
             pst.executeUpdate();
             Long id = null;
             ResultSet rs = pst.getGeneratedKeys();
@@ -497,6 +487,33 @@ public class ConxDB {
         }
     }
 
+    public String[] consultOperArray(int id) {
+        String[] employee = new String[4];
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"OPERADOR\" "
+                    + "WHERE \"PK_ID_OPERADOR\"= '" + id + "';");
+            while (rs.next()) {
+                employee[0] = "" + id;
+                employee[1] = rs.getString("NOMBRE_OPERADOR");
+                employee[2] = rs.getString("APELLIDO_PATERNO_OPERADOR");
+                employee[3] = rs.getString("APELLIDO_MATERNO_OPERADOR");
+            }
+
+            rs.close();
+            st.close();
+            return employee;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            employee[0] = "Error";
+            employee[1] = "ConxDB/Consulta$\t" + e.getClass().getName();
+            employee[2] = e.getMessage();
+            return employee;
+        }
+    }
+
     public String consultRadioOper() {
         String resp = "";
         try {
@@ -545,6 +562,34 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
             return e.getMessage();
+        }
+    }
+
+    public String[] consultRadioOperArray(int id) {
+        String[] employee = new String[4];
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"RADIO_OPERADOR\" "
+                    + "WHERE \"PK_ID_RADIO_OPERADOR\"= '" + id + "';");
+            while (rs.next()) {
+                employee[0] = "" + id;
+                employee[1] = rs.getString("NOMBRE_RADIO_OPERADOR");
+                employee[2] = rs.getString("APELLIDO_PATERNO_RADIO_OPERADOR");
+                employee[3] = rs.getString("APELLIDO_MATERNO_RADIO_OPERADOR");
+
+            }
+
+            rs.close();
+            st.close();
+            return employee;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            employee[0] = "Error";
+            employee[1] = "ConxDB/Consulta$\t" + e.getClass().getName();
+            employee[2] = e.getMessage();
+            return employee;
         }
     }
 
@@ -599,6 +644,33 @@ public class ConxDB {
         }
     }
 
+    public String[] consultParamedicArray(int id) {
+        String[] employee = new String[4];
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"PARAMEDICO\" "
+                    + "WHERE \"PK_ID_PARAMEDICO\"= '" + id + "';");
+            while (rs.next()) {
+                employee[0] = "" + id;
+                employee[1] = rs.getString("NOMBRE_PARAMEDICO");
+                employee[2] = rs.getString("APELLIDO_PATERNO_PARAMEDICO");
+                employee[3] = rs.getString("APELLIDO_MATERNO_PARAMEDICO");
+            }
+
+            rs.close();
+            st.close();
+            return employee;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            employee[0] = "Error";
+            employee[1] = "ConxDB/Consulta$\t" + e.getClass().getName();
+            employee[2] = e.getMessage();
+            return employee;
+        }
+    }
+
     public String consultPatient() {
         String resp = "";
         try {
@@ -650,12 +722,20 @@ public class ConxDB {
                 String obstetrico = rs.getString("TIPO_OBSTETRICO_PACIENTE");
                 String obstetricoMonthes = rs.getString("MESES_OBSTETRICO_PACIENTE");
 
-                resp += ("[PC#" + id + "]\nNombre: " + nom + " " + lastName + " " + lastName2 + "\n"
-                        + "Edad: " + ageOld + " años \t\tSexo: " + sex + "\n"
-                        + "trauma: " + trauma + "\n"
-                        + "ENFERMO motivo: " + motivo + "\t\tpadecimiento: " + padecimiento + "\n"
-                        + "medicamento: " + medicamento + "\t\tevento previo: " + eventoPrevio + "\n"
-                        + "OBTETRICO tipo: " + obstetrico + "\t\tmeses: " + obstetricoMonthes + "\n\n");
+                resp += "[PC#" + id + "]\nNombre: " + nom + " " + lastName + " " + lastName2 + "\n"
+                        + "Edad: " + ageOld + " años \t\tSexo: " + sex + "\n";
+                if (!trauma.equals("") && trauma != null) {
+                    resp += "trauma: " + trauma + "\n";
+                }
+                if ((!motivo.equals("") && motivo != null) || (!padecimiento.equals("") && padecimiento != null)
+                        || (!medicamento.equals("") && medicamento != null) || (!eventoPrevio.equals("") && eventoPrevio != null)) {
+                    resp += "ENFERMO motivo: " + motivo + "\t\tpadecimiento: " + padecimiento + "\n"
+                            + "medicamento: " + medicamento + "\t\tevento previo: " + eventoPrevio + "\n";
+                }
+                if ((!obstetrico.equals("") && obstetrico != null) || (!obstetricoMonthes.equals("0"))) {
+                    resp += "OBTETRICO tipo: " + obstetrico + "\t\tmeses: " + obstetricoMonthes + "\n";
+                }
+                resp += "\n";
             }
 
             rs.close();
@@ -704,6 +784,21 @@ public class ConxDB {
             System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
             return e.getMessage();
         }
+    }
+
+    public String[][] consultPatientIdEmergncy(int idEmergency) {
+        ArrayList<String[]> list = new ArrayList<String[]>();
+        String[] row = new String[21];
+
+        String[][] patient = new String[list.size()][row.length];
+        for (int i = 0;
+                i < patient.length;
+                i++) {
+            for (int j = 0; j < patient[0].length; j++) {
+                patient[i][j] = list.get(i)[j];
+            }
+        }
+        return patient;
     }
 
     public String consultPatient(int idOpen, int idClose) {
@@ -803,7 +898,7 @@ public class ConxDB {
     }
 
     public String consultEmergency() {
-        String resp = "";
+        String resp = "<HTML>";
         try {
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(""
@@ -846,6 +941,7 @@ public class ConxDB {
                         timeComeback, note);
             }
 
+            resp += "</HTML>";
             rs.close();
             st.close();
             return resp;
@@ -961,7 +1057,7 @@ public class ConxDB {
     }
 
     public String[] consultEditEmergency(int idEmergency) {
-        String[] resp = new String[29];
+        String[] resp = new String[30];
         try {
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(""
@@ -998,6 +1094,7 @@ public class ConxDB {
                 resp[26] = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
                 resp[27] = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
                 resp[28] = rs.getString("KM_RECORRIDO_EMERGENCIA");
+                resp[29] = rs.getString("FOLIO_EMERGENCIA");
 
             }
 
@@ -2107,30 +2204,30 @@ public class ConxDB {
             String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic,
             int idOper, int idRadioOper, int idAmbulance, int kmTraveled, String base, String paramedicVoluntary, String operVoluntary, String timeCall,
             String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note) {
-        return ("[EM#" + idEmergency + "]"
-                + "\nDirección: " + dir + " \t\tentre: " + entre + "\n"
-                + "Referencia: " + ref + "\n"
-                + "Colonia: " + col + " \t\tDelegación: " + del + "\n"
-                + "Nombre del solicitante: " + nameApplicant + "\n"
-                + "Resultado: " + resultado + "\n"
-                + "Traslado: " + transfer + "\t\tPrioridad: " + priorityTransfer + "\n"
-                + "Vivos: " + alive + "\t\tMuertos: " + deads + "\n"
+        return ("<b>[EM#" + idEmergency + "]</b><br>"
+                + "<b>Dirección:</b> " + dir + " \t\t<b>entre:</b> " + entre + "<br>"
+                + "<b>Referencia:</b> " + ref + "<br>"
+                + "<b>Colonia:</b> " + col + " \t\t<b>Delegación:</b> " + del + "<br>"
+                + "<b>Nombre del solicitante:</b> " + nameApplicant + "<br>"
+                + "<b>Resultado:</b> " + resultado + "<br>"
+                + "<b>Traslado:</b> " + transfer + "\t\t<b>Prioridad:</b> " + priorityTransfer + "<br>"
+                + "<b>Vivos:</b> " + alive + "\t\t<b>Muertos:</b> " + deads + "<br>"
                 + consultInfoPatient(idEmergency)
-                + "Paramedico: #" + idParamedic + "\tNombre: " + consultNameParamedic(idParamedic) + "\n"
-                + "Paramedico voluntario: : " + paramedicVoluntary + "\n"
-                + "Operador: #" + idOper + "\tNombre: " + consultNameOper(idParamedic) + "\n"
-                + "Operador voluntario: " + operVoluntary + "\n"
-                + "RadioOperador: #" + idRadioOper + "\tNombre: " + consultNameRadioOper(idRadioOper) + "\n"
-                + "Ambulancia: id:" + idAmbulance + "\tNumero: " + consultNumAmbulance(idAmbulance) + "\tKm recorridas: " + kmTraveled
-                + "\tBase: " + base + "\n"
-                + "hora de la llamada: " + timeCall + "\n"
-                + "hora de la salida: " + timeDeparture + "\n"
-                + "hora de la llegada: " + timeArrival + "\n"
-                + "hora de la traslado: " + timeTransfer + "\n"
-                + "hora de la hospital: " + timeHospital + "\n"
-                + "hora de la base: " + timeComeback + "\n"
-                + "Observaciones: " + note + "\n"
-                + "\n");
+                + "<b>Paramedico:</b> #" + idParamedic + "\t<b>Nombre:</b> " + consultNameParamedic(idParamedic) + "<br>"
+                + "<b>Paramedico voluntario:</b> " + paramedicVoluntary + "<br>"
+                + "<b>Operador:</b> #" + idOper + "\t<b>Nombre:</b> " + consultNameOper(idParamedic) + "<br>"
+                + "<b>Operador voluntario:</b> " + operVoluntary + "<br>"
+                + "<b>RadioOperador:</b> #" + idRadioOper + "\t<b>Nombre:</b> " + consultNameRadioOper(idRadioOper) + "<br>"
+                + "<b>Ambulancia:</b> id:" + idAmbulance + "\t<b>Numero:</b> " + consultNumAmbulance(idAmbulance) + "\t<b>Km recorridas:</b> " + kmTraveled
+                + "\t<b>Base:</b> " + base + "<br>"
+                + "<b>hora de la llamada:</b> " + timeCall + "<br>"
+                + "<b>hora de la salida:</b> " + timeDeparture + "<br>"
+                + "<b>hora de la llegada:</b> " + timeArrival + "<br>"
+                + "<b>hora de la traslado:</b> " + timeTransfer + "<br>"
+                + "<b>hora de la hospital:</b> " + timeHospital + "<br>"
+                + "<b>hora de la base:</b> " + timeComeback + "<br>"
+                + "<b>Observaciones:</b> " + note + "<br>"
+                + "<br>");
     }
 
     public String consultNamePatient(int idEmergency) {
@@ -2165,50 +2262,50 @@ public class ConxDB {
                     + "FROM \"PACIENTE\""
                     + "WHERE \"ID_EMERGENCIA\"= '" + idEmergency + "';");
             while (rs.next()) {
-                infoPatient += "Paciente[" + rs.getInt("PK_ID_PACIENTE") + "]: "
+                infoPatient += "<b>Paciente[" + rs.getInt("PK_ID_PACIENTE") + "]:</b> "
                         + rs.getString("NOMBRE_PACIENTE") + " "
                         + rs.getString("APELLIDO_PATERNO_PACIENTE") + " "
-                        + rs.getString("APELLIDO_MATERNO_PACIENTE") + "\n";
+                        + rs.getString("APELLIDO_MATERNO_PACIENTE") + "</span><br>";
                 data = "" + rs.getInt("EDAD_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "Edad: " + data + "\n";
+                    infoPatient += "<b>Edad:</b> " + data + "<br>";
                 }
                 data = "" + rs.getString("SEXO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "Sexo: " + data + "\n";
+                    infoPatient += "<b>Sexo:</b> " + data + "<br>";
                 }
                 data = "" + rs.getString("ESTADO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "Estado: " + data + "\n";
+                    infoPatient += "<b>Estado:</b> " + data + "<br>";
                 }
                 data = "" + rs.getString("NUM_FRAP_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "FRAP: " + data + "\n";
+                    infoPatient += "<b>FRAP:</b> " + data + "<br>";
                 }
                 data = rs.getString("TRAUMA_TIPO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "Trauma: " + data + "\n";
+                    infoPatient += "<b>Trauma:</b> " + data + "<br>";
                 }
                 data = rs.getString("MOTIVO_ENFERMO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "Motivo: " + data + "\n";
+                    infoPatient += "<b>Motivo:</b> " + data + "<br>";
                 }
                 data = rs.getString("PADECIMIENTO_ENFERMO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "Padecimiento: " + data + "\n";
+                    infoPatient += "<b>Padecimiento:</b> " + data + "<br>";
                 }
                 data = rs.getString("MEDICAMENTO_ENFERMO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "Medicamento: " + data + "\n";
+                    infoPatient += "<b>Medicamento:</b> " + data + "<br>";
                 }
                 data = rs.getString("EVENTO_PREVIO_ENFERMO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "Evento previo: " + data + "\n";
+                    infoPatient += "<b>Evento previo:</b> " + data + "<br>";
                 }
                 data = rs.getString("TIPO_OBSTETRICO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "Tipo Obstetrico: " + rs.getString("TIPO_OBSTETRICO_PACIENTE") + "\t"
-                            + rs.getInt("MESES_OBSTETRICO_PACIENTE") + " meses\n";
+                    infoPatient += "<b>Tipo Obstetrico:</b> " + rs.getString("TIPO_OBSTETRICO_PACIENTE") + "\t"
+                            + rs.getInt("MESES_OBSTETRICO_PACIENTE") + " meses<br>";
                 }
             }
             rs.close();
@@ -2369,7 +2466,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -2413,7 +2510,8 @@ public class ConxDB {
             ResultSet rs = st.executeQuery(""
                     + "SELECT * "
                     + "FROM \"EMERGENCIA\" "
-                    + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" ");
+                    + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
+                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
             while (rs.next()) {
                 row = new String[21];
                 id = rs.getInt("PK_ID_EMERGENCIA") + "";
@@ -2445,7 +2543,81 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
+        for (int i = 0;
+                i < data.length;
+                i++) {
+            for (int j = 0; j < data[0].length; j++) {
+                data[i][j] = list.get(i)[j];
+            }
+        }
+        return data;
+    }
+
+    public String[][] reportEmergencyAll() {
+        ArrayList<String[]> list = new ArrayList<String[]>();
+        String[] row = new String[21];
+        String id;
+        row[0] = "No";
+        row[1] = "FECHA";
+        row[2] = "AMB";
+        row[3] = "SALIDA";
+        row[4] = "REGRESO";
+        row[5] = "ASIGNACIÓN";
+        row[6] = "TRAUMA";
+        row[7] = "CLINICO";
+        row[8] = "RESCATE";
+        row[9] = "RESULTADO";
+        row[10] = "HOSPITAL";
+        row[11] = "FOLIO PAGADO";
+        row[12] = "UBICACIÓN";
+        row[13] = "OPERADOR";
+        row[14] = "PARAMEDICO";
+        row[15] = "T. DE RESPUESTA";
+        row[16] = "FRAP";
+        row[17] = "ENTREGO";
+        row[18] = "RADIO OPERADOR";
+        row[19] = "PACIENTE";
+        row[20] = "OBSERVACIONES";
+        list.add(row);
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"EMERGENCIA\" "
+                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
+            while (rs.next()) {
+                row = new String[21];
+                id = rs.getInt("PK_ID_EMERGENCIA") + "";
+                row[0] = id;
+                row[1] = divTimeFull(rs.getString("HORA_LLAMADA_EMERGENCIA"), false);
+                row[2] = consultNumAmbulance(rs.getInt("ID_AMBULANCIA_EMERGENCIA"));
+                row[3] = divTimeFull(rs.getString("HORA_LLAMADA_EMERGENCIA"), true);
+                row[4] = divTimeFull(rs.getString("HORA_BASE_EMERGENCIA"), true);
+                row[5] = rs.getString("BASE_EMERGENCIA");
+                row[6] = "";
+                row[7] = "";
+                row[8] = "";
+                row[9] = rs.getString("RESULTADO_EMERGENCIA");
+                row[10] = rs.getString("TRASLADO_EMERGENCIA");
+                row[11] = rs.getString("FOLIO_EMERGENCIA");
+                row[12] = rs.getString("COL_EMERGENCIA");
+                row[13] = consultNameOper(rs.getInt("ID_OPERADOR_EMERGENCIA"));
+                row[14] = consultNameParamedic(rs.getInt("ID_PARAMEDICO_EMERGENCIA"));
+                row[15] = subTime(divTimeFull(rs.getString("HORA_SALIDA_EMERGENCIA"), true), row[4]);
+                row[16] = "";
+                row[17] = "";
+                row[18] = consultNameRadioOper(rs.getInt("ID_RADIO_OPERADOR_EMERGENCIA"));
+                row[19] = "";
+                row[20] = rs.getString("OBSERVACION_EMERGENCIA");
+                list.add(row);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
+        }
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -2488,7 +2660,8 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"EMERGENCIA\" "
                     + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
-                    + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' ");
+                    + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' "
+                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
             while (rs.next()) {
                 row = new String[21];
                 id = rs.getInt("PK_ID_EMERGENCIA") + "";
@@ -2520,7 +2693,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -2563,7 +2736,8 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"EMERGENCIA\" "
                     + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
-                    + "WHERE \"ID_AMBULANCIA_EMERGENCIA\" = '" + idAmbulance + "' ");
+                    + "WHERE \"ID_AMBULANCIA_EMERGENCIA\" = '" + idAmbulance + "' "
+                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
             while (rs.next()) {
                 row = new String[21];
                 id = rs.getInt("PK_ID_EMERGENCIA") + "";
@@ -2595,7 +2769,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -2639,7 +2813,8 @@ public class ConxDB {
                     + "FROM \"EMERGENCIA\" "
                     + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
                     + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' "
-                    + "AND \"ID_AMBULANCIA_EMERGENCIA\" = '" + idAmbulance + "' ");
+                    + "AND \"ID_AMBULANCIA_EMERGENCIA\" = '" + idAmbulance + "' "
+                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
             while (rs.next()) {
                 row = new String[21];
                 id = rs.getInt("PK_ID_EMERGENCIA") + "";
@@ -2672,7 +2847,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -2715,7 +2890,8 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"EMERGENCIA\" "
                     + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
-                    + "WHERE \"NUM_FRAP_PACIENTE\" = '" + frap + "' ");
+                    + "WHERE \"NUM_FRAP_PACIENTE\" = '" + frap + "' "
+                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
             while (rs.next()) {
                 row = new String[21];
                 id = rs.getInt("PK_ID_EMERGENCIA") + "";
@@ -2747,7 +2923,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -2822,7 +2998,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -2898,7 +3074,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -2973,7 +3149,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3049,7 +3225,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3124,7 +3300,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3200,7 +3376,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3275,7 +3451,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3351,7 +3527,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3426,7 +3602,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3502,7 +3678,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3577,7 +3753,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3653,7 +3829,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3728,7 +3904,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3804,7 +3980,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3879,7 +4055,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -3955,7 +4131,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0;
                 i < data.length;
                 i++) {
@@ -4030,7 +4206,7 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
+        String[][] data = new String[list.size()][row.length];
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[0].length; j++) {
                 data[i][j] = list.get(i)[j];
@@ -4104,10 +4280,66 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
-        for (int i = 0;
-                i < data.length;
-                i++) {
+        String[][] data = new String[list.size()][row.length];
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[0].length; j++) {
+                data[i][j] = list.get(i)[j];
+            }
+        }
+        return data;
+    }
+
+    public String[][] reportPatient() {
+        ArrayList<String[]> list = new ArrayList<String[]>();
+        String[] row = new String[14];
+        row[0] = "No EMERGENCIA";
+        row[1] = "No PACIENTE";
+        row[2] = "FRAP";
+        row[3] = "NOMBRE";
+        row[4] = "EDAD";
+        row[5] = "SEXO";
+        row[6] = "TRAUMA";
+        row[7] = "MOTIVO ENFERMO";
+        row[8] = "PADECIMIENTO";
+        row[9] = "MEDICAMENTO";
+        row[10] = "EVENTO PREVIO";
+        row[11] = "TIPO OBSTETRICO";
+        row[12] = "MESES OBSTETRICO";
+        row[13] = "ESTADO DEL PACIENTE";
+        list.add(row);
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"PACIENTE\" "
+                    + "ORDER BY \"PK_ID_PACIENTE\" ASC;");
+            while (rs.next()) {
+                row = new String[14];
+                row[0] = rs.getInt("ID_EMERGENCIA") + "";
+                row[1] = rs.getInt("PK_ID_PACIENTE") + "";
+                row[2] = rs.getString("NUM_FRAP_PACIENTE");
+                row[3] = rs.getString("NOMBRE_PACIENTE") + " " + rs.getString("APELLIDO_PATERNO_PACIENTE") + " "
+                        + rs.getString("APELLIDO_MATERNO_PACIENTE") + " ";
+                row[4] = rs.getInt("EDAD_PACIENTE") + "";
+                row[5] = rs.getString("SEXO_PACIENTE");
+                row[6] = rs.getString("TRAUMA_TIPO_PACIENTE");
+                row[7] = rs.getString("MOTIVO_ENFERMO_PACIENTE");
+                row[8] = rs.getString("PADECIMIENTO_ENFERMO_PACIENTE");
+                row[9] = rs.getString("MEDICAMENTO_ENFERMO_PACIENTE");
+                row[10] = rs.getString("EVENTO_PREVIO_ENFERMO_PACIENTE");
+                row[11] = rs.getString("TIPO_OBSTETRICO_PACIENTE");
+                row[12] = rs.getInt("MESES_OBSTETRICO_PACIENTE") + "";
+                row[13] = rs.getString("ESTADO_PACIENTE");
+                list.add(row);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
+        }
+        String[][] data = new String[list.size()][row.length];
+        System.out.println("data:\t" + list.size() + "\t" + row.length);
+        for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[0].length; j++) {
                 data[i][j] = list.get(i)[j];
             }
@@ -4181,10 +4413,8 @@ public class ConxDB {
         } catch (Exception e) {
             System.err.println("ConxDB/ConsultaEmergency/reportExcel$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
-        String[][] data = new String[list.size()][21];
-        for (int i = 0;
-                i < data.length;
-                i++) {
+        String[][] data = new String[list.size()][row.length];
+        for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[0].length; j++) {
                 data[i][j] = list.get(i)[j];
             }
@@ -4192,11 +4422,79 @@ public class ConxDB {
         return data;
     }
 
+    public String editAmbulanceKm(int id, int km) {
+        String query = "UPDATE \"AMBULANCIA\" "
+                + "SET \"KM_AMBULANCIA\" = ? "
+                + "WHERE \"PK_ID_AMBULANCIA\" = ?";
+        try (PreparedStatement pst = c.prepareStatement(query)) {
+            pst.setInt(1, km);
+            pst.setInt(2, id);
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            return ex.getMessage();
+        }
+        return "done";
+    }
+
+    public String editOper(String[] employee) {
+        String query = "UPDATE \"OPERADOR\" "
+                + "SET \"NOMBRE_OPERADOR\" = ?, "
+                + " \"APELLIDO_PATERNO_OPERADOR\" = ?, "
+                + " \"APELLIDO_MATERNO_OPERADOR\" = ? "
+                + "WHERE \"PK_ID_OPERADOR\" = ?";
+        try (PreparedStatement pst = c.prepareStatement(query)) {
+            pst.setString(1, employee[1]);
+            pst.setString(2, employee[2]);
+            pst.setString(3, employee[3]);
+            pst.setInt(4, Integer.valueOf(employee[0]));
+            pst.executeUpdate();
+            return "done update OP";
+        } catch (SQLException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String editParamedic(String[] employee) {
+        String query = "UPDATE \"PARAMEDICO\" "
+                + "SET \"NOMBRE_PARAMEDICO\" = ?, "
+                + " \"APELLIDO_PATERNO_PARAMEDICO\" = ?, "
+                + " \"APELLIDO_MATERNO_PARAMEDICO\" = ? "
+                + "WHERE \"PK_ID_PARAMEDICO\" = ?";
+        try (PreparedStatement pst = c.prepareStatement(query)) {
+            pst.setString(1, employee[1]);
+            pst.setString(2, employee[2]);
+            pst.setString(3, employee[3]);
+            pst.setInt(4, Integer.valueOf(employee[0]));
+            pst.executeUpdate();
+            return "done update PM";
+        } catch (SQLException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String editRadioOper(String[] employee) {
+        String query = "UPDATE \"RADIO_OPERADOR\" "
+                + "SET \"NOMBRE_RADIO_OPERADOR\" = ?, "
+                + " \"APELLIDO_PATERNO_RADIO_OPERADOR\" = ?, "
+                + " \"APELLIDO_MATERNO_RADIO_OPERADOR\" = ? "
+                + "WHERE \"PK_ID_RADIO_OPERADOR\" = ?";
+        try (PreparedStatement pst = c.prepareStatement(query)) {
+            pst.setString(1, employee[1]);
+            pst.setString(2, employee[2]);
+            pst.setString(3, employee[3]);
+            pst.setInt(4, Integer.valueOf(employee[0]));
+            pst.executeUpdate();
+            return "done update RO";
+        } catch (SQLException ex) {
+            return ex.getMessage();
+        }
+    }
+
     public String editEmergency(int id, String dir, String entre, String ref, String col, String del, String nameApplicant,
             String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic, int idOper,
             int idRadioOper, int idAmbulance, String base, String operVoluntary, String paramedicVoluntary, String timeCall,
             String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note,
-            String tipeCallmain, String callmain, int kmTraveled) {
+            String tipeCallmain, String callmain, int kmTraveled, String folio) {
         String query = "UPDATE \"EMERGENCIA\" "
                 + "SET \"DIR_EMERGENCIA\" = ?, "
                 + " \"ENTRE_EMERGENCIA\" = ?, "
@@ -4225,14 +4523,10 @@ public class ConxDB {
                 + " \"OBSERVACION_EMERGENCIA\" = ?, "
                 + " \"LLAMADA_RECIBIDA_EMERGENCIA\" = ?, "
                 + " \"NUMERO_LLAMADA_RECIBIDA_EMERGENCIA\" = ?, "
-                + " \"KM_RECORRIDO_EMERGENCIA\" = ? "
+                + " \"KM_RECORRIDO_EMERGENCIA\" = ?, "
+                + " \"FOLIO_EMERGENCIA\" = ? "
                 + "WHERE \"PK_ID_EMERGENCIA\" = ?";
         try (PreparedStatement pst = c.prepareStatement(query)) {
-            /*int id, String dir, String entre, String ref, String col, String del, String nameApplicant,
-             String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic, int idOper,
-             int idRadioOper, int idAmbulance, String base, String operVoluntary, String paramedicVoluntary, String timeCall,
-             String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note,
-             String tipeCallmain, String callmain, int kmTraveled*/
             pst.setString(1, dir);
             pst.setString(2, entre);
             pst.setString(3, ref);
@@ -4261,7 +4555,8 @@ public class ConxDB {
             pst.setString(26, tipeCallmain);
             pst.setString(27, callmain);
             pst.setInt(28, kmTraveled);
-            pst.setInt(29, id);
+            pst.setString(29, folio);
+            pst.setInt(30, id);
             pst.executeUpdate();
         } catch (SQLException ex) {
             return ex.getMessage();
@@ -4378,7 +4673,7 @@ public class ConxDB {
     }
 
     public String subTime(String time1, String time2) {
-        System.out.println("time: " + time2 + "-" + time1);
+//        System.out.println("time: " + time2 + "-" + time1);
         String time = "";
         String catchTime;
         int seg = 0, min = 0, hor = 0, tipeTime;
@@ -4413,9 +4708,9 @@ public class ConxDB {
                 }
             }
         }
-        System.out.println("catch: " + catchTime);
+//        System.out.println("catch: " + catchTime);
         seg = Integer.valueOf(catchTime);
-        System.out.println("time2: " + hor + ":" + min + ":" + seg);
+//        System.out.println("time2: " + hor + ":" + min + ":" + seg);
 
         tipeTime = 0;
         catchTime = "";
@@ -4424,11 +4719,11 @@ public class ConxDB {
             if (arrayChar[i] == ':') {
                 switch (tipeTime) {
                     case 0:
-                        System.out.print("time1: " + catchTime);
+//                        System.out.print("time1: " + catchTime);
                         hor -= Integer.valueOf(catchTime);
                         break;
                     case 1:
-                        System.out.print(":" + catchTime);
+//                        System.out.print(":" + catchTime);
                         min -= Integer.valueOf(catchTime);
                         break;
                 }
@@ -4448,7 +4743,7 @@ public class ConxDB {
                 }
             }
         }
-        System.out.print(":" + catchTime);
+//        System.out.print(":" + catchTime);
         seg -= Integer.valueOf(catchTime);
         if (seg < 0) {
             seg += 60;
@@ -4473,7 +4768,7 @@ public class ConxDB {
             time += "0";
         }
         time += seg;
-        System.out.println("\nsubTime: " + time);
+//        System.out.println("\nsubTime: " + time);
         return time;
     }
 }

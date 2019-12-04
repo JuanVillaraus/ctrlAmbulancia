@@ -8,7 +8,6 @@ package ctrlambulancia;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
 /**
  *
@@ -25,11 +24,14 @@ public class tabData extends JTabbedPane implements ActionListener {
     JTextField tEventoPrevio = new JTextField(10);
     JTextField tObstetricoMonthes = new JTextField(5);
     JTextField tOther = new JTextField(10);
+    JTextField tTransferFrom = new JTextField(30);
+    JTextField tTransferTo = new JTextField(30);
 
     public tabData() {
         JPanel pTrauma = new JPanel();
         JPanel pEnfermo = new JPanel();
         JPanel pObstetrico = new JPanel();
+        JPanel pPaidTransfer = new JPanel();
         //JButton b1 = new JButton();
 
         //JMenuBar mServiceTrauma = new JMenuBar();
@@ -104,6 +106,8 @@ public class tabData extends JTabbedPane implements ActionListener {
         JLabel lMedicamento = new JLabel("Medicamento");
         JLabel lEventoPrevio = new JLabel("Evento previo");
         JLabel lObstetricoMonthes = new JLabel("Meses");
+        JLabel lTransferFrom = new JLabel("Desde:");
+        JLabel lTransferTo = new JLabel("Hasta:");
         pTrauma.add(mBarTrauma);
         pTrauma.add(tOther);
         pEnfermo.add(lMotivo);
@@ -117,10 +121,15 @@ public class tabData extends JTabbedPane implements ActionListener {
         pObstetrico.add(mBarObstetrico);
         pObstetrico.add(lObstetricoMonthes);
         pObstetrico.add(tObstetricoMonthes);
+        pPaidTransfer.add(lTransferFrom);
+        pPaidTransfer.add(tTransferFrom);
+        pPaidTransfer.add(lTransferTo);
+        pPaidTransfer.add(tTransferTo);
 
         this.addTab("trauma", pTrauma);
         this.addTab("Enfermo", pEnfermo);
         this.addTab("Obstetrico", pObstetrico);
+        this.addTab("Traslado Pagado", pPaidTransfer);
     }
 
     @Override

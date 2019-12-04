@@ -10,6 +10,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -22,6 +25,8 @@ public class Consulta extends JPanel implements ActionListener {
 
     ConxDB db;
     archivo a = new archivo();
+    SimpleDateFormat month = new SimpleDateFormat("yyyy-MM");
+    Calendar calendario = new GregorianCalendar();
     JMenu mOption = new JMenu("Opción");
     JMenu mOptionSearch = new JMenu("Opción para Buscar");
     JTextField tDateOpen = new JTextField(6);
@@ -29,7 +34,8 @@ public class Consulta extends JPanel implements ActionListener {
     JTextField tDir = new JTextField(30);
     JTextField tFrap = new JTextField(8);
     JTextField tName = new JTextField(20);
-    JTextArea tMain = new JTextArea(40, 140);
+//    JTextArea eMain=  new JTextArea(40, 140);
+    JEditorPane eMain = new JEditorPane();
     JLabel lDateOpen = new JLabel("Fecha de:");
     JLabel lDateClose = new JLabel("hasta:");
     JLabel lFrap = new JLabel("ID:");
@@ -50,18 +56,19 @@ public class Consulta extends JPanel implements ActionListener {
         JMenuItem iOption1 = new JMenuItem("Reporte Emergencia");
         JMenuItem iOption2 = new JMenuItem("Paciente");
         JMenuItem iOptionSearch0 = new JMenuItem("Emergencia");
-        JMenuItem iOptionSearch1 = new JMenuItem("FRAP");
-        JMenuItem iOptionSearch2 = new JMenuItem("Ubicación");
-        JMenuItem iOptionSearch3 = new JMenuItem("Resultado");
-        JMenuItem iOptionSearch4 = new JMenuItem("Traslado");
-        JMenuItem iOptionSearch5 = new JMenuItem("Prioridad del traslado");
-        JMenuItem iOptionSearch6 = new JMenuItem("Operador");
-        JMenuItem iOptionSearch7 = new JMenuItem("Paramedico");
-        JMenuItem iOptionSearch8 = new JMenuItem("Operador Voluntario");
-        JMenuItem iOptionSearch9 = new JMenuItem("Paramedico Voluntario");
-        JMenuItem iOptionSearch10 = new JMenuItem("Radio Operador");
-        JMenuItem iOptionSearch11 = new JMenuItem("Ambulancia");
-        JMenuItem iOptionSearch12 = new JMenuItem("Paciente");
+        JMenuItem iOptionSearch1 = new JMenuItem("Emergencia sin FRAP");
+        JMenuItem iOptionSearch2 = new JMenuItem("FRAP");
+        JMenuItem iOptionSearch3 = new JMenuItem("Ubicación");
+        JMenuItem iOptionSearch4 = new JMenuItem("Resultado");
+        JMenuItem iOptionSearch5 = new JMenuItem("Traslado");
+        JMenuItem iOptionSearch6 = new JMenuItem("Prioridad del traslado");
+        JMenuItem iOptionSearch7 = new JMenuItem("Operador");
+        JMenuItem iOptionSearch8 = new JMenuItem("Paramedico");
+        JMenuItem iOptionSearch9 = new JMenuItem("Operador Voluntario");
+        JMenuItem iOptionSearch10 = new JMenuItem("Paramedico Voluntario");
+        JMenuItem iOptionSearch11 = new JMenuItem("Radio Operador");
+        JMenuItem iOptionSearch12 = new JMenuItem("Ambulancia");
+        JMenuItem iOptionSearch13 = new JMenuItem("Paciente");
 
         JMenuBar mBarResultado = new JMenuBar();
         JMenuBar mBarPriorityTransfer = new JMenuBar();
@@ -136,7 +143,7 @@ public class Consulta extends JPanel implements ActionListener {
 
         JPanel top = new JPanel();
         JScrollPane scroll = new JScrollPane();
-        scroll.setViewportView(tMain);
+        scroll.setViewportView(eMain);
 
         iOption1.addActionListener(this);
         iOption2.addActionListener(this);
@@ -153,6 +160,7 @@ public class Consulta extends JPanel implements ActionListener {
         iOptionSearch10.addActionListener(this);
         iOptionSearch11.addActionListener(this);
         iOptionSearch12.addActionListener(this);
+        iOptionSearch13.addActionListener(this);
         bSearch.addActionListener(this);
         mOption.add(iOption1);
         mOption.add(iOption2);
@@ -169,6 +177,7 @@ public class Consulta extends JPanel implements ActionListener {
         mOptionSearch.add(iOptionSearch10);
         mOptionSearch.add(iOptionSearch11);
         mOptionSearch.add(iOptionSearch12);
+        mOptionSearch.add(iOptionSearch13);
         mBarOption.add(mOption);
         mBarOptionSearch.add(mOptionSearch);
         mOption.setPreferredSize(new Dimension(150, 30));
@@ -185,9 +194,10 @@ public class Consulta extends JPanel implements ActionListener {
         mAmbulance.setVisible(false);
         lDir.setVisible(false);
         tDir.setVisible(false);
-        tMain.setLineWrap(true);
-        tMain.setWrapStyleWord(true);
+//        eMain.setLineWrap(true);
+//        eMain.setWrapStyleWord(true);
         menuUpdate();
+        eMain.setContentType("text/html");
         mBarOper.add(mOper);
         mBarRadioOper.add(mRadioOper);
         mBarParamedic.add(mParamedic);
@@ -199,6 +209,7 @@ public class Consulta extends JPanel implements ActionListener {
         mResultado.setPreferredSize(new Dimension(150, 30));
         mPriorityTransfer.setPreferredSize(new Dimension(150, 30));
         mTransfer.setPreferredSize(new Dimension(150, 30));
+        eMain.setPreferredSize(new Dimension(1500, 750));
         mResultado.setHorizontalAlignment(SwingConstants.CENTER);
         mResultado.setHorizontalTextPosition(JTextField.CENTER);
 
@@ -220,6 +231,7 @@ public class Consulta extends JPanel implements ActionListener {
         top.add(lDateClose);
         top.add(tDateClose);
         top.add(bSearch);
+//        top.add(eMain);
         this.add(top, BorderLayout.NORTH);
         this.add(scroll, BorderLayout.CENTER);
     }
@@ -228,28 +240,30 @@ public class Consulta extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().getClass().getSimpleName().equals("JButton")) {
             String sEmergency;
-            tMain.setText("");
+            eMain.setText("");
             switch (mOptionSearch.getText()) {
                 case "Opción para Buscar":
                 case "Emergencia":
                     if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
-                        sEmergency = db.consultEmergency();
-                        tMain.setText(sEmergency);
+                        sEmergency = db.consultEmergency(month.format(calendario.getTime()) + "-01 00:00:00",
+                                            month.format(calendario.getTime()) + "-31 23:59:59");
+                        eMain.setText(sEmergency);
                         try {
 //                            a.escribirTxt("resource/Emergencia.txt", sEmergency);
-                            a.writeExcelData("C:/CtrlAmb/reporte historial.xlsx",
-                                    "hoja1", db.reportEmergency());
-                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" historial\".xlsx");
+                            a.writeExcelData("C:/CtrlAmb/reporte mensual.xlsx",
+                                    "hoja1", db.reportEmergency(month.format(calendario.getTime()) + "-01 00:00:00",
+                                            month.format(calendario.getTime()) + "-31 23:59:59"));
+                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" mensual\".xlsx");
                         } catch (IOException ex) {
                             Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                             System.out.println("ERROR: " + ex);
-                            tMain.setText("error: " + ex);
+                            eMain.setText("error: " + ex);
                         }
                     } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                         if (tDateOpen.getText().equals("")) {
                             sEmergency = db.consultEmergency(tDateClose.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia " + tDateClose.getText() + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte "
@@ -262,7 +276,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergency(tDateOpen.getText()
                                     + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte "
@@ -276,7 +290,7 @@ public class Consulta extends JPanel implements ActionListener {
                     } else {
                         sEmergency = db.consultEmergency(tDateOpen.getText() + " 00:00:00",
                                 tDateClose.getText() + " 23:59:59");
-                        tMain.setText(sEmergency);
+                        eMain.setText(sEmergency);
                         try {
 //                            a.escribirTxt("resource/Emergencia " + tDateOpen.getText() + " "
 //                                    + tDateClose.getText() + ".txt", sEmergency);
@@ -288,6 +302,22 @@ public class Consulta extends JPanel implements ActionListener {
                         }
                     }
                     break;
+                case "Emergencia sin FRAP":
+                    if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                        sEmergency = db.consultEmergency();
+                        eMain.setText(sEmergency);
+                        try {
+//                            a.escribirTxt("resource/Emergencia.txt", sEmergency);
+                            a.writeExcelData("C:/CtrlAmb/reporte historial sin FRAP.xlsx",
+                                    "hoja1", db.reportEmergencyAll());
+                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" historial sin FRAP\".xlsx");
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.println("ERROR: " + ex);
+                            eMain.setText("error: " + ex);
+                        }
+                    }
+                    break;
                 case "FRAP":
                     try {
 //                            a.escribirTxt("resource/Emergencia.txt", sEmergency);
@@ -296,7 +326,7 @@ public class Consulta extends JPanel implements ActionListener {
                         Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" FRAP " + tFrap.getText() + "\".xlsx");
                     } catch (IOException ex) {
                         Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                        tMain.setText("error: " + ex);
+                        eMain.setText("error: " + ex);
                     }
                     break;
                 case "Ubicación":
@@ -306,7 +336,7 @@ public class Consulta extends JPanel implements ActionListener {
                     } else {
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyDir(tDir.getText());
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias " + tDir.getText() + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte Ubicación "
@@ -319,7 +349,7 @@ public class Consulta extends JPanel implements ActionListener {
                             if (tDateOpen.getText().equals("")) {
                                 sEmergency = db.consultEmergencyDir(tDir.getText(), tDateClose.getText()
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
 //                                            + tDateClose.getText() + ".txt", sEmergency);
@@ -334,7 +364,7 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyDir(tDir.getText(), tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
 //                                            + tDateOpen.getText() + ".txt", sEmergency);
@@ -350,7 +380,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergencyDir(tDir.getText(), tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -376,7 +406,7 @@ public class Consulta extends JPanel implements ActionListener {
                         }
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyResultado(resultado);
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias con " + resultado + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte "
@@ -390,7 +420,7 @@ public class Consulta extends JPanel implements ActionListener {
                             if (tDateOpen.getText().equals("")) {
                                 sEmergency = db.consultEmergencyResultado(resultado, tDateClose.getText()
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + resultado + " del "
 //                                            + tDateClose.getText() + ".txt", sEmergency);
@@ -404,7 +434,7 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyResultado(resultado, tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + resultado + " del "
 //                                            + tDateOpen.getText() + ".txt", sEmergency);
@@ -419,7 +449,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergencyResultado(resultado, tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia con " + resultado + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -441,7 +471,7 @@ public class Consulta extends JPanel implements ActionListener {
                     } else {
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyTransfer(mTransfer.getText());
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias a " + mTransfer.getText() + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte "
@@ -455,7 +485,7 @@ public class Consulta extends JPanel implements ActionListener {
                             if (tDateOpen.getText().equals("")) {
                                 sEmergency = db.consultEmergencyTransfer(mTransfer.getText(), tDateClose.getText()
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
 //                                            + tDateClose.getText() + ".txt", sEmergency);
@@ -469,7 +499,7 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyTransfer(mTransfer.getText(), tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
 //                                            + tDateOpen.getText() + ".txt", sEmergency);
@@ -484,7 +514,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergencyTransfer(mTransfer.getText(), tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -506,7 +536,7 @@ public class Consulta extends JPanel implements ActionListener {
                     } else {
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]));
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias con " + mPriorityTransfer.getText()
 //                                        + " del Traslado.txt", sEmergency);
@@ -522,7 +552,7 @@ public class Consulta extends JPanel implements ActionListener {
                                 sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
                                         + mPriorityTransfer.getText().toCharArray()[10]), tDateClose.getText()
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
 //                                            + tDateClose.getText() + ".txt", sEmergency);
@@ -539,7 +569,7 @@ public class Consulta extends JPanel implements ActionListener {
                                 sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
                                         + mPriorityTransfer.getText().toCharArray()[10]), tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
 //                                            + tDateOpen.getText() + ".txt", sEmergency);
@@ -557,7 +587,7 @@ public class Consulta extends JPanel implements ActionListener {
                             sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
                                     + mPriorityTransfer.getText().toCharArray()[10]), tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -591,7 +621,7 @@ public class Consulta extends JPanel implements ActionListener {
                         }
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyOper(idOper);
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias con " + mOper.getText() + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte "
@@ -604,7 +634,7 @@ public class Consulta extends JPanel implements ActionListener {
                             if (tDateOpen.getText().equals("")) {
                                 sEmergency = db.consultEmergencyOper(idOper, tDateClose.getText()
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + mOper.getText() + " del "
 //                                            + tDateClose.getText() + ".txt", sEmergency);
@@ -618,7 +648,7 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyOper(idOper, tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + mOper.getText() + " del "
 //                                            + tDateOpen.getText() + ".txt", sEmergency);
@@ -633,7 +663,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergencyOper(idOper, tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia Operador con " + mOper.getText() + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -666,7 +696,7 @@ public class Consulta extends JPanel implements ActionListener {
                         }
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyParamedic(idParamedic);
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias con " + mParamedic.getText() + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte "
@@ -679,7 +709,7 @@ public class Consulta extends JPanel implements ActionListener {
                             if (tDateOpen.getText().equals("")) {
                                 sEmergency = db.consultEmergencyParamedic(idParamedic, tDateClose.getText()
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
 //                                            + tDateClose.getText() + ".txt", sEmergency);
@@ -693,7 +723,7 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyParamedic(idParamedic, tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
 //                                            + tDateOpen.getText() + ".txt", sEmergency);
@@ -708,7 +738,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergencyParamedic(idParamedic, tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -730,7 +760,7 @@ public class Consulta extends JPanel implements ActionListener {
                     } else {
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyOperVoluntary(tName.getText());
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias Radio Operador Voluntario " + tName.getText() + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte Radio Operador Voluntario "
@@ -743,7 +773,7 @@ public class Consulta extends JPanel implements ActionListener {
                             if (tDateOpen.getText().equals("")) {
                                 sEmergency = db.consultEmergencyOperVoluntary(tName.getText(), tDateClose.getText()
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
 //                                            + tDateClose.getText() + ".txt", sEmergency);
@@ -759,7 +789,7 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyOperVoluntary(tName.getText(), tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
 //                                            + tDateOpen.getText() + ".txt", sEmergency);
@@ -775,7 +805,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergencyOperVoluntary(tName.getText(), tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -797,7 +827,7 @@ public class Consulta extends JPanel implements ActionListener {
                     } else {
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText());
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias Paramedico Voluntario " + tName.getText() + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte Paramedico Voluntario "
@@ -810,7 +840,7 @@ public class Consulta extends JPanel implements ActionListener {
                             if (tDateOpen.getText().equals("")) {
                                 sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText(),
                                         tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
 //                                            + tDateClose.getText() + ".txt", sEmergency);
@@ -826,7 +856,7 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText(),
                                         tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
 //                                            + tDateOpen.getText() + ".txt", sEmergency);
@@ -843,7 +873,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText(), tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -877,7 +907,7 @@ public class Consulta extends JPanel implements ActionListener {
                         }
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyRadioOper(idRadioOper);
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias con " + mRadioOper.getText() + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte "
@@ -890,7 +920,7 @@ public class Consulta extends JPanel implements ActionListener {
                             if (tDateOpen.getText().equals("")) {
                                 sEmergency = db.consultEmergencyRadioOper(idRadioOper, tDateClose.getText()
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + mRadioOper.getText()
 //                                            + " del " + tDateClose.getText() + ".txt", sEmergency);
@@ -905,7 +935,7 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyRadioOper(idRadioOper, tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia con " + mRadioOper.getText()
 //                                            + " del " + tDateOpen.getText() + ".txt", sEmergency);
@@ -921,7 +951,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergencyRadioOper(idRadioOper, tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia con " + mRadioOper.getText() + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -954,7 +984,7 @@ public class Consulta extends JPanel implements ActionListener {
                         }
                         if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                             sEmergency = db.consultEmergencyAmbulance(idAmbulance);
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencias Ambulancia #" + db.consultNumAmbulance(idAmbulance) + ".txt", sEmergency);
                                 a.writeExcelData("C:/CtrlAmb/reporte Ambulancia #"
@@ -967,7 +997,7 @@ public class Consulta extends JPanel implements ActionListener {
                             if (tDateOpen.getText().equals("")) {
                                 sEmergency = db.consultEmergencyAmbulance(idAmbulance, tDateClose.getText()
                                         + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia Ambulancia #" + idAmbulance + " del "
 //                                            + tDateClose.getText() + ".txt", sEmergency);
@@ -982,7 +1012,7 @@ public class Consulta extends JPanel implements ActionListener {
                             } else {
                                 sEmergency = db.consultEmergencyAmbulance(idAmbulance, tDateOpen.getText()
                                         + " 00:00:00", tDateOpen.getText() + " 23:59:59");
-                                tMain.setText(sEmergency);
+                                eMain.setText(sEmergency);
                                 try {
 //                                    a.escribirTxt("resource/Emergencia Ambulancia #" + db.consultNumAmbulance(idAmbulance) + " del "
 //                                            + tDateOpen.getText() + ".txt", sEmergency);
@@ -998,7 +1028,7 @@ public class Consulta extends JPanel implements ActionListener {
                         } else {
                             sEmergency = db.consultEmergencyAmbulance(idAmbulance, tDateOpen.getText()
                                     + " 00:00:00", tDateClose.getText() + " 23:59:59");
-                            tMain.setText(sEmergency);
+                            eMain.setText(sEmergency);
                             try {
 //                                a.escribirTxt("resource/Emergencia Ambulancia #" + idAmbulance + " del "
 //                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
@@ -1015,12 +1045,17 @@ public class Consulta extends JPanel implements ActionListener {
                     }
                     break;
                 case "Paciente":
-                    sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText());
-                    tMain.setText(sEmergency);
+                    sEmergency = db.consultPatientAll();
+                    eMain.setText(sEmergency);
                     try {
 //                                a.escribirTxt("resource/Emergencias Paramedico Voluntario " + tName.getText() + ".txt", sEmergency);
-                        a.writeExcelData("C:/CtrlAmb/reporte Paciente " + tName.getText() + ".xlsx", "hoja1", db.reportPatient(tName.getText()));
-                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paciente " + tName.getText() + "\".xlsx");
+                        if (tName.getText().equals("") || tName.getText() == null) {
+                            a.writeExcelData("C:/CtrlAmb/reporte Paciente.xlsx", "hoja1", db.reportPatient());
+                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paciente\".xlsx");
+                        } else {
+                            a.writeExcelData("C:/CtrlAmb/reporte Paciente " + tName.getText() + ".xlsx", "hoja1", db.reportPatient(tName.getText()));
+                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paciente " + tName.getText() + "\".xlsx");
+                        }
                     } catch (IOException ex) {
                         Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
                     }

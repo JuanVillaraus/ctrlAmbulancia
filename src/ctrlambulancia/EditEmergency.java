@@ -89,12 +89,6 @@ public class EditEmergency extends JPanel implements ActionListener {
     String sTimeCall;
     String sex = "";
     String status = "";
-//    String timeCall = "";
-//    String timeDeparture = "";
-//    String timeArrival = "";
-//    String timeTransfer = "";
-//    String timeHospital = "";
-//    String timeComeback = "";
     String numAmbulance = "";
     String nameParamedic = "";
     String nameOper = "";
@@ -136,7 +130,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         if (dataEmergency[8].equals("0")) {
             this.mPriorityTransfer.setText("Prioridad del traslado");
         } else {
-            this.mPriorityTransfer.setText(dataEmergency[8]);
+            this.mPriorityTransfer.setText("Prioridad " + dataEmergency[8]);
         }
         this.tAlive.setText(dataEmergency[9]);
         this.tDeads.setText(dataEmergency[10]);
@@ -162,6 +156,9 @@ public class EditEmergency extends JPanel implements ActionListener {
         this.tipeCallmain = dataEmergency[26];
         this.callmain = dataEmergency[27];
         this.kmTraveled = Integer.valueOf(dataEmergency[28]);
+        this.tFolio.setText(dataEmergency[29]);
+
+        String[][] patientPast;
 
         JPanel pDir = new JPanel();
         JPanel pTransfer = new JPanel();
@@ -475,7 +472,6 @@ public class EditEmergency extends JPanel implements ActionListener {
         if (e.getActionCommand().length() > 1) {
             command = "" + cadena[0] + cadena[1];
         }
-        Calendar calendario = new GregorianCalendar();
         if (e.getSource().getClass().getSimpleName().equals("JRadioButton")) {
             switch (e.getActionCommand().toCharArray()[0]) {
                 case 'M':
@@ -671,10 +667,10 @@ public class EditEmergency extends JPanel implements ActionListener {
                     transfer, priority, alive, deads, idParamedic, idOper,
                     idRadioOper, idAmbulance, mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
                     tTimeCall.getText(), tTimeDeparture.getText(), tTimeArrival.getText(), tTimeTransfer.getText(),
-                    tTimeHospital.getText(), tTimeComeback.getText(), tNote.getText(), tipeCallmain, callmain, kmTraveled);
+                    tTimeHospital.getText(), tTimeComeback.getText(), tNote.getText(), tipeCallmain, callmain, kmTraveled, tFolio.getText());
             System.out.println("insert= " + em);
             if (em.equals("done")) {
-                System.out.println("size patient: " + patient.size());
+//                System.out.println("size patient: " + patient.size());
                 for (int m = 0; m < patient.size(); m++) {
                     if (!tab.mObstetrico.getText().equals("Tipo de obstetrico")) {
                         obstetrico = tab.mObstetrico.getText();
@@ -688,12 +684,12 @@ public class EditEmergency extends JPanel implements ActionListener {
                             tab.tMotivo.getText(), tab.tPadecimiento.getText(), tab.tMedicamento.getText(),
                             tab.tEventoPrevio.getText(), obstetrico, obstetricoMonthes);
                 }
-                System.out.println("id Paciente: " + sPatient);
+//                System.out.println("id Paciente: " + sPatient);
             } else {
                 System.out.println("ctrData/ActionPerformed: error# " + em);
             }
             archivo a = new archivo();
-            String[][] data = new String[31][2];
+            String[][] data = new String[33][2];
             data[0][0] = "date";
             data[1][0] = "tiket";
             data[2][0] = "dir";
@@ -718,13 +714,15 @@ public class EditEmergency extends JPanel implements ActionListener {
             data[21][0] = "Hospitalcomeback";
             data[22][0] = "alive";
             data[23][0] = "dead";
-            data[24][0] = "sex";
+            data[24][0] = "patient";
             data[25][0] = "age";
-            data[26][0] = "transfer";
-            data[27][0] = "denominacion";
-            data[28][0] = "note";
-            data[29][0] = "telephone";
-            data[30][0] = "radiooper";
+            data[26][0] = "sex";
+            data[27][0] = "status";
+            data[28][0] = "transfer";
+            data[29][0] = "denominacion";
+            data[30][0] = "note";
+            data[31][0] = "telephone";
+            data[32][0] = "radiooper";
             data[0][1] = db.divTimeFull(tTimeCall.getText(), false);
             data[1][1] = tFolio.getText();
             data[2][1] = tDir.getText();
@@ -767,13 +765,22 @@ public class EditEmergency extends JPanel implements ActionListener {
             }
             data[22][1] = tAlive.getText();
             data[23][1] = tDeads.getText();
-            data[24][1] = sex;
-            data[25][1] = tAgeOld.getText();
-            data[26][1] = transfer;
-            data[27][1] = "";
-            data[28][1] = tNote.getText();
+            if (patient.size() > 0) {
+                data[24][1] = patient.get(0)[0] + " " + patient.get(0)[1] + " " + patient.get(0)[2];
+                data[25][1] = patient.get(0)[3];
+                data[26][1] = patient.get(0)[4];
+                data[27][1] = patient.get(0)[5];
+            } else {
+                data[24][1] = "";
+                data[25][1] = "";
+                data[26][1] = "";
+                data[27][1] = "";
+            }
+            data[28][1] = transfer;
             data[29][1] = "";
-            data[30][1] = nameRadioOper;
+            data[30][1] = tNote.getText();
+            data[31][1] = "";
+            data[32][1] = db.consultRadioOper(idRadioOper);
 
             a.replaceWordData("resource/formatoCtrlAmb.docx", "C:/CtrlAmb/Emergencia#" + idEmergency + ".docx", data);
             try {
