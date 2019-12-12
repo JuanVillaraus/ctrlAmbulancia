@@ -47,7 +47,7 @@ public class Interface extends JFrame implements ActionListener {
         this.setSize(400, 560);
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-        this.setTitle("Sist. de Control de Ambulancias Beta2.6");
+        this.setTitle("Sist. de Control de Ambulancias Beta2.8");
 
         RealTime rt = new RealTime();
         rt.settTime(tTime);

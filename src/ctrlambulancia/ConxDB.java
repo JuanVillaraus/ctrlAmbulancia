@@ -700,7 +700,7 @@ public class ConxDB {
     }
 
     public String consultPatientAll() {
-        String resp = "";
+        String resp = "<HTML>";
         try {
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(""
@@ -721,23 +721,83 @@ public class ConxDB {
                 String eventoPrevio = rs.getString("EVENTO_PREVIO_ENFERMO_PACIENTE");
                 String obstetrico = rs.getString("TIPO_OBSTETRICO_PACIENTE");
                 String obstetricoMonthes = rs.getString("MESES_OBSTETRICO_PACIENTE");
+                String status = rs.getString("ESTADO_PACIENTE");
+                String frap = rs.getString("NUM_FRAP_PACIENTE");
+                int idEmergency = rs.getInt("ID_EMERGENCIA");
 
-                resp += "[PC#" + id + "]\nNombre: " + nom + " " + lastName + " " + lastName2 + "\n"
-                        + "Edad: " + ageOld + " años \t\tSexo: " + sex + "\n";
+                resp += "<b>[PC#" + id + "]<br>Nombre:</b> " + nom + " " + lastName + " " + lastName2 + "<br>"
+                        + "<b>Edad:</b> " + ageOld + " años \t\t<b>Sexo:</b> " + sex + "<br>"
+                        + "<b>Estado:</b> " + status + " <b>FRAP:</b> " + frap + " <b>idEmergencia:</b> " + idEmergency;
                 if (!trauma.equals("") && trauma != null) {
-                    resp += "trauma: " + trauma + "\n";
+                    resp += "<b>trauma:</b> " + trauma + "<br>";
                 }
                 if ((!motivo.equals("") && motivo != null) || (!padecimiento.equals("") && padecimiento != null)
                         || (!medicamento.equals("") && medicamento != null) || (!eventoPrevio.equals("") && eventoPrevio != null)) {
-                    resp += "ENFERMO motivo: " + motivo + "\t\tpadecimiento: " + padecimiento + "\n"
-                            + "medicamento: " + medicamento + "\t\tevento previo: " + eventoPrevio + "\n";
+                    resp += "<b>ENFERMO motivo:</b> " + motivo + "\t\t<b>padecimiento:</b> " + padecimiento + "<br>"
+                            + "<b>medicamento:</b> " + medicamento + "\t\t<b>evento previo:</b> " + eventoPrevio + "<br>";
                 }
                 if ((!obstetrico.equals("") && obstetrico != null) || (!obstetricoMonthes.equals("0"))) {
-                    resp += "OBTETRICO tipo: " + obstetrico + "\t\tmeses: " + obstetricoMonthes + "\n";
+                    resp += "<b>OBTETRICO tipo:</b> " + obstetrico + "\t\t<b>meses:</b> " + obstetricoMonthes + "<br>";
                 }
-                resp += "\n";
+                resp += "<br>";
             }
 
+            resp += "</HTML>";
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+    
+    public String consultPatientAll(String search) {
+        String resp = "<HTML>";
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"PACIENTE\" "
+                    + "WHERE \"NOMBRE_PACIENTE\" = '" + search + "' "
+                    + "OR \"APELLIDO_PATERNO_PACIENTE\" = '" + search + "' "
+                    + "OR \"APELLIDO_MATERNO_PACIENTE\" = '" + search + "' ;");
+            while (rs.next()) {
+                int id = rs.getInt("PK_ID_PACIENTE");
+                String name = rs.getString("NOMBRE_PACIENTE");
+                String lastName = rs.getString("APELLIDO_PATERNO_PACIENTE");
+                String lastName2 = rs.getString("APELLIDO_MATERNO_PACIENTE");
+                int ageOld = rs.getInt("EDAD_PACIENTE");
+                String sex = rs.getString("SEXO_PACIENTE");
+                String trauma = rs.getString("TRAUMA_TIPO_PACIENTE");
+                String motivo = rs.getString("MOTIVO_ENFERMO_PACIENTE");
+                String padecimiento = rs.getString("PADECIMIENTO_ENFERMO_PACIENTE");
+                String medicamento = rs.getString("MEDICAMENTO_ENFERMO_PACIENTE");
+                String eventoPrevio = rs.getString("EVENTO_PREVIO_ENFERMO_PACIENTE");
+                String obstetrico = rs.getString("TIPO_OBSTETRICO_PACIENTE");
+                String obstetricoMonthes = rs.getString("MESES_OBSTETRICO_PACIENTE");
+                String status = rs.getString("ESTADO_PACIENTE");
+                String frap = rs.getString("NUM_FRAP_PACIENTE");
+                int idEmergency = rs.getInt("ID_EMERGENCIA");
+
+                resp += "<b>[PC#" + id + "]<br>Nombre:</b> " + name + " " + lastName + " " + lastName2 + "<br>"
+                        + "<b>Edad:</b> " + ageOld + " años \t\t<b>Sexo:</b> " + sex + "<br>"
+                        + "<b>Estado:</b> " + status + " <b>FRAP:</b> " + frap + " <b>idEmergencia:</b> " + idEmergency;
+                if (!trauma.equals("") && trauma != null) {
+                    resp += "<b>trauma:</b> " + trauma + "<br>";
+                }
+                if ((!motivo.equals("") && motivo != null) || (!padecimiento.equals("") && padecimiento != null)
+                        || (!medicamento.equals("") && medicamento != null) || (!eventoPrevio.equals("") && eventoPrevio != null)) {
+                    resp += "<b>ENFERMO motivo:</b> " + motivo + "\t\t<b>padecimiento:</b> " + padecimiento + "<br>"
+                            + "<b>medicamento:</b> " + medicamento + "\t\t<b>evento previo:</b> " + eventoPrevio + "<br>";
+                }
+                if ((!obstetrico.equals("") && obstetrico != null) || (!obstetricoMonthes.equals("0"))) {
+                    resp += "<b>OBTETRICO tipo:</b> " + obstetrico + "\t\t<b>meses:</b> " + obstetricoMonthes + "<br>";
+                }
+                resp += "<br>";
+            }
+
+            resp += "</HTML>";
             rs.close();
             st.close();
             return resp;
@@ -777,6 +837,59 @@ public class ConxDB {
                         + "OBTETRICO tipo: " + obstetrico + "\t\tmeses: " + obstetricoMonthes + "\n\n");
             }
 
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+    
+    public String consultFRAP(String frap) {
+        String resp = "<HTML>";
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"PACIENTE\" "
+                    + "WHERE \"NUM_FRAP_PACIENTE\"= '" + frap + "';");
+            while (rs.next()) {
+                int id = rs.getInt("PK_ID_PACIENTE");
+                String nom = rs.getString("NOMBRE_PACIENTE");
+                String lastName = rs.getString("APELLIDO_PATERNO_PACIENTE");
+                String lastName2 = rs.getString("APELLIDO_MATERNO_PACIENTE");
+                int ageOld = rs.getInt("EDAD_PACIENTE");
+                String sex = rs.getString("SEXO_PACIENTE");
+                String trauma = rs.getString("TRAUMA_TIPO_PACIENTE");
+                String motivo = rs.getString("MOTIVO_ENFERMO_PACIENTE");
+                String padecimiento = rs.getString("PADECIMIENTO_ENFERMO_PACIENTE");
+                String medicamento = rs.getString("MEDICAMENTO_ENFERMO_PACIENTE");
+                String eventoPrevio = rs.getString("EVENTO_PREVIO_ENFERMO_PACIENTE");
+                String obstetrico = rs.getString("TIPO_OBSTETRICO_PACIENTE");
+                String obstetricoMonthes = rs.getString("MESES_OBSTETRICO_PACIENTE");
+                String status = rs.getString("ESTADO_PACIENTE");
+//                String frap = rs.getString("NUM_FRAP_PACIENTE");
+                int idEmergency = rs.getInt("ID_EMERGENCIA");
+
+                resp += "<b>[PC#" + id + "]<br>Nombre:</b> " + nom + " " + lastName + " " + lastName2 + "<br>"
+                        + "<b>Edad:</b> " + ageOld + " años \t\t<b>Sexo:</b> " + sex + "<br>"
+                        + "<b>Estado:</b> " + status + " <b>FRAP:</b> " + frap + " <b>idEmergencia:</b> " + idEmergency+"</br>";
+                if (!trauma.equals("") && trauma != null) {
+                    resp += "<b>trauma:</b> " + trauma + "<br>";
+                }
+                if ((!motivo.equals("") && motivo != null) || (!padecimiento.equals("") && padecimiento != null)
+                        || (!medicamento.equals("") && medicamento != null) || (!eventoPrevio.equals("") && eventoPrevio != null)) {
+                    resp += "<b>ENFERMO motivo:</b> " + motivo + "\t\t<b>padecimiento:</b> " + padecimiento + "<br>"
+                            + "<b>medicamento:</b> " + medicamento + "\t\t<b>evento previo:</b> " + eventoPrevio + "<br>";
+                }
+                if ((!obstetrico.equals("") && obstetrico != null) || (!obstetricoMonthes.equals("0"))) {
+                    resp += "<b>OBTETRICO tipo:</b> " + obstetrico + "\t\t<b>meses:</b> " + obstetricoMonthes + "<br>";
+                }
+                resp += "<br>";
+            }
+
+            resp += "</HTML>";
             rs.close();
             st.close();
             return resp;
@@ -949,6 +1062,129 @@ public class ConxDB {
             System.err.println("ConxDB/ConsultaEmergency$\t" + e.getClass().getName() + "\t" + e.getMessage());
             return e.getMessage();
         }
+    }
+
+    public String[][] consultEmergencyAll() {
+        ArrayList<String[]> list = new ArrayList<String[]>();
+        String[] row = new String[32];
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"EMERGENCIA\" "
+                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
+            while (rs.next()) {
+                row = new String[32];
+                row[0] = "" + rs.getInt("PK_ID_EMERGENCIA");
+                row[1] = rs.getString("DIR_EMERGENCIA");
+                row[2] = rs.getString("ENTRE_EMERGENCIA");
+                row[3] = rs.getString("REF_EMERGENCIA");
+                row[4] = rs.getString("COL_EMERGENCIA");
+                row[5] = rs.getString("DEL_EMERGENCIA");
+                row[6] = rs.getString("NOMBRE_SOLICITANTE_EMERGENCIA");
+                row[7] = rs.getString("RESULTADO_EMERGENCIA");
+                row[8] = rs.getString("TRASLADO_EMERGENCIA");
+                row[9] = "" + rs.getInt("PRIORIDAD_TRASLADO_EMERGENCIA");
+                row[10] = "" + rs.getInt("NUMERO_PACIENTES_EMERGENCIA");
+                row[11] = "" + rs.getInt("NUMERO_MUERTOS_EMERGENCIA");
+                row[12] = "" + rs.getInt("ID_PARAMEDICO_EMERGENCIA");
+                row[13] = "" + rs.getInt("ID_OPERADOR_EMERGENCIA");
+                row[14] = "" + rs.getInt("ID_RADIO_OPERADOR_EMERGENCIA");
+                row[15] = "" + rs.getInt("ID_AMBULANCIA_EMERGENCIA");
+                row[16] = "" + rs.getInt("KM_RECORRIDO_EMERGENCIA");
+                row[17] = rs.getString("BASE_EMERGENCIA");
+                row[18] = rs.getString("OPERADOR_VOLUNTARIO_EMERGENCIA");
+                row[19] = rs.getString("PARAMEDICO_VOLUNTARIO_EMERGENCIA");
+                row[20] = rs.getString("HORA_LLAMADA_EMERGENCIA");
+                row[21] = rs.getString("HORA_SALIDA_EMERGENCIA");
+                row[22] = rs.getString("HORA_LLEGADA_EMERGENCIA");
+                row[23] = rs.getString("HORA_TRASLADO_EMERGENCIA");
+                row[24] = rs.getString("HORA_HOSPITAL_EMERGENCIA");
+                row[25] = rs.getString("HORA_BASE_EMERGENCIA");
+                row[26] = rs.getString("OBSERVACION_EMERGENCIA");
+                row[27] = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                row[28] = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                row[29] = rs.getString("FOLIO_EMERGENCIA");
+                row[30] = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                row[31] = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
+                list.add(row);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergencyAll/\t" + e.getClass().getName() + "\t" + e.getMessage());
+        }
+        String[][] data = new String[list.size()][row.length];
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[0].length; j++) {
+                System.out.print(list.get(i)[j] + "\t");
+                data[i][j] = list.get(i)[j];
+            }
+            System.out.println();
+        }
+        return data;
+    }
+    
+    public String[][] consultEmergencyAll(String dateOpen, String dateClose) {
+        ArrayList<String[]> list = new ArrayList<String[]>();
+        String[] row = new String[21];
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT * "
+                    + "FROM \"EMERGENCIA\" "
+                    + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' "
+                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
+            while (rs.next()) {
+                row = new String[32];
+                row[0] = "" + rs.getInt("PK_ID_EMERGENCIA");
+                row[1] = rs.getString("DIR_EMERGENCIA");
+                row[2] = rs.getString("ENTRE_EMERGENCIA");
+                row[3] = rs.getString("REF_EMERGENCIA");
+                row[4] = rs.getString("COL_EMERGENCIA");
+                row[5] = rs.getString("DEL_EMERGENCIA");
+                row[6] = rs.getString("NOMBRE_SOLICITANTE_EMERGENCIA");
+                row[7] = rs.getString("RESULTADO_EMERGENCIA");
+                row[8] = rs.getString("TRASLADO_EMERGENCIA");
+                row[9] = "" + rs.getInt("PRIORIDAD_TRASLADO_EMERGENCIA");
+                row[10] = "" + rs.getInt("NUMERO_PACIENTES_EMERGENCIA");
+                row[11] = "" + rs.getInt("NUMERO_MUERTOS_EMERGENCIA");
+                row[12] = "" + rs.getInt("ID_PARAMEDICO_EMERGENCIA");
+                row[13] = "" + rs.getInt("ID_OPERADOR_EMERGENCIA");
+                row[14] = "" + rs.getInt("ID_RADIO_OPERADOR_EMERGENCIA");
+                row[15] = "" + rs.getInt("ID_AMBULANCIA_EMERGENCIA");
+                row[16] = "" + rs.getInt("KM_RECORRIDO_EMERGENCIA");
+                row[17] = rs.getString("BASE_EMERGENCIA");
+                row[18] = rs.getString("OPERADOR_VOLUNTARIO_EMERGENCIA");
+                row[19] = rs.getString("PARAMEDICO_VOLUNTARIO_EMERGENCIA");
+                row[20] = rs.getString("HORA_LLAMADA_EMERGENCIA");
+                row[21] = rs.getString("HORA_SALIDA_EMERGENCIA");
+                row[22] = rs.getString("HORA_LLEGADA_EMERGENCIA");
+                row[23] = rs.getString("HORA_TRASLADO_EMERGENCIA");
+                row[24] = rs.getString("HORA_HOSPITAL_EMERGENCIA");
+                row[25] = rs.getString("HORA_BASE_EMERGENCIA");
+                row[26] = rs.getString("OBSERVACION_EMERGENCIA");
+                row[27] = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                row[28] = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                row[29] = rs.getString("FOLIO_EMERGENCIA");
+                row[30] = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                row[31] = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
+                list.add(row);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergencyAll/\t" + e.getClass().getName() + "\t" + e.getMessage());
+        }
+        String[][] data = new String[list.size()][row.length];
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[0].length; j++) {
+//                System.out.print(list.get(i)[j] + "\t");
+                data[i][j] = list.get(i)[j];
+            }
+//            System.out.println();
+        }
+        return data;
     }
 
     public String consultEmergency(String dateOpen, String dateClose) {
@@ -2215,7 +2451,7 @@ public class ConxDB {
                 + consultInfoPatient(idEmergency)
                 + "<b>Paramedico:</b> #" + idParamedic + "\t<b>Nombre:</b> " + consultNameParamedic(idParamedic) + "<br>"
                 + "<b>Paramedico voluntario:</b> " + paramedicVoluntary + "<br>"
-                + "<b>Operador:</b> #" + idOper + "\t<b>Nombre:</b> " + consultNameOper(idParamedic) + "<br>"
+                + "<b>Operador:</b> #" + idOper + "\t<b>Nombre:</b> " + consultNameOper(idOper) + "<br>"
                 + "<b>Operador voluntario:</b> " + operVoluntary + "<br>"
                 + "<b>RadioOperador:</b> #" + idRadioOper + "\t<b>Nombre:</b> " + consultNameRadioOper(idRadioOper) + "<br>"
                 + "<b>Ambulancia:</b> id:" + idAmbulance + "\t<b>Numero:</b> " + consultNumAmbulance(idAmbulance) + "\t<b>Km recorridas:</b> " + kmTraveled
@@ -4292,8 +4528,8 @@ public class ConxDB {
     public String[][] reportPatient() {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[14];
-        row[0] = "No EMERGENCIA";
-        row[1] = "No PACIENTE";
+        row[0] = "No PACIENTE";
+        row[1] = "No EMERGENCIA";
         row[2] = "FRAP";
         row[3] = "NOMBRE";
         row[4] = "EDAD";
@@ -4315,8 +4551,8 @@ public class ConxDB {
                     + "ORDER BY \"PK_ID_PACIENTE\" ASC;");
             while (rs.next()) {
                 row = new String[14];
-                row[0] = rs.getInt("ID_EMERGENCIA") + "";
-                row[1] = rs.getInt("PK_ID_PACIENTE") + "";
+                row[0] = rs.getInt("PK_ID_PACIENTE") + "";
+                row[1] = rs.getInt("ID_EMERGENCIA") + "";
                 row[2] = rs.getString("NUM_FRAP_PACIENTE");
                 row[3] = rs.getString("NOMBRE_PACIENTE") + " " + rs.getString("APELLIDO_PATERNO_PACIENTE") + " "
                         + rs.getString("APELLIDO_MATERNO_PACIENTE") + " ";
