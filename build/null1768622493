@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.10.4
+Created-By: 1.8.0_221-b11 (Oracle Corporation)
+Codebase: C:\Users\Sistemas\repository\ctrlAmbulancia\dist
+Application-Library-Allowable-Codebase: C:\Users\Sistemas\repository\c
+ trlAmbulancia\dist
+Caller-Allowable-Codebase: C:\Users\Sistemas\repository\ctrlAmbulancia
+ \dist
+Permissions: sandbox
+Application-Name: CtrlAmbulancia
+

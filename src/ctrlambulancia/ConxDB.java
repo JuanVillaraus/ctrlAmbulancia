@@ -699,6 +699,32 @@ public class ConxDB {
         }
     }
 
+    public String consultPatientName() {
+        String resp = "";
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT \"PK_ID_PACIENTE\", \"NOMBRE_PACIENTE\", \"APELLIDO_PATERNO_PACIENTE\", \"APELLIDO_MATERNO_PACIENTE\" "
+                    + "FROM \"PACIENTE\" "
+                    + "ORDER BY \"PK_ID_PACIENTE\" ASC;");
+            while (rs.next()) {
+                int id = rs.getInt("PK_ID_PACIENTE");
+                String nom = rs.getString("NOMBRE_PACIENTE");
+                String lastName = rs.getString("APELLIDO_PATERNO_PACIENTE");
+                String lastName2 = rs.getString("APELLIDO_MATERNO_PACIENTE");
+
+                resp += ("PC#" + id + " " + nom + " " + lastName + " " + lastName2 + "\n");
+            }
+
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
     public String consultPatientAll() {
         String resp = "<HTML>";
         try {
@@ -751,7 +777,28 @@ public class ConxDB {
             return e.getMessage();
         }
     }
-    
+
+    public String consultPatientAll(int id) {
+        int idEmergency = 0;
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT \"ID_EMERGENCIA\", \"PK_ID_PACIENTE\" "
+                    + "FROM \"PACIENTE\" "
+                    + "WHERE \"PK_ID_PACIENTE\" = '" + id + "' ;");
+            while (rs.next()) {
+                idEmergency = rs.getInt("ID_EMERGENCIA");
+            }
+
+            rs.close();
+            st.close();
+            return consultEmergency(idEmergency);
+        } catch (Exception e) {
+            System.err.println("ConxDB/Consulta$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
     public String consultPatientAll(String search) {
         String resp = "<HTML>";
         try {
@@ -845,7 +892,7 @@ public class ConxDB {
             return e.getMessage();
         }
     }
-    
+
     public String consultFRAP(String frap) {
         String resp = "<HTML>";
         try {
@@ -874,7 +921,7 @@ public class ConxDB {
 
                 resp += "<b>[PC#" + id + "]<br>Nombre:</b> " + nom + " " + lastName + " " + lastName2 + "<br>"
                         + "<b>Edad:</b> " + ageOld + " años \t\t<b>Sexo:</b> " + sex + "<br>"
-                        + "<b>Estado:</b> " + status + " <b>FRAP:</b> " + frap + " <b>idEmergencia:</b> " + idEmergency+"</br>";
+                        + "<b>Estado:</b> " + status + " <b>FRAP:</b> " + frap + " <b>idEmergencia:</b> " + idEmergency + "</br>";
                 if (!trauma.equals("") && trauma != null) {
                     resp += "<b>trauma:</b> " + trauma + "<br>";
                 }
@@ -1124,7 +1171,7 @@ public class ConxDB {
         }
         return data;
     }
-    
+
     public String[][] consultEmergencyAll(String dateOpen, String dateClose) {
         ArrayList<String[]> list = new ArrayList<String[]>();
         String[] row = new String[21];

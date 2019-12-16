@@ -16,6 +16,7 @@ import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import com.mxrck.autocompleter.TextAutoCompleter;
 
 /**
  *
@@ -34,6 +35,7 @@ public class Consulta extends JPanel implements ActionListener {
     JTextField tDir = new JTextField(30);
     JTextField tFrap = new JTextField(8);
     JTextField tName = new JTextField(20);
+    JTextField tPatient = new JTextField(30);
 //    JTextArea eMain=  new JTextArea(40, 140);
     JEditorPane eMain = new JEditorPane();
     JLabel lDateOpen = new JLabel("Fecha de:");
@@ -47,6 +49,7 @@ public class Consulta extends JPanel implements ActionListener {
     JMenu mRadioOper = new JMenu("seleccione una opción");
     JMenu mParamedic = new JMenu("seleccione una opción");
     JMenu mAmbulance = new JMenu("seleccione una opción");
+    TextAutoCompleter autoPatient;
 
     public Consulta(JFrame window, ConxDB db) {
         this.db = db;
@@ -189,6 +192,7 @@ public class Consulta extends JPanel implements ActionListener {
         lFrap.setVisible(false);
         tFrap.setVisible(false);
         tName.setVisible(false);
+        tPatient.setVisible(false);
         mResultado.setVisible(false);
         mPriorityTransfer.setVisible(false);
         mTransfer.setVisible(false);
@@ -198,8 +202,8 @@ public class Consulta extends JPanel implements ActionListener {
         mAmbulance.setVisible(false);
         lDir.setVisible(false);
         tDir.setVisible(false);
-//        eMain.setLineWrap(true);
-//        eMain.setWrapStyleWord(true);
+        autoPatient = new TextAutoCompleter(tPatient);
+        autoPatient.setMode(0);
         menuUpdate();
         eMain.setContentType("text/html");
         mBarOper.add(mOper);
@@ -221,6 +225,7 @@ public class Consulta extends JPanel implements ActionListener {
         top.add(lFrap);
         top.add(tFrap);
         top.add(tName);
+        top.add(tPatient);
         top.add(mBarResultado);
         top.add(mBarPriorityTransfer);
         top.add(mBarTransfer);
@@ -1081,12 +1086,22 @@ public class Consulta extends JPanel implements ActionListener {
                             }
                             break;
                         case "Paciente":
-                            if (tName.getText().equals("") || tName.getText() == null) {
-                                System.out.println("all");
+                            if (tPatient.getText().equals("") || tPatient.getText() == null) {
                                 sEmergency = db.consultPatientAll();
                             } else {
-                                System.out.println("search:" + tName.getText());
-                                sEmergency = db.consultPatientAll(tName.getText());
+                                String word = "";
+                                int idPatient = 0;
+                                char[] cadena = tPatient.getText().toCharArray();
+                                for (int i = 3; i < cadena.length; i++) {
+                                    if (cadena[i] == ' ') {
+                                        idPatient = Integer.valueOf(word);
+                                        i = cadena.length;
+                                    } else {
+                                        word += cadena[i];
+                                    }
+                                }
+                                System.out.println("id: " + idPatient);
+                                sEmergency = db.consultPatientAll(idPatient);
                             }
                             eMain.setText(sEmergency);
 
@@ -1138,6 +1153,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1157,6 +1173,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(true);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1176,6 +1193,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(true);
                     mResultado.setVisible(false);
@@ -1195,6 +1213,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(true);
@@ -1214,6 +1233,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1233,6 +1253,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1252,6 +1273,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1271,6 +1293,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1290,6 +1313,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(true);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1309,6 +1333,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(true);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1328,6 +1353,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1347,6 +1373,7 @@ public class Consulta extends JPanel implements ActionListener {
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
                     tName.setVisible(false);
+                    tPatient.setVisible(false);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1365,7 +1392,8 @@ public class Consulta extends JPanel implements ActionListener {
                     mOptionSearch.setText(e.getActionCommand());
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
-                    tName.setVisible(true);
+                    tName.setVisible(false);
+                    tPatient.setVisible(true);
                     lDir.setVisible(false);
                     tDir.setVisible(false);
                     mResultado.setVisible(false);
@@ -1475,6 +1503,32 @@ public class Consulta extends JPanel implements ActionListener {
                 JMenuItem iEmployees = new JMenuItem(word);
                 mAmbulance.add(iEmployees);
                 iEmployees.addActionListener(this);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+        employees = db.consultPatientName();
+        cadena = employees.toCharArray();
+        word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                autoPatient.addItem(word);
+                word = "";
+            } else {
+                word += cadena[i];
+            }
+        }
+    }
+
+    public void updateAutoPatient() {
+        char[] cadena;
+        String employees = db.consultPatient();
+        cadena = employees.toCharArray();
+        String word = "";
+        for (int i = 0; i < employees.length(); i++) {
+            if (cadena[i] == '\n') {
+                autoPatient.addItem(word);
                 word = "";
             } else {
                 word += cadena[i];

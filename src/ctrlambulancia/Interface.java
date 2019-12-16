@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.*;
 
+
 /**
  *
  * @author Sistemas
@@ -39,7 +40,6 @@ public class Interface extends JFrame implements ActionListener {
     JMenu mBase = new JMenu("Base de salida");
     JMenu mCallmain = new JMenu("llamada recibida");
     ConxDB db = new ConxDB();
-    //String[] data;
 
     public Interface() {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
@@ -47,7 +47,7 @@ public class Interface extends JFrame implements ActionListener {
         this.setSize(400, 560);
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-        this.setTitle("Sist. de Control de Ambulancias Beta2.8");
+        this.setTitle("Sist. Control de Ambulancias Beta2.9");
 
         RealTime rt = new RealTime();
         rt.settTime(tTime);
