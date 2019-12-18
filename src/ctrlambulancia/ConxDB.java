@@ -23,8 +23,8 @@ public class ConxDB {
     public ConxDB(JFrame frameInsert) {
         try {
             Class.forName("org.postgresql.Driver");
+//            this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/pruebaCA", "admincrm", "CRM*1975*dvb");//DB para hacer pruebas
             this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/CtrlAmbDB", "admincrm", "CRM*1975*dvb");
-//            this.c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/CtrlAmbDB", "postgres", "admin");
             System.out.println("Opened database successfully");
         } catch (ClassNotFoundException | SQLException e) {
             //e.printStackTrace();
@@ -36,8 +36,8 @@ public class ConxDB {
     public ConxDB() {
         try {
             Class.forName("org.postgresql.Driver");
+//            this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/pruebaCA", "admincrm", "CRM*1975*dvb");//DB para hacer pruebas
             this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/CtrlAmbDB", "admincrm", "CRM*1975*dvb");
-//            this.c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/CtrlAmbDB", "postgres", "admin");
             System.out.println("Opened database successfully");
         } catch (ClassNotFoundException | SQLException e) {
             //e.printStackTrace();
@@ -225,7 +225,7 @@ public class ConxDB {
             String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic, int idOper,
             int idRadioOper, int idAmbulance, String base, String operVoluntary, String paramedicVoluntary, String timeCall,
             String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note,
-            String tipeCallmain, String callmain, int kmTraveled, String folio) {
+            String tipeCallmain, String callmain, int kmTraveled, String folio, String transferFrom, String transferTo) {
         String query = "INSERT INTO \"EMERGENCIA\"(\"DIR_EMERGENCIA\", \"ENTRE_EMERGENCIA\", \"REF_EMERGENCIA\", \"COL_EMERGENCIA\", "
                 + "\"DEL_EMERGENCIA\", \"NOMBRE_SOLICITANTE_EMERGENCIA\", \"RESULTADO_EMERGENCIA\", \"TRASLADO_EMERGENCIA\", "
                 + "\"PRIORIDAD_TRASLADO_EMERGENCIA\", \"NUMERO_PACIENTES_EMERGENCIA\", \"NUMERO_MUERTOS_EMERGENCIA\", "
@@ -233,8 +233,9 @@ public class ConxDB {
                 + "\"ID_AMBULANCIA_EMERGENCIA\", \"BASE_EMERGENCIA\", \"OPERADOR_VOLUNTARIO_EMERGENCIA\", \"PARAMEDICO_VOLUNTARIO_EMERGENCIA\", "
                 + "\"HORA_LLAMADA_EMERGENCIA\", \"HORA_SALIDA_EMERGENCIA\", \"HORA_LLEGADA_EMERGENCIA\", \"HORA_TRASLADO_EMERGENCIA\", "
                 + "\"HORA_HOSPITAL_EMERGENCIA\", \"HORA_BASE_EMERGENCIA\", \"OBSERVACION_EMERGENCIA\", \"LLAMADA_RECIBIDA_EMERGENCIA\", "
-                + "\"NUMERO_LLAMADA_RECIBIDA_EMERGENCIA\", \"KM_RECORRIDO_EMERGENCIA\", \"FOLIO_EMERGENCIA\") "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "\"NUMERO_LLAMADA_RECIBIDA_EMERGENCIA\", \"KM_RECORRIDO_EMERGENCIA\", \"FOLIO_EMERGENCIA\", "
+                + "\"TRASLADO_PAGADO_SALIDA_EMERGENCIA\", \"TRASLADO_PAGADO_DESTINO_EMERGENCIA\") "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pst = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, dir);
@@ -266,6 +267,8 @@ public class ConxDB {
             pst.setString(27, callmain);
             pst.setInt(28, kmTraveled);
             pst.setString(29, folio);
+            pst.setString(30, transferFrom);
+            pst.setString(31, transferTo);
             pst.executeUpdate();
             Long id = null;
             ResultSet rs = pst.getGeneratedKeys();
@@ -726,7 +729,7 @@ public class ConxDB {
     }
 
     public String consultPatientAll() {
-        String resp = "<HTML>";
+        String resp = "";
         try {
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(""
@@ -751,24 +754,23 @@ public class ConxDB {
                 String frap = rs.getString("NUM_FRAP_PACIENTE");
                 int idEmergency = rs.getInt("ID_EMERGENCIA");
 
-                resp += "<b>[PC#" + id + "]<br>Nombre:</b> " + nom + " " + lastName + " " + lastName2 + "<br>"
-                        + "<b>Edad:</b> " + ageOld + " años \t\t<b>Sexo:</b> " + sex + "<br>"
-                        + "<b>Estado:</b> " + status + " <b>FRAP:</b> " + frap + " <b>idEmergencia:</b> " + idEmergency;
+                resp += "[PC#" + id + "]\nNombre: " + nom + " " + lastName + " " + lastName2 + "\n"
+                        + "Edad: " + ageOld + " años \t\tSexo: " + sex + "\n"
+                        + "Estado: " + status + "\t\tFRAP: " + frap + "\t\tidEmergencia: " + idEmergency + "\n";
                 if (!trauma.equals("") && trauma != null) {
-                    resp += "<b>trauma:</b> " + trauma + "<br>";
+                    resp += "trauma: " + trauma + "\n";
                 }
                 if ((!motivo.equals("") && motivo != null) || (!padecimiento.equals("") && padecimiento != null)
                         || (!medicamento.equals("") && medicamento != null) || (!eventoPrevio.equals("") && eventoPrevio != null)) {
-                    resp += "<b>ENFERMO motivo:</b> " + motivo + "\t\t<b>padecimiento:</b> " + padecimiento + "<br>"
-                            + "<b>medicamento:</b> " + medicamento + "\t\t<b>evento previo:</b> " + eventoPrevio + "<br>";
+                    resp += "ENFERMO motivo: " + motivo + "\t\tpadecimiento: " + padecimiento + "\n"
+                            + "medicamento: " + medicamento + "\t\tevento previo: " + eventoPrevio + "\n";
                 }
                 if ((!obstetrico.equals("") && obstetrico != null) || (!obstetricoMonthes.equals("0"))) {
-                    resp += "<b>OBTETRICO tipo:</b> " + obstetrico + "\t\t<b>meses:</b> " + obstetricoMonthes + "<br>";
+                    resp += "OBTETRICO tipo: " + obstetrico + "\t\t<b>meses: " + obstetricoMonthes + "\n";
                 }
-                resp += "<br>";
+                resp += "\n";
             }
 
-            resp += "</HTML>";
             rs.close();
             st.close();
             return resp;
@@ -800,7 +802,7 @@ public class ConxDB {
     }
 
     public String consultPatientAll(String search) {
-        String resp = "<HTML>";
+        String resp = "";
         try {
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(""
@@ -827,24 +829,23 @@ public class ConxDB {
                 String frap = rs.getString("NUM_FRAP_PACIENTE");
                 int idEmergency = rs.getInt("ID_EMERGENCIA");
 
-                resp += "<b>[PC#" + id + "]<br>Nombre:</b> " + name + " " + lastName + " " + lastName2 + "<br>"
-                        + "<b>Edad:</b> " + ageOld + " años \t\t<b>Sexo:</b> " + sex + "<br>"
-                        + "<b>Estado:</b> " + status + " <b>FRAP:</b> " + frap + " <b>idEmergencia:</b> " + idEmergency;
+                resp += "[PC#" + id + "]\nNombre: " + name + " " + lastName + " " + lastName2 + "\n"
+                        + "Edad: " + ageOld + " años \t\tSexo: " + sex + "\n"
+                        + "Estado: " + status + "\t\tFRAP: " + frap + "\t\tidEmergencia: " + idEmergency + "\n";
                 if (!trauma.equals("") && trauma != null) {
-                    resp += "<b>trauma:</b> " + trauma + "<br>";
+                    resp += "trauma: " + trauma + "\n";
                 }
                 if ((!motivo.equals("") && motivo != null) || (!padecimiento.equals("") && padecimiento != null)
                         || (!medicamento.equals("") && medicamento != null) || (!eventoPrevio.equals("") && eventoPrevio != null)) {
-                    resp += "<b>ENFERMO motivo:</b> " + motivo + "\t\t<b>padecimiento:</b> " + padecimiento + "<br>"
-                            + "<b>medicamento:</b> " + medicamento + "\t\t<b>evento previo:</b> " + eventoPrevio + "<br>";
+                    resp += "ENFERMO motivo: " + motivo + "\t\tpadecimiento: " + padecimiento + "\n"
+                            + "medicamento: " + medicamento + "\t\tevento previo: " + eventoPrevio + "\n";
                 }
                 if ((!obstetrico.equals("") && obstetrico != null) || (!obstetricoMonthes.equals("0"))) {
-                    resp += "<b>OBTETRICO tipo:</b> " + obstetrico + "\t\t<b>meses:</b> " + obstetricoMonthes + "<br>";
+                    resp += "OBTETRICO tipo: " + obstetrico + "\t\tmeses: " + obstetricoMonthes + "\n";
                 }
-                resp += "<br>";
+                resp += "\n";
             }
-
-            resp += "</HTML>";
+            ;
             rs.close();
             st.close();
             return resp;
@@ -894,7 +895,7 @@ public class ConxDB {
     }
 
     public String consultFRAP(String frap) {
-        String resp = "<HTML>";
+        String resp = "";
         try {
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(""
@@ -919,24 +920,23 @@ public class ConxDB {
 //                String frap = rs.getString("NUM_FRAP_PACIENTE");
                 int idEmergency = rs.getInt("ID_EMERGENCIA");
 
-                resp += "<b>[PC#" + id + "]<br>Nombre:</b> " + nom + " " + lastName + " " + lastName2 + "<br>"
-                        + "<b>Edad:</b> " + ageOld + " años \t\t<b>Sexo:</b> " + sex + "<br>"
-                        + "<b>Estado:</b> " + status + " <b>FRAP:</b> " + frap + " <b>idEmergencia:</b> " + idEmergency + "</br>";
+                resp += "[PC#" + id + "]\nNombre: " + nom + " " + lastName + " " + lastName2 + "\n"
+                        + "Edad: " + ageOld + " años \t\tSexo: " + sex + "\n"
+                        + "Estado: " + status + "\t\tFRAP: " + frap + "\t\tidEmergencia: " + idEmergency + "\n";
                 if (!trauma.equals("") && trauma != null) {
-                    resp += "<b>trauma:</b> " + trauma + "<br>";
+                    resp += "trauma: " + trauma + "\n";
                 }
                 if ((!motivo.equals("") && motivo != null) || (!padecimiento.equals("") && padecimiento != null)
                         || (!medicamento.equals("") && medicamento != null) || (!eventoPrevio.equals("") && eventoPrevio != null)) {
-                    resp += "<b>ENFERMO motivo:</b> " + motivo + "\t\t<b>padecimiento:</b> " + padecimiento + "<br>"
-                            + "<b>medicamento:</b> " + medicamento + "\t\t<b>evento previo:</b> " + eventoPrevio + "<br>";
+                    resp += "ENFERMO motivo: " + motivo + "\t\tpadecimiento: " + padecimiento + "\n"
+                            + "medicamento: " + medicamento + "\t\tevento previo: " + eventoPrevio + "\n";
                 }
                 if ((!obstetrico.equals("") && obstetrico != null) || (!obstetricoMonthes.equals("0"))) {
-                    resp += "<b>OBTETRICO tipo:</b> " + obstetrico + "\t\t<b>meses:</b> " + obstetricoMonthes + "<br>";
+                    resp += "OBTETRICO tipo: " + obstetrico + "\t\tmeses: " + obstetricoMonthes + "\n";
                 }
-                resp += "<br>";
+                resp += "\n";
             }
 
-            resp += "</HTML>";
             rs.close();
             st.close();
             return resp;
@@ -1058,7 +1058,7 @@ public class ConxDB {
     }
 
     public String consultEmergency() {
-        String resp = "<HTML>";
+        String resp = "";
         try {
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(""
@@ -1093,15 +1093,19 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
 
-            resp += "</HTML>";
             rs.close();
             st.close();
             return resp;
@@ -1235,6 +1239,7 @@ public class ConxDB {
     }
 
     public String consultEmergency(String dateOpen, String dateClose) {
+        System.out.println("conx/consltEme");
         String resp = "";
         try {
             Statement st = c.createStatement();
@@ -1270,12 +1275,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
 
             rs.close();
@@ -1322,12 +1332,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
 
             rs.close();
@@ -1426,12 +1441,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
 
             rs.close();
@@ -1478,12 +1498,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1530,12 +1555,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1581,12 +1611,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1633,12 +1668,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1684,12 +1724,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1736,12 +1781,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1787,12 +1837,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1839,12 +1894,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1890,12 +1950,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1942,12 +2007,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -1994,12 +2064,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2047,12 +2122,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2099,12 +2179,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2152,12 +2237,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2204,12 +2294,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2257,12 +2352,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2309,12 +2409,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2362,12 +2467,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2414,12 +2524,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2467,12 +2582,17 @@ public class ConxDB {
                 String timeHospital = rs.getString("HORA_HOSPITAL_EMERGENCIA");
                 String timeComeback = rs.getString("HORA_BASE_EMERGENCIA");
                 String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
+                String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
                         operVoluntary, timeCall, timeDeparture, timeArrival, timeTransfer, timeHospital,
-                        timeComeback, note);
+                        timeComeback, note, tipeCallMain, callMain, folio, transferFrom, transferTo);
             }
             rs.close();
             st.close();
@@ -2486,31 +2606,36 @@ public class ConxDB {
     public String format(int idEmergency, String dir, String entre, String ref, String col, String del, String nameApplicant,
             String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic,
             int idOper, int idRadioOper, int idAmbulance, int kmTraveled, String base, String paramedicVoluntary, String operVoluntary, String timeCall,
-            String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note) {
-        return ("<b>[EM#" + idEmergency + "]</b><br>"
-                + "<b>Dirección:</b> " + dir + " \t\t<b>entre:</b> " + entre + "<br>"
-                + "<b>Referencia:</b> " + ref + "<br>"
-                + "<b>Colonia:</b> " + col + " \t\t<b>Delegación:</b> " + del + "<br>"
-                + "<b>Nombre del solicitante:</b> " + nameApplicant + "<br>"
-                + "<b>Resultado:</b> " + resultado + "<br>"
-                + "<b>Traslado:</b> " + transfer + "\t\t<b>Prioridad:</b> " + priorityTransfer + "<br>"
-                + "<b>Vivos:</b> " + alive + "\t\t<b>Muertos:</b> " + deads + "<br>"
+            String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note,
+            String tipeCallMain, String callMain, String folio, String transferFrom, String transferTo) {
+        String info = ("[EM#" + idEmergency + "]\n"
+                + "Dirección: " + dir + " \t\tentre: " + entre + "\n"
+                + "Referencia: " + ref + "\n"
+                + "Colonia: " + col + " \t\tDelegación: " + del + "\n"
+                + "Nombre del solicitante: " + nameApplicant + "\n"
+                + "Resultado: " + resultado + "\n"
+                + "Traslado: " + transfer + "\t\tPrioridad: " + priorityTransfer + "\n"
+                + "Vivos: " + alive + "\t\tMuertos: " + deads + "\n"
                 + consultInfoPatient(idEmergency)
-                + "<b>Paramedico:</b> #" + idParamedic + "\t<b>Nombre:</b> " + consultNameParamedic(idParamedic) + "<br>"
-                + "<b>Paramedico voluntario:</b> " + paramedicVoluntary + "<br>"
-                + "<b>Operador:</b> #" + idOper + "\t<b>Nombre:</b> " + consultNameOper(idOper) + "<br>"
-                + "<b>Operador voluntario:</b> " + operVoluntary + "<br>"
-                + "<b>RadioOperador:</b> #" + idRadioOper + "\t<b>Nombre:</b> " + consultNameRadioOper(idRadioOper) + "<br>"
-                + "<b>Ambulancia:</b> id:" + idAmbulance + "\t<b>Numero:</b> " + consultNumAmbulance(idAmbulance) + "\t<b>Km recorridas:</b> " + kmTraveled
-                + "\t<b>Base:</b> " + base + "<br>"
-                + "<b>hora de la llamada:</b> " + timeCall + "<br>"
-                + "<b>hora de la salida:</b> " + timeDeparture + "<br>"
-                + "<b>hora de la llegada:</b> " + timeArrival + "<br>"
-                + "<b>hora de la traslado:</b> " + timeTransfer + "<br>"
-                + "<b>hora de la hospital:</b> " + timeHospital + "<br>"
-                + "<b>hora de la base:</b> " + timeComeback + "<br>"
-                + "<b>Observaciones:</b> " + note + "<br>"
-                + "<br>");
+                + "Paramedico: #" + idParamedic + "\tNombre: " + consultNameParamedic(idParamedic) + "\n"
+                + "Paramedico voluntario: " + paramedicVoluntary + "\n"
+                + "Operador: #" + idOper + "\tNombre: " + consultNameOper(idOper) + "\n"
+                + "Operador voluntario: " + operVoluntary + "\n"
+                + "RadioOperador: #" + idRadioOper + "\tNombre: " + consultNameRadioOper(idRadioOper) + "\n"
+                + "Ambulancia: id:" + idAmbulance + "\tNumero: " + consultNumAmbulance(idAmbulance) + "\tKm recorridas: " + kmTraveled
+                + "\tBase: " + base + "\n"
+                + "hora de la llamada: " + timeCall + "\n"
+                + "hora de la salida: " + timeDeparture + "\n"
+                + "hora de la llegada: " + timeArrival + "\n"
+                + "hora de la traslado: " + timeTransfer + "\n"
+                + "hora de la hospital: " + timeHospital + "\n"
+                + "hora de la base: " + timeComeback + "\n"
+                + "Observaciones: " + note + "\n"
+                + "llamada recibida: " + tipeCallMain + " " + callMain + "\n");
+        if (!folio.equals("") && folio != null) {
+            info += "Folio: " + folio + "\t\tDesde: " + transferFrom + "\thasta: " + transferTo;
+        }
+        return info;
     }
 
     public String consultNamePatient(int idEmergency) {
@@ -2545,50 +2670,50 @@ public class ConxDB {
                     + "FROM \"PACIENTE\""
                     + "WHERE \"ID_EMERGENCIA\"= '" + idEmergency + "';");
             while (rs.next()) {
-                infoPatient += "<b>Paciente[" + rs.getInt("PK_ID_PACIENTE") + "]:</b> "
+                infoPatient += "Paciente[" + rs.getInt("PK_ID_PACIENTE") + "]: "
                         + rs.getString("NOMBRE_PACIENTE") + " "
                         + rs.getString("APELLIDO_PATERNO_PACIENTE") + " "
-                        + rs.getString("APELLIDO_MATERNO_PACIENTE") + "</span><br>";
+                        + rs.getString("APELLIDO_MATERNO_PACIENTE") + "\n";
                 data = "" + rs.getInt("EDAD_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>Edad:</b> " + data + "<br>";
+                    infoPatient += "Edad: " + data + "\n";
                 }
                 data = "" + rs.getString("SEXO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>Sexo:</b> " + data + "<br>";
+                    infoPatient += "Sexo: " + data + "\n";
                 }
                 data = "" + rs.getString("ESTADO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>Estado:</b> " + data + "<br>";
+                    infoPatient += "Estado: " + data + "\n";
                 }
                 data = "" + rs.getString("NUM_FRAP_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>FRAP:</b> " + data + "<br>";
+                    infoPatient += "FRAP: " + data + "\n";
                 }
                 data = rs.getString("TRAUMA_TIPO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>Trauma:</b> " + data + "<br>";
+                    infoPatient += "Trauma: " + data + "\n";
                 }
                 data = rs.getString("MOTIVO_ENFERMO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>Motivo:</b> " + data + "<br>";
+                    infoPatient += "Motivo: " + data + "\n";
                 }
                 data = rs.getString("PADECIMIENTO_ENFERMO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>Padecimiento:</b> " + data + "<br>";
+                    infoPatient += "Padecimiento: " + data + "\n";
                 }
                 data = rs.getString("MEDICAMENTO_ENFERMO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>Medicamento:</b> " + data + "<br>";
+                    infoPatient += "Medicamento: " + data + "\n";
                 }
                 data = rs.getString("EVENTO_PREVIO_ENFERMO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>Evento previo:</b> " + data + "<br>";
+                    infoPatient += "Evento previo: " + data + "\n";
                 }
                 data = rs.getString("TIPO_OBSTETRICO_PACIENTE");
                 if (data != null && !data.equals("")) {
-                    infoPatient += "<b>Tipo Obstetrico:</b> " + rs.getString("TIPO_OBSTETRICO_PACIENTE") + "\t"
-                            + rs.getInt("MESES_OBSTETRICO_PACIENTE") + " meses<br>";
+                    infoPatient += "Tipo Obstetrico: " + data + "\t"
+                            + rs.getInt("MESES_OBSTETRICO_PACIENTE") + " meses\n";
                 }
             }
             rs.close();

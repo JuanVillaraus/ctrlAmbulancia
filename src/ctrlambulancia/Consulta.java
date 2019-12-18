@@ -36,8 +36,8 @@ public class Consulta extends JPanel implements ActionListener {
     JTextField tFrap = new JTextField(8);
     JTextField tName = new JTextField(20);
     JTextField tPatient = new JTextField(30);
-//    JTextArea eMain=  new JTextArea(40, 140);
-    JEditorPane eMain = new JEditorPane();
+    JTextArea eMain = new JTextArea(40, 140);
+//    JEditorPane eMain = new JEditorPane();
     JLabel lDateOpen = new JLabel("Fecha de:");
     JLabel lDateClose = new JLabel("hasta:");
     JLabel lFrap = new JLabel("ID:");
@@ -149,6 +149,8 @@ public class Consulta extends JPanel implements ActionListener {
         JPanel top = new JPanel();
         JScrollPane scroll = new JScrollPane();
         scroll.setViewportView(eMain);
+        eMain.setLineWrap(true);
+        eMain.setWrapStyleWord(true);
 
         iOption1.addActionListener(this);
         iOption2.addActionListener(this);
@@ -205,7 +207,6 @@ public class Consulta extends JPanel implements ActionListener {
         autoPatient = new TextAutoCompleter(tPatient);
         autoPatient.setMode(0);
         menuUpdate();
-        eMain.setContentType("text/html");
         mBarOper.add(mOper);
         mBarRadioOper.add(mRadioOper);
         mBarParamedic.add(mParamedic);
@@ -217,7 +218,7 @@ public class Consulta extends JPanel implements ActionListener {
         mResultado.setPreferredSize(new Dimension(150, 30));
         mPriorityTransfer.setPreferredSize(new Dimension(150, 30));
         mTransfer.setPreferredSize(new Dimension(150, 30));
-        eMain.setPreferredSize(new Dimension(1500, 750));
+//        eMain.setPreferredSize(new Dimension(1500, 750));
         mResultado.setHorizontalAlignment(SwingConstants.CENTER);
         mResultado.setHorizontalTextPosition(JTextField.CENTER);
 
@@ -280,13 +281,14 @@ public class Consulta extends JPanel implements ActionListener {
                     break;
                 default:
                     switch (mOptionSearch.getText()) {
-
                         case "Opción para Buscar":
                         case "Emergencia":
                             if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+//                                String[][] arrayEmergency = db.consultEmergencyAll(month.format(calendario.getTime()) + "-01 00:00:00",
                                 sEmergency = db.consultEmergency(month.format(calendario.getTime()) + "-01 00:00:00",
                                         month.format(calendario.getTime()) + "-31 23:59:59");
                                 eMain.setText(sEmergency);
+//                                eMain.setText(format(arrayEmergency));
 //                        try {
 ////                            a.escribirTxt("resource/Emergencia.txt", sEmergency);
 //                            a.writeExcelData("C:/CtrlAmb/reporte mensual.xlsx",
@@ -378,61 +380,61 @@ public class Consulta extends JPanel implements ActionListener {
                                 if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                                     sEmergency = db.consultEmergencyDir(tDir.getText());
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencias " + tDir.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte Ubicación "
-                                                + tDir.getText() + ".xlsx", "hoja1", db.reportDir(tDir.getText()));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Ubicación " + tDir.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencias " + tDir.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte Ubicación "
+//                                                + tDir.getText() + ".xlsx", "hoja1", db.reportDir(tDir.getText()));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Ubicación " + tDir.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                                     if (tDateOpen.getText().equals("")) {
                                         sEmergency = db.consultEmergencyDir(tDir.getText(), tDateClose.getText()
                                                 + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
-//                                            + tDateClose.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte Ubicación "
-                                                    + tDir.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1", db.reportDir(tDir.getText(),
-                                                            tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Ubicación " + tDir.getText() + " del "
-                                                    + tDateClose.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
+////                                            + tDateClose.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte Ubicación "
+//                                                    + tDir.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1", db.reportDir(tDir.getText(),
+//                                                            tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Ubicación " + tDir.getText() + " del "
+//                                                    + tDateClose.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     } else {
                                         sEmergency = db.consultEmergencyDir(tDir.getText(), tDateOpen.getText()
                                                 + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
-//                                            + tDateOpen.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte Ubicación "
-                                                    + tDir.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1", db.reportDir(tDir.getText(),
-                                                            tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Ubicación " + tDir.getText() + " del "
-                                                    + tDateOpen.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
+////                                            + tDateOpen.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte Ubicación "
+//                                                    + tDir.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1", db.reportDir(tDir.getText(),
+//                                                            tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Ubicación " + tDir.getText() + " del "
+//                                                    + tDateOpen.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     }
                                 } else {
                                     sEmergency = db.consultEmergencyDir(tDir.getText(), tDateOpen.getText()
                                             + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
-//                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte Ubicación "
-                                                + tDir.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                db.reportDir(tDir.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Ubicación " + tDir.getText() + " del "
-                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencia en " + tDir.getText() + " del "
+////                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte Ubicación "
+//                                                + tDir.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                db.reportDir(tDir.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Ubicación " + tDir.getText() + " del "
+//                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 }
                             }
                             break;
@@ -448,60 +450,60 @@ public class Consulta extends JPanel implements ActionListener {
                                 if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                                     sEmergency = db.consultEmergencyResultado(resultado);
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencias con " + resultado + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + resultado + ".xlsx", "hoja1",
-                                                db.reportResultado(resultado));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + resultado + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencias con " + resultado + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + resultado + ".xlsx", "hoja1",
+//                                                db.reportResultado(resultado));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + resultado + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                                     if (tDateOpen.getText().equals("")) {
                                         sEmergency = db.consultEmergencyResultado(resultado, tDateClose.getText()
                                                 + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + resultado + " del "
-//                                            + tDateClose.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + resultado + " del " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                    db.reportResultado(resultado, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + resultado + " del " + tDateClose.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + resultado + " del "
+////                                            + tDateClose.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + resultado + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                    db.reportResultado(resultado, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + resultado + " del " + tDateClose.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     } else {
                                         sEmergency = db.consultEmergencyResultado(resultado, tDateOpen.getText()
                                                 + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + resultado + " del "
-//                                            + tDateOpen.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + resultado + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
-                                                    db.reportResultado(resultado, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + resultado + " del " + tDateOpen.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + resultado + " del "
+////                                            + tDateOpen.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + resultado + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+//                                                    db.reportResultado(resultado, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + resultado + " del " + tDateOpen.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     }
                                 } else {
                                     sEmergency = db.consultEmergencyResultado(resultado, tDateOpen.getText()
                                             + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencia con " + resultado + " del "
-//                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + resultado + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                db.reportResultado(resultado, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + resultado + " del "
-                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencia con " + resultado + " del "
+////                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + resultado + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                db.reportResultado(resultado, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + resultado + " del "
+//                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 }
                             }
                             break;
@@ -513,60 +515,60 @@ public class Consulta extends JPanel implements ActionListener {
                                 if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                                     sEmergency = db.consultEmergencyTransfer(mTransfer.getText());
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencias a " + mTransfer.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mTransfer.getText() + ".xlsx", "hoja1",
-                                                db.reportTransfer(mTransfer.getText()));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mTransfer.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencias a " + mTransfer.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mTransfer.getText() + ".xlsx", "hoja1",
+//                                                db.reportTransfer(mTransfer.getText()));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mTransfer.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                                     if (tDateOpen.getText().equals("")) {
                                         sEmergency = db.consultEmergencyTransfer(mTransfer.getText(), tDateClose.getText()
                                                 + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
-//                                            + tDateClose.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mTransfer.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                    db.reportTransfer(mTransfer.getText(), tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mTransfer.getText() + " del " + tDateClose.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
+////                                            + tDateClose.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mTransfer.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                    db.reportTransfer(mTransfer.getText(), tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mTransfer.getText() + " del " + tDateClose.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     } else {
                                         sEmergency = db.consultEmergencyTransfer(mTransfer.getText(), tDateOpen.getText()
                                                 + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
-//                                            + tDateOpen.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mTransfer.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
-                                                    db.reportTransfer(mTransfer.getText(), tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mTransfer.getText() + " del " + tDateOpen.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
+////                                            + tDateOpen.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mTransfer.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+//                                                    db.reportTransfer(mTransfer.getText(), tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mTransfer.getText() + " del " + tDateOpen.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     }
                                 } else {
                                     sEmergency = db.consultEmergencyTransfer(mTransfer.getText(), tDateOpen.getText()
                                             + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
-//                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mTransfer.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                db.reportTransfer(mTransfer.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mTransfer.getText() + " del "
-                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencia a " + mTransfer.getText() + " del "
+////                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mTransfer.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                db.reportTransfer(mTransfer.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mTransfer.getText() + " del "
+//                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 }
                             }
                             break;
@@ -578,69 +580,69 @@ public class Consulta extends JPanel implements ActionListener {
                                 if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                                     sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]));
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencias con " + mPriorityTransfer.getText()
-//                                        + " del Traslado.txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mPriorityTransfer.getText() + ".xlsx", "hoja1",
-                                                db.reportPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10])));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mPriorityTransfer.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencias con " + mPriorityTransfer.getText()
+////                                        + " del Traslado.txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mPriorityTransfer.getText() + ".xlsx", "hoja1",
+//                                                db.reportPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10])));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mPriorityTransfer.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                                     if (tDateOpen.getText().equals("")) {
                                         sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
                                                 + mPriorityTransfer.getText().toCharArray()[10]), tDateClose.getText()
                                                 + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
-//                                            + tDateClose.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mPriorityTransfer.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                    db.reportPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]),
-                                                            tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mPriorityTransfer.getText()
-                                                    + " del " + tDateClose.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
+////                                            + tDateClose.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mPriorityTransfer.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                    db.reportPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]),
+//                                                            tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mPriorityTransfer.getText()
+//                                                    + " del " + tDateClose.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     } else {
                                         sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
                                                 + mPriorityTransfer.getText().toCharArray()[10]), tDateOpen.getText()
                                                 + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
-//                                            + tDateOpen.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mPriorityTransfer.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
-                                                    db.reportPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]),
-                                                            tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mPriorityTransfer.getText()
-                                                    + " del " + tDateOpen.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
+////                                            + tDateOpen.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mPriorityTransfer.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+//                                                    db.reportPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]),
+//                                                            tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mPriorityTransfer.getText()
+//                                                    + " del " + tDateOpen.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     }
                                 } else {
                                     sEmergency = db.consultEmergencyPriorityTransfer(Integer.valueOf(""
                                             + mPriorityTransfer.getText().toCharArray()[10]), tDateOpen.getText()
                                             + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
-//                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mPriorityTransfer.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                db.reportPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]),
-                                                        tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mPriorityTransfer.getText()
-                                                + " del " + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencia con " + mPriorityTransfer.getText() + " del "
+////                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mPriorityTransfer.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                db.reportPriorityTransfer(Integer.valueOf("" + mPriorityTransfer.getText().toCharArray()[10]),
+//                                                        tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mPriorityTransfer.getText()
+//                                                + " del " + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 }
                             }
                             break;
@@ -663,59 +665,59 @@ public class Consulta extends JPanel implements ActionListener {
                                 if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                                     sEmergency = db.consultEmergencyOper(idOper);
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencias con " + mOper.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mOper.getText() + ".xlsx", "hoja1", db.reportOper(idOper));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mOper.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencias con " + mOper.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mOper.getText() + ".xlsx", "hoja1", db.reportOper(idOper));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mOper.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                                     if (tDateOpen.getText().equals("")) {
                                         sEmergency = db.consultEmergencyOper(idOper, tDateClose.getText()
                                                 + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + mOper.getText() + " del "
-//                                            + tDateClose.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mOper.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                    db.reportOper(idOper, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mOper.getText() + " del " + tDateClose.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + mOper.getText() + " del "
+////                                            + tDateClose.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mOper.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                    db.reportOper(idOper, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mOper.getText() + " del " + tDateClose.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     } else {
                                         sEmergency = db.consultEmergencyOper(idOper, tDateOpen.getText()
                                                 + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + mOper.getText() + " del "
-//                                            + tDateOpen.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mOper.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
-                                                    db.reportOper(idOper, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mOper.getText() + " del " + tDateOpen.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + mOper.getText() + " del "
+////                                            + tDateOpen.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mOper.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+//                                                    db.reportOper(idOper, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mOper.getText() + " del " + tDateOpen.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     }
                                 } else {
                                     sEmergency = db.consultEmergencyOper(idOper, tDateOpen.getText()
                                             + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencia Operador con " + mOper.getText() + " del "
-//                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mOper.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                db.reportOper(idOper, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mOper.getText() + " del "
-                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencia Operador con " + mOper.getText() + " del "
+////                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mOper.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                db.reportOper(idOper, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mOper.getText() + " del "
+//                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 }
                             }
                             break;
@@ -738,59 +740,59 @@ public class Consulta extends JPanel implements ActionListener {
                                 if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                                     sEmergency = db.consultEmergencyParamedic(idParamedic);
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencias con " + mParamedic.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mParamedic.getText() + ".xlsx", "hoja1", db.reportParamedic(idParamedic));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mParamedic.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencias con " + mParamedic.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mParamedic.getText() + ".xlsx", "hoja1", db.reportParamedic(idParamedic));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mParamedic.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                                     if (tDateOpen.getText().equals("")) {
                                         sEmergency = db.consultEmergencyParamedic(idParamedic, tDateClose.getText()
                                                 + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
-//                                            + tDateClose.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mParamedic.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                    db.reportParamedic(idParamedic, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mParamedic.getText() + " del " + tDateClose.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
+////                                            + tDateClose.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mParamedic.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                    db.reportParamedic(idParamedic, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mParamedic.getText() + " del " + tDateClose.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     } else {
                                         sEmergency = db.consultEmergencyParamedic(idParamedic, tDateOpen.getText()
                                                 + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
-//                                            + tDateOpen.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mParamedic.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
-                                                    db.reportParamedic(idParamedic, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mParamedic.getText() + " del " + tDateOpen.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
+////                                            + tDateOpen.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mParamedic.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+//                                                    db.reportParamedic(idParamedic, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mParamedic.getText() + " del " + tDateOpen.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     }
                                 } else {
                                     sEmergency = db.consultEmergencyParamedic(idParamedic, tDateOpen.getText()
                                             + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
-//                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mParamedic.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                db.reportParamedic(idParamedic, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mParamedic.getText() + " del "
-                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencia con " + mParamedic.getText() + " del "
+////                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mParamedic.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                db.reportParamedic(idParamedic, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mParamedic.getText() + " del "
+//                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 }
                             }
                             break;
@@ -802,62 +804,62 @@ public class Consulta extends JPanel implements ActionListener {
                                 if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                                     sEmergency = db.consultEmergencyOperVoluntary(tName.getText());
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencias Radio Operador Voluntario " + tName.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte Radio Operador Voluntario "
-                                                + tName.getText() + ".xlsx", "hoja1", db.reportOperVoluntary(tName.getText()));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Radio Operador Voluntario " + tName.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencias Radio Operador Voluntario " + tName.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte Radio Operador Voluntario "
+//                                                + tName.getText() + ".xlsx", "hoja1", db.reportOperVoluntary(tName.getText()));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Radio Operador Voluntario " + tName.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                                     if (tDateOpen.getText().equals("")) {
                                         sEmergency = db.consultEmergencyOperVoluntary(tName.getText(), tDateClose.getText()
                                                 + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
-//                                            + tDateClose.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte Radio Operador Voluntario "
-                                                    + tName.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                    db.reportOperVoluntary(tName.getText(), tDateClose.getText() + " 00:00:00", tDateClose.getText()
-                                                            + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Radio Operador Voluntario " + tName.getText()
-                                                    + " del " + tDateClose.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
+////                                            + tDateClose.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte Radio Operador Voluntario "
+//                                                    + tName.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                    db.reportOperVoluntary(tName.getText(), tDateClose.getText() + " 00:00:00", tDateClose.getText()
+//                                                            + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Radio Operador Voluntario " + tName.getText()
+//                                                    + " del " + tDateClose.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     } else {
                                         sEmergency = db.consultEmergencyOperVoluntary(tName.getText(), tDateOpen.getText()
                                                 + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
-//                                            + tDateOpen.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte Radio Operador Voluntario "
-                                                    + tName.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
-                                                    db.reportOperVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Radio Operador Voluntario " + tName.getText()
-                                                    + " del " + tDateOpen.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
+////                                            + tDateOpen.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte Radio Operador Voluntario "
+//                                                    + tName.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+//                                                    db.reportOperVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Radio Operador Voluntario " + tName.getText()
+//                                                    + " del " + tDateOpen.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     }
                                 } else {
                                     sEmergency = db.consultEmergencyOperVoluntary(tName.getText(), tDateOpen.getText()
                                             + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
-//                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte Radio Operador Voluntario "
-                                                + tName.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                db.reportOperVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Radio Operador Voluntario " + tName.getText()
-                                                + " del " + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencia Radio Operador Voluntario " + tName.getText() + " del "
+////                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte Radio Operador Voluntario "
+//                                                + tName.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                db.reportOperVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Radio Operador Voluntario " + tName.getText()
+//                                                + " del " + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 }
                             }
                             break;
@@ -869,64 +871,64 @@ public class Consulta extends JPanel implements ActionListener {
                                 if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                                     sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText());
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencias Paramedico Voluntario " + tName.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte Paramedico Voluntario "
-                                                + tName.getText() + ".xlsx", "hoja1", db.reportParamedicVoluntary(tName.getText()));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paramedico Voluntario " + tName.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencias Paramedico Voluntario " + tName.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte Paramedico Voluntario "
+//                                                + tName.getText() + ".xlsx", "hoja1", db.reportParamedicVoluntary(tName.getText()));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paramedico Voluntario " + tName.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                                     if (tDateOpen.getText().equals("")) {
                                         sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText(),
                                                 tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
-//                                            + tDateClose.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte Paramedico Voluntario "
-                                                    + tName.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                    db.reportParamedicVoluntary(tName.getText(), tDateClose.getText() + " 00:00:00", tDateClose.getText()
-                                                            + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paramedico Voluntario " + tName.getText() + " del "
-                                                    + tDateClose.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
+////                                            + tDateClose.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte Paramedico Voluntario "
+//                                                    + tName.getText() + " del " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                    db.reportParamedicVoluntary(tName.getText(), tDateClose.getText() + " 00:00:00", tDateClose.getText()
+//                                                            + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paramedico Voluntario " + tName.getText() + " del "
+//                                                    + tDateClose.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     } else {
                                         sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText(),
                                                 tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
-//                                            + tDateOpen.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte Paramedico Voluntario "
-                                                    + tName.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
-                                                    db.reportParamedicVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateOpen.getText()
-                                                            + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paramedico Voluntario " + tName.getText() + " del "
-                                                    + tDateOpen.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
+////                                            + tDateOpen.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte Paramedico Voluntario "
+//                                                    + tName.getText() + " del " + tDateOpen.getText() + ".xlsx", "hoja1",
+//                                                    db.reportParamedicVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateOpen.getText()
+//                                                            + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paramedico Voluntario " + tName.getText() + " del "
+//                                                    + tDateOpen.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     }
                                 } else {
                                     sEmergency = db.consultEmergencyParamedicVoluntary(tName.getText(), tDateOpen.getText()
                                             + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
-//                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte Paramedico Voluntario "
-                                                + tName.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                db.reportParamedicVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText()
-                                                        + " 23:59:59"));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paramedico Voluntario " + tName.getText() + " del "
-                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencia Paramedico Voluntario " + tName.getText() + " del "
+////                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte Paramedico Voluntario "
+//                                                + tName.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                db.reportParamedicVoluntary(tName.getText(), tDateOpen.getText() + " 00:00:00", tDateClose.getText()
+//                                                        + " 23:59:59"));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" Paramedico Voluntario " + tName.getText() + " del "
+//                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 }
                             }
                             break;
@@ -949,61 +951,61 @@ public class Consulta extends JPanel implements ActionListener {
                                 if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
                                     sEmergency = db.consultEmergencyRadioOper(idRadioOper);
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencias con " + mRadioOper.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mRadioOper.getText() + ".xlsx", "hoja1", db.reportRadioOper(idRadioOper));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mRadioOper.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencias con " + mRadioOper.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mRadioOper.getText() + ".xlsx", "hoja1", db.reportRadioOper(idRadioOper));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mRadioOper.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
                                     if (tDateOpen.getText().equals("")) {
                                         sEmergency = db.consultEmergencyRadioOper(idRadioOper, tDateClose.getText()
                                                 + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + mRadioOper.getText()
-//                                            + " del " + tDateClose.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mRadioOper.getText() + " del " + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                    db.reportRadioOper(idRadioOper, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mRadioOper.getText() + " del "
-                                                    + tDateClose.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + mRadioOper.getText()
+////                                            + " del " + tDateClose.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mRadioOper.getText() + " del " + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                    db.reportRadioOper(idRadioOper, tDateClose.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mRadioOper.getText() + " del "
+//                                                    + tDateClose.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     } else {
                                         sEmergency = db.consultEmergencyRadioOper(idRadioOper, tDateOpen.getText()
                                                 + " 00:00:00", tDateOpen.getText() + " 23:59:59");
                                         eMain.setText(sEmergency);
-                                        try {
-//                                    a.escribirTxt("resource/Emergencia con " + mRadioOper.getText()
-//                                            + " del " + tDateOpen.getText() + ".txt", sEmergency);
-                                            a.writeExcelData("C:/CtrlAmb/reporte "
-                                                    + mRadioOper.getText() + " del " + tDateOpen.getText() + " " + ".xlsx", "hoja1",
-                                                    db.reportRadioOper(idRadioOper, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
-                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mRadioOper.getText() + " del "
-                                                    + tDateOpen.getText() + "\".xlsx");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+//                                        try {
+////                                    a.escribirTxt("resource/Emergencia con " + mRadioOper.getText()
+////                                            + " del " + tDateOpen.getText() + ".txt", sEmergency);
+//                                            a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                    + mRadioOper.getText() + " del " + tDateOpen.getText() + " " + ".xlsx", "hoja1",
+//                                                    db.reportRadioOper(idRadioOper, tDateOpen.getText() + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+//                                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mRadioOper.getText() + " del "
+//                                                    + tDateOpen.getText() + "\".xlsx");
+//                                        } catch (IOException ex) {
+//                                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                        }
                                     }
                                 } else {
                                     sEmergency = db.consultEmergencyRadioOper(idRadioOper, tDateOpen.getText()
                                             + " 00:00:00", tDateClose.getText() + " 23:59:59");
                                     eMain.setText(sEmergency);
-                                    try {
-//                                a.escribirTxt("resource/Emergencia con " + mRadioOper.getText() + " del "
-//                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
-                                        a.writeExcelData("C:/CtrlAmb/reporte "
-                                                + mRadioOper.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
-                                                db.reportRadioOper(idRadioOper, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
-                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mRadioOper.getText() + " del "
-                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+//                                    try {
+////                                a.escribirTxt("resource/Emergencia con " + mRadioOper.getText() + " del "
+////                                        + tDateOpen.getText() + " " + tDateClose.getText() + ".txt", sEmergency);
+//                                        a.writeExcelData("C:/CtrlAmb/reporte "
+//                                                + mRadioOper.getText() + " del " + tDateOpen.getText() + " " + tDateClose.getText() + ".xlsx", "hoja1",
+//                                                db.reportRadioOper(idRadioOper, tDateOpen.getText() + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+//                                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" " + mRadioOper.getText() + " del "
+//                                                + tDateOpen.getText() + " " + tDateClose.getText() + "\".xlsx");
+//                                    } catch (IOException ex) {
+//                                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+//                                    }
                                 }
                             }
                             break;
@@ -1143,6 +1145,8 @@ public class Consulta extends JPanel implements ActionListener {
                             break;
                     }
             }
+//            eMain.setLineWrap(true);
+//            eMain.setWrapStyleWord(true);
         } else {
             switch (e.getActionCommand()) {
                 case "Reporte Emergencia":

@@ -19,7 +19,7 @@ import javax.swing.*;
  * @author Sistemas
  */
 public class ctrData extends JPanel implements ActionListener {
-
+    
     JFrame emergency;
     tabData tab;
     ConxDB db;
@@ -101,18 +101,18 @@ public class ctrData extends JPanel implements ActionListener {
     int idRadioOper = 0;
     int idPatient = 0;
     int lastPatient = 0;
-
+    
     public int getWindowX() {
         return windowX;
     }
-
+    
     public void setWindowX(int windowX) {
         this.windowX = windowX;
         //bTime.setPreferredSize(new Dimension(windowX / 13, 30));
         System.out.println(windowX + "\treWind");
         //ctrData(sTimeCall, windowX);
     }
-
+    
     public ctrData(String sTimeCall, int windowX, JFrame emergency, tabData tab, ConxDB db, String sAmbulance, String sKmAmbulance,
             String sBase, String sOperVoluntary, String sParamedicVoluntary, String sOper, String sParamedic,
             String sRadioOper, String sApplicant, String tipeCallmain, String callmain) {
@@ -219,7 +219,7 @@ public class ctrData extends JPanel implements ActionListener {
             this.tipeCallmain = tipeCallmain;
         }
         this.callmain = callmain;
-
+        
         JLabel lSpace0 = new JLabel("");
         JLabel lSpace1 = new JLabel("");
         JLabel lSpace2 = new JLabel("");
@@ -267,13 +267,13 @@ public class ctrData extends JPanel implements ActionListener {
         JMenuBar mBarParamedic = new JMenuBar();
         JMenuBar mBarAmbulance = new JMenuBar();
         JMenuBar mBarBase = new JMenuBar();
-        JMenuItem iFalseAlarm = new JMenuItem("Falsa alarma");
-        JMenuItem iNoFound = new JMenuItem("No encontrado");
-        JMenuItem iOtherTransfer = new JMenuItem("Tranf por tercero");
-        JMenuItem iNoNeedTransfer = new JMenuItem("No necesita tranf");
-        JMenuItem iNoWantTransfer = new JMenuItem("No quiere tranf");
-        JMenuItem iTransfer = new JMenuItem("Traslado");
-        JMenuItem iDead = new JMenuItem("Fallecido");
+        JMenuItem iResultado1 = new JMenuItem("22 Falsa alarma");
+        JMenuItem iResultado2 = new JMenuItem("22B No encontrado");
+        JMenuItem iResultado3 = new JMenuItem("10X3 Tranf por tercero");
+        JMenuItem iResultado4 = new JMenuItem("22A No necesita tranf");
+        JMenuItem iResultado5 = new JMenuItem("22C Se niega a tranf");
+        JMenuItem iResultado6 = new JMenuItem("10 Traslado");
+        JMenuItem iResultado7 = new JMenuItem("14 Fallecido");
         JMenuItem iPriority1 = new JMenuItem("Prioridad 1");
         JMenuItem iPriority2 = new JMenuItem("Prioridad 2");
         JMenuItem iPriority3 = new JMenuItem("Prioridad 3");
@@ -293,13 +293,13 @@ public class ctrData extends JPanel implements ActionListener {
         JButton bUpPatient = new JButton(" + ");
         JScrollPane scroll = new JScrollPane();
         scroll.setViewportView(tNote);
-        iFalseAlarm.addActionListener(this);
-        iNoFound.addActionListener(this);
-        iOtherTransfer.addActionListener(this);
-        iNoNeedTransfer.addActionListener(this);
-        iNoWantTransfer.addActionListener(this);
-        iTransfer.addActionListener(this);
-        iDead.addActionListener(this);
+        iResultado1.addActionListener(this);
+        iResultado2.addActionListener(this);
+        iResultado3.addActionListener(this);
+        iResultado4.addActionListener(this);
+        iResultado5.addActionListener(this);
+        iResultado6.addActionListener(this);
+        iResultado7.addActionListener(this);
         iPriority1.addActionListener(this);
         iPriority2.addActionListener(this);
         iPriority3.addActionListener(this);
@@ -325,13 +325,13 @@ public class ctrData extends JPanel implements ActionListener {
         bTime.addActionListener(this);
         bSave.addActionListener(this);
         bUpPatient.addActionListener(this);
-        mResultado.add(iFalseAlarm);
-        mResultado.add(iNoFound);
-        mResultado.add(iOtherTransfer);
-        mResultado.add(iNoNeedTransfer);
-        mResultado.add(iNoWantTransfer);
-        mResultado.add(iTransfer);
-        mResultado.add(iDead);
+        mResultado.add(iResultado1);
+        mResultado.add(iResultado2);
+        mResultado.add(iResultado3);
+        mResultado.add(iResultado4);
+        mResultado.add(iResultado5);
+        mResultado.add(iResultado6);
+        mResultado.add(iResultado7);
         mBarResultado.add(mResultado);
         mPriorityTransfer.add(iPriority1);
         mPriorityTransfer.add(iPriority2);
@@ -392,8 +392,24 @@ public class ctrData extends JPanel implements ActionListener {
         bTime.setPreferredSize(new Dimension(windowX / 13, 30));
         mResultado.setPreferredSize(new Dimension(150, 30));
         mPriorityTransfer.setPreferredSize(new Dimension(150, 30));
+        iPriority1.setPreferredSize(new Dimension(150, 20));
+        iPriority2.setPreferredSize(new Dimension(150, 20));
+        iPriority3.setPreferredSize(new Dimension(150, 20));
         mTransfer.setPreferredSize(new Dimension(150, 30));
+        iTransfer1.setPreferredSize(new Dimension(150, 20));
+        iTransfer2.setPreferredSize(new Dimension(150, 20));
+        iTransfer3.setPreferredSize(new Dimension(150, 20));
+        iTransfer4.setPreferredSize(new Dimension(150, 20));
+        iTransfer5.setPreferredSize(new Dimension(150, 20));
+        iTransfer6.setPreferredSize(new Dimension(150, 20));
+        iTransfer7.setPreferredSize(new Dimension(150, 20));
+        iTransfer8.setPreferredSize(new Dimension(150, 20));
+        iTransfer9.setPreferredSize(new Dimension(150, 20));
+        iTransfer10.setPreferredSize(new Dimension(150, 20));
         mBase.setPreferredSize(new Dimension(150, 30));
+        iBase1.setPreferredSize(new Dimension(150, 20));
+        iBase2.setPreferredSize(new Dimension(150, 20));
+        iBase3.setPreferredSize(new Dimension(150, 20));
         lDir.setHorizontalAlignment(SwingConstants.RIGHT);
         lRadioOper.setHorizontalAlignment(SwingConstants.RIGHT);
         lAlive.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -421,7 +437,6 @@ public class ctrData extends JPanel implements ActionListener {
         tTimeComeback.setHorizontalAlignment(JTextField.CENTER);
         mResultado.setHorizontalAlignment(SwingConstants.CENTER);
         mResultado.setHorizontalTextPosition(JTextField.CENTER);
-        iFalseAlarm.setHorizontalAlignment(JTextField.CENTER);
         lTimeCall.setHorizontalAlignment(JTextField.RIGHT);
         lTimeDeparture.setHorizontalAlignment(JTextField.RIGHT);
         lTimeArrival.setHorizontalAlignment(JTextField.RIGHT);
@@ -436,9 +451,9 @@ public class ctrData extends JPanel implements ActionListener {
         tNote.setLineWrap(true);
         tNote.setWrapStyleWord(true);
         tTimeCall.setText(sTimeCall);
-
+        
         this.setLayout(new FlowLayout());
-
+        
         pDir.add(lDir);
         pDir.add(tDir);
         pDir.add(lEntre);
@@ -451,7 +466,7 @@ public class ctrData extends JPanel implements ActionListener {
         pDir.add(tDel);
         //this.add(pDir, BorderLayout.LINE_START );
         this.add(pDir);
-
+        
         pTransfer.add(lRadioOper);
         pTransfer.add(mBarRadioOper);
         pTransfer.add(lApplicant);
@@ -469,7 +484,7 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(lDeads);
         this.add(tDeads);
         this.add(lSpace2);
-
+        
         this.add(lPatient);
         this.add(lStatus);
         this.add(rAlive);
@@ -489,7 +504,7 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(tLastName2Patient);
         this.add(bUpPatient);
         this.add(lSpace3);
-
+        
         this.add(lAmbulance);
         this.add(mBarAmbulance);
         this.add(lKmDeparture);
@@ -531,7 +546,7 @@ public class ctrData extends JPanel implements ActionListener {
         pPatient.add(aPatient);
         this.add(pPatient);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
 //        System.out.println("event: " + e.getActionCommand() + " \t summoner: " + e.getSource().getClass().getSimpleName());
@@ -655,13 +670,13 @@ public class ctrData extends JPanel implements ActionListener {
                 }
             } else {
                 switch (e.getActionCommand()) {
-                    case "Falsa alarma":
-                    case "No encontrado":
-                    case "Tranf por tercero":
-                    case "No necesita tranf":
-                    case "No quiere tranf":
-                    case "Fallecido":
-                    case "Traslado":
+                    case "22 Falsa alarma":
+                    case "22B No encontrado":
+                    case "10X3 Tranf por tercero":
+                    case "22A No necesita tranf":
+                    case "22C Se niega a tranf":
+                    case "14 Fallecido":
+                    case "10 Traslado":
                         mResultado.setText(e.getActionCommand());
                         break;
                     case "Centro":
@@ -741,10 +756,21 @@ public class ctrData extends JPanel implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Km recorridas: " + kmTraveled, "", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
+            String resultado = "";
+            String word = "";
+            cadena = mResultado.getText().toCharArray();
+            for (int i = 3; i < cadena.length; i++) {
+                if (i == ' ') {
+                    resultado = word;
+                    i = cadena.length;
+                } else {
+                    word += cadena[i];
+                }
+            }
             switch (e.getActionCommand()) {
                 case "Guardar":
                     String em = db.insertEmergency(tDir.getText(), tEntre.getText(), tRef.getText(),
-                            tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
+                            tCol.getText(), tDel.getText(), tApplicant.getText(), resultado,
                             transfer, priority, alive, deads, idParamedic, idOper,
                             idRadioOper, idAmbulance, mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
                             date.format(calendario.getTime()) + " " + tTimeCall.getText(),
@@ -753,21 +779,27 @@ public class ctrData extends JPanel implements ActionListener {
                             date.format(calendario.getTime()) + " " + tTimeTransfer.getText(),
                             date.format(calendario.getTime()) + " " + tTimeHospital.getText(),
                             date.format(calendario.getTime()) + " " + tTimeComeback.getText(),
-                            tNote.getText(), tipeCallmain, callmain, kmTraveled, tFolio.getText());
+                            tNote.getText(), tipeCallmain, callmain, kmTraveled, tFolio.getText(), 
+                            tab.tTransferFrom.getText(), tab.tTransferTo.getText());
                     System.out.println("insert= " + em);
                     if (em.toCharArray()[0] == 'E' && em.toCharArray()[1] == 'M') {
-                        String word = "";
+                        word = "";
                         cadena = em.toCharArray();
                         for (int i = 3; i < cadena.length; i++) {
                             word += cadena[i];
                         }
                         this.idEmergency = Integer.valueOf(word);
+                        emergency.setTitle("Emergencia #" + idEmergency);
                         for (int m = lastPatient; m < patient.size(); m++) {
                             if (!tab.mObstetrico.getText().equals("Tipo de obstetrico")) {
                                 obstetrico = tab.mObstetrico.getText();
                             }
                             if (!tab.mTrauma.getText().equals("Tipo de Trauma")) {
-                                trauma = tab.mTrauma.getText();
+                                if (tab.mTrauma.getText().equals("Otro")) {
+                                    trauma = tab.tOther.getText();
+                                } else {
+                                    trauma = tab.mTrauma.getText();
+                                }
                             }
                             sPatient = db.insertPatient(patient.get(m)[0], patient.get(m)[1],
                                     patient.get(m)[2], Integer.valueOf(patient.get(m)[3]), patient.get(m)[4],
@@ -872,7 +904,7 @@ public class ctrData extends JPanel implements ActionListener {
                     data[30][1] = tNote.getText();
                     data[31][1] = "";
                     data[32][1] = db.consultRadioOper(idRadioOper);
-
+                    
                     a.replaceWordData("resource/formatoCtrlAmb.docx", "C:/CtrlAmb/Emergencia#" + idEmergency + ".docx", data);
                     try {
                         Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\Emergencia#" + idEmergency + ".docx");
@@ -882,6 +914,7 @@ public class ctrData extends JPanel implements ActionListener {
                     bSave.setText("Actualizar");
 //                emergency.dispose();
                     break;
+                
                 case "Actualizar":
                     System.out.println("update= " + db.editEmergency(idEmergency, tDir.getText(), tEntre.getText(),
                             tRef.getText(), tCol.getText(), tDel.getText(), tApplicant.getText(), mResultado.getText(),
@@ -1001,7 +1034,7 @@ public class ctrData extends JPanel implements ActionListener {
                     data[30][1] = tNote.getText();
                     data[31][1] = "";
                     data[32][1] = db.consultRadioOper(idRadioOper);
-
+                    
                     a.replaceWordData("resource/formatoCtrlAmb.docx", "C:/CtrlAmb/Emergencia#" + idEmergency + ".docx", data);
                     try {
                         Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\Emergencia#" + idEmergency + ".docx");
@@ -1051,7 +1084,7 @@ public class ctrData extends JPanel implements ActionListener {
             }
         }
     }
-
+    
     public void menuUpdate() {
         char[] cadena;
         String employees = db.consultOper();
@@ -1060,6 +1093,7 @@ public class ctrData extends JPanel implements ActionListener {
         for (int i = 0; i < employees.length(); i++) {
             if (cadena[i] == '\n') {
                 JMenuItem iEmployees = new JMenuItem(word);
+                iEmployees.setPreferredSize(new Dimension(250, 20));
                 mOper.add(iEmployees);
                 iEmployees.addActionListener(this);
                 word = "";
@@ -1073,6 +1107,7 @@ public class ctrData extends JPanel implements ActionListener {
         for (int i = 0; i < employees.length(); i++) {
             if (cadena[i] == '\n') {
                 JMenuItem iEmployees = new JMenuItem(word);
+                iEmployees.setPreferredSize(new Dimension(250, 20));
                 mRadioOper.add(iEmployees);
                 iEmployees.addActionListener(this);
                 word = "";
@@ -1086,6 +1121,7 @@ public class ctrData extends JPanel implements ActionListener {
         for (int i = 0; i < employees.length(); i++) {
             if (cadena[i] == '\n') {
                 JMenuItem iEmployees = new JMenuItem(word);
+                iEmployees.setPreferredSize(new Dimension(250, 20));
                 mParamedic.add(iEmployees);
                 iEmployees.addActionListener(this);
                 word = "";
@@ -1099,6 +1135,7 @@ public class ctrData extends JPanel implements ActionListener {
         for (int i = 0; i < employees.length(); i++) {
             if (cadena[i] == '\n') {
                 JMenuItem iEmployees = new JMenuItem(word);
+                iEmployees.setPreferredSize(new Dimension(150, 20));
                 mAmbulance.add(iEmployees);
                 iEmployees.addActionListener(this);
                 word = "";
