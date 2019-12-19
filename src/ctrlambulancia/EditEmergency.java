@@ -24,7 +24,6 @@ import javax.swing.*;
 public class EditEmergency extends JPanel implements ActionListener {
 
     int idEmergency = 0;
-    JFrame emergency;
     tabData tab;
     SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
     SimpleDateFormat timeFull = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -39,7 +38,7 @@ public class EditEmergency extends JPanel implements ActionListener {
     JTextField tTransfer = new JTextField(8);
     JTextField tRadioOper = new JTextField(20);
     JTextField tApplicant = new JTextField(20);
-    JTextField tNumPatient = new JTextField(5);
+//    JTextField tNumPatient = new JTextField(5);
     JTextField tAlive = new JTextField(5);
     JTextField tDeads = new JTextField(5);
     JTextField tAgeOld = new JTextField(5);
@@ -55,19 +54,21 @@ public class EditEmergency extends JPanel implements ActionListener {
     JTextField tParamedicVoluntary = new JTextField(17);
     JTextField tOper = new JTextField(17);
     JTextField tParamedic = new JTextField(17);
+    JTextField tKmUsed = new JTextField(8);
     JTextField tTimeCall = new JTextField(8);
     JTextField tTimeDeparture = new JTextField(8);
     JTextField tTimeArrival = new JTextField(8);
     JTextField tTimeTransfer = new JTextField(8);
     JTextField tTimeHospital = new JTextField(8);
     JTextField tTimeComeback = new JTextField(8);
-    JRadioButton multSingle = new JRadioButton("Individual", false);
-    JRadioButton multGroup = new JRadioButton("Grupal", false);
+//    JRadioButton multSingle = new JRadioButton("Individual", false);
+//    JRadioButton multGroup = new JRadioButton("Grupal", false);
     JRadioButton sexM = new JRadioButton("Mas", false);
     JRadioButton sexF = new JRadioButton("Fem", false);
     JRadioButton rAlive = new JRadioButton("Vivo", false);
     JRadioButton rDeads = new JRadioButton("Muerto", false);
     JButton bTime = new JButton("GUARDAR");
+    JButton bSave = new JButton("Actualizar");
     JMenu mResultado = new JMenu("Resultado");
     JMenu mPriorityTransfer = new JMenu("Prioridad del traslado");
     JMenu mTransfer = new JMenu("Hospital a transferir");
@@ -76,7 +77,7 @@ public class EditEmergency extends JPanel implements ActionListener {
     JMenu mParamedic = new JMenu();
     JMenu mAmbulance = new JMenu();
     JMenu mBase = new JMenu("Base de salida");
-    ButtonGroup groupMult = new ButtonGroup();
+//    ButtonGroup groupMult = new ButtonGroup();
     ButtonGroup groupSex = new ButtonGroup();
     ButtonGroup groupStatus = new ButtonGroup();
     JTextArea tNote = new JTextArea(5, 30);
@@ -99,7 +100,6 @@ public class EditEmergency extends JPanel implements ActionListener {
     int idOper = 0;
     int idRadioOper = 0;
     int idPatient = 0;
-    int kmTraveled = 0;
 
     public int getWindowX() {
         return windowX;
@@ -112,10 +112,9 @@ public class EditEmergency extends JPanel implements ActionListener {
         //ctrData(sTimeCall, windowX);
     }
 
-    EditEmergency(int windowX, JFrame emergency, tabData tab, ConxDB db, int idEmergency) {
+    EditEmergency(int windowX, tabData tab, ConxDB db, int idEmergency) {
         this.idEmergency = idEmergency;
         this.windowX = windowX;
-        this.emergency = emergency;
         this.tab = tab;
         this.db = db;
         String[] dataEmergency = db.consultEditEmergency(idEmergency);
@@ -142,7 +141,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         this.mRadioOper.setText("RO#" + dataEmergency[13] + " " + db.consultRadioOper(idRadioOper));
         this.idAmbulance = Integer.valueOf(dataEmergency[14]);
         this.mAmbulance.setText(db.consultAmbulanceNum(idAmbulance));
-        this.tKmDeparture.setText(String.valueOf(db.consultAmbulanceKm(Integer.valueOf(dataEmergency[15]))));
+        this.tKmUsed.setText(dataEmergency[15]);
         this.mBase.setText(dataEmergency[16]);
         this.tOperVoluntary.setText(dataEmergency[17]);
         this.tParamedicVoluntary.setText(dataEmergency[18]);
@@ -155,10 +154,10 @@ public class EditEmergency extends JPanel implements ActionListener {
         this.tNote.setText(dataEmergency[25]);
         this.tipeCallmain = dataEmergency[26];
         this.callmain = dataEmergency[27];
-        this.kmTraveled = Integer.valueOf(dataEmergency[28]);
-        this.tFolio.setText(dataEmergency[29]);
-
-        String[][] patientPast;
+        this.tFolio.setText(dataEmergency[28]);
+        tab.tTransferFrom.setText(dataEmergency[29]);
+        tab.tTransferTo.setText(dataEmergency[30]);
+        aPatient.setText(db.consultPatientForEdit(idEmergency));
 
         JPanel pDir = new JPanel();
         JPanel pTransfer = new JPanel();
@@ -193,15 +192,14 @@ public class EditEmergency extends JPanel implements ActionListener {
         JLabel lLastNamePatient = new JLabel("Apellido paterno:");
         JLabel lLastName2Patient = new JLabel("Apellido materno:");
         JLabel lStatus = new JLabel("Estado:");
-        JLabel lNumPatient = new JLabel("Numero de paciente CRM:");
         JLabel lAmbulance = new JLabel("Ambulancia:");
         JLabel lKmDeparture = new JLabel("Km:");
-        //JLabel lKmComeback = new JLabel("Km llegada:");
         JLabel lFolio = new JLabel("Folio:");
         JLabel lOperVoluntary = new JLabel("Operador voluntario:");
         JLabel lParamedicVoluntary = new JLabel("Paramedico voluntario:");
         JLabel lOper = new JLabel("Operador:");
         JLabel lParamedic = new JLabel("Paramedico:");
+        JLabel lKmUsed = new JLabel("Km recorrido:");
         JLabel lNote = new JLabel("Observacion:");
         JMenuBar mBarResultado = new JMenuBar();
         JMenuBar mBarPriorityTransfer = new JMenuBar();
@@ -260,13 +258,12 @@ public class EditEmergency extends JPanel implements ActionListener {
         iBase1.addActionListener(this);
         iBase2.addActionListener(this);
         iBase3.addActionListener(this);
-        multSingle.addActionListener(this);
-        multGroup.addActionListener(this);
         sexM.addActionListener(this);
         sexF.addActionListener(this);
         rAlive.addActionListener(this);
         rDeads.addActionListener(this);
         bTime.addActionListener(this);
+        bSave.addActionListener(this);
         bUpPatient.addActionListener(this);
         mResultado.add(iFalseAlarm);
         mResultado.add(iNoFound);
@@ -295,8 +292,6 @@ public class EditEmergency extends JPanel implements ActionListener {
         mBase.add(iBase2);
         mBase.add(iBase3);
         mBarBase.add(mBase);
-        groupMult.add(multSingle);
-        groupMult.add(multGroup);
         groupSex.add(sexM);
         groupSex.add(sexF);
         groupStatus.add(rAlive);
@@ -324,7 +319,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         lLastNamePatient.setPreferredSize(new Dimension(115, 50));
         lLastName2Patient.setPreferredSize(new Dimension(115, 50));
         lStatus.setPreferredSize(new Dimension(65, 50));
-        lNumPatient.setPreferredSize(new Dimension(170, 50));
+//        lNumPatient.setPreferredSize(new Dimension(170, 50));
         lAmbulance.setPreferredSize(new Dimension(170, 50));
         lKmDeparture.setPreferredSize(new Dimension(70, 50));
         lOper.setPreferredSize(new Dimension(120, 50));
@@ -347,7 +342,6 @@ public class EditEmergency extends JPanel implements ActionListener {
         lSex.setHorizontalAlignment(SwingConstants.RIGHT);
         lAgeOld.setHorizontalAlignment(SwingConstants.RIGHT);
         lStatus.setHorizontalAlignment(SwingConstants.RIGHT);
-        lNumPatient.setHorizontalAlignment(SwingConstants.RIGHT);
         lAmbulance.setHorizontalAlignment(SwingConstants.RIGHT);
         lKmDeparture.setHorizontalAlignment(SwingConstants.RIGHT);
         lOper.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -355,7 +349,6 @@ public class EditEmergency extends JPanel implements ActionListener {
         lOperVoluntary.setHorizontalAlignment(SwingConstants.RIGHT);
         lParamedicVoluntary.setHorizontalAlignment(SwingConstants.RIGHT);
         lNote.setHorizontalAlignment(SwingConstants.RIGHT);
-        //lPatient.setHorizontalAlignment(SwingConstants.RIGHT);
         tTimeCall.setHorizontalAlignment(JTextField.CENTER);
         tTimeDeparture.setHorizontalAlignment(JTextField.CENTER);
         tTimeArrival.setHorizontalAlignment(JTextField.CENTER);
@@ -371,6 +364,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         lTimeTransfer.setHorizontalAlignment(JTextField.RIGHT);
         lTimeHospital.setHorizontalAlignment(JTextField.RIGHT);
         lTimeComeback.setHorizontalAlignment(JTextField.RIGHT);
+        bTime.setVisible(false);
         tNote.setLineWrap(true);
         tNote.setWrapStyleWord(true);
 
@@ -429,10 +423,8 @@ public class EditEmergency extends JPanel implements ActionListener {
 
         this.add(lAmbulance);
         this.add(mBarAmbulance);
-        this.add(lKmDeparture);
-        this.add(tKmDeparture);
-        //this.add(lKmComeback);
-        //this.add(tKmComeback);
+        this.add(lKmUsed);
+        this.add(tKmUsed);
         this.add(mBarBase);
         this.add(lFolio);
         this.add(tFolio);
@@ -447,6 +439,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         this.add(tParamedicVoluntary);
         this.add(lNote);
         this.add(scroll, BorderLayout.CENTER);
+        this.add(bSave);
         pTimeAmbulance.add(bTime);
         pTimeAmbulance.add(lTimeCall);
         pTimeAmbulance.add(tTimeCall);
@@ -473,19 +466,18 @@ public class EditEmergency extends JPanel implements ActionListener {
             command = "" + cadena[0] + cadena[1];
         }
         if (e.getSource().getClass().getSimpleName().equals("JRadioButton")) {
-            switch (e.getActionCommand().toCharArray()[0]) {
-                case 'M':
-                    if (e.getActionCommand().toCharArray()[1] == 'a') {
-                        sex = e.getActionCommand();
-                    } else {
-                        status = e.getActionCommand();
-                    }
+            switch (e.getActionCommand()) {
+                case "Vivo":
+                    status = e.getActionCommand();
                     break;
-                case 'F':
+                case "Muerto":
+                    status = e.getActionCommand();
+                    break;
+                case "Mas":
                     sex = e.getActionCommand();
                     break;
-                case 'V':
-                    status = e.getActionCommand();
+                case "Fem":
+                    sex = e.getActionCommand();
                     break;
                 default:
                     System.out.println("El event JRadioButton es: " + e.getActionCommand());
@@ -644,10 +636,6 @@ public class EditEmergency extends JPanel implements ActionListener {
             String trauma = "";
             int alive = 0;
             if (tAlive.getText().equals("") || tAlive.getText() == null) {
-                if (multSingle.isSelected()) {
-                    alive = 1;
-                }
-            } else {
                 alive = Integer.valueOf(tAlive.getText());
             }
             int deads = 0;
@@ -667,10 +655,9 @@ public class EditEmergency extends JPanel implements ActionListener {
                     transfer, priority, alive, deads, idParamedic, idOper,
                     idRadioOper, idAmbulance, mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
                     tTimeCall.getText(), tTimeDeparture.getText(), tTimeArrival.getText(), tTimeTransfer.getText(),
-                    tTimeHospital.getText(), tTimeComeback.getText(), tNote.getText(), tipeCallmain, callmain, kmTraveled, tFolio.getText());
+                    tTimeHospital.getText(), tTimeComeback.getText(), tNote.getText(), tipeCallmain, callmain, Integer.valueOf(tKmUsed.getText()), tFolio.getText());
             System.out.println("insert= " + em);
             if (em.equals("done")) {
-//                System.out.println("size patient: " + patient.size());
                 for (int m = 0; m < patient.size(); m++) {
                     if (!tab.mObstetrico.getText().equals("Tipo de obstetrico")) {
                         obstetrico = tab.mObstetrico.getText();
@@ -683,8 +670,8 @@ public class EditEmergency extends JPanel implements ActionListener {
                             patient.get(m)[5], patient.get(m)[6], idEmergency, trauma,
                             tab.tMotivo.getText(), tab.tPadecimiento.getText(), tab.tMedicamento.getText(),
                             tab.tEventoPrevio.getText(), obstetrico, obstetricoMonthes);
+                    System.out.println("id Paciente: " + sPatient);
                 }
-//                System.out.println("id Paciente: " + sPatient);
             } else {
                 System.out.println("ctrData/ActionPerformed: error# " + em);
             }
@@ -846,5 +833,4 @@ public class EditEmergency extends JPanel implements ActionListener {
             }
         }
     }
-
 }

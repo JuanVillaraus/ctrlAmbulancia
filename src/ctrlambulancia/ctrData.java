@@ -20,7 +20,7 @@ import javax.swing.*;
  */
 public class ctrData extends JPanel implements ActionListener {
     
-    JFrame emergency;
+    JFrame window;
     tabData tab;
     ConxDB db;
     archivo a = new archivo();
@@ -113,12 +113,12 @@ public class ctrData extends JPanel implements ActionListener {
         //ctrData(sTimeCall, windowX);
     }
     
-    public ctrData(String sTimeCall, int windowX, JFrame emergency, tabData tab, ConxDB db, String sAmbulance, String sKmAmbulance,
+    public ctrData(String sTimeCall, int windowX, JFrame window, tabData tab, ConxDB db, String sAmbulance, String sKmAmbulance,
             String sBase, String sOperVoluntary, String sParamedicVoluntary, String sOper, String sParamedic,
             String sRadioOper, String sApplicant, String tipeCallmain, String callmain) {
 //        this.timeCall = sTimeCall;
         this.windowX = windowX;
-        this.emergency = emergency;
+        this.window = window;
         this.tab = tab;
         this.db = db;
         JPanel pDir = new JPanel();
@@ -509,8 +509,6 @@ public class ctrData extends JPanel implements ActionListener {
         this.add(mBarAmbulance);
         this.add(lKmDeparture);
         this.add(tKmDeparture);
-        //this.add(lKmComeback);
-        //this.add(tKmComeback);
         this.add(mBarBase);
         this.add(lFolio);
         this.add(tFolio);
@@ -541,7 +539,6 @@ public class ctrData extends JPanel implements ActionListener {
         pTimeAmbulance.add(tTimeHospital);
         pTimeAmbulance.add(lTimeComeback);
         pTimeAmbulance.add(tTimeComeback);
-//        pTimeAmbulance.add(bSave);
         this.add(pTimeAmbulance, BorderLayout.SOUTH);
         pPatient.add(aPatient);
         this.add(pPatient);
@@ -557,19 +554,18 @@ public class ctrData extends JPanel implements ActionListener {
         }
         Calendar calendario = new GregorianCalendar();
         if (e.getSource().getClass().getSimpleName().equals("JRadioButton")) {
-            switch (e.getActionCommand().toCharArray()[0]) {
-                case 'M':
-                    if (e.getActionCommand().toCharArray()[1] == 'a') {
-                        sex = e.getActionCommand();
-                    } else {
-                        status = e.getActionCommand();
-                    }
+            switch (e.getActionCommand()) {
+                case "Vivo":
+                    status = e.getActionCommand();
                     break;
-                case 'F':
+                case "Muerto":
+                    status = e.getActionCommand();
+                    break;
+                case "Mas":
                     sex = e.getActionCommand();
                     break;
-                case 'V':
-                    status = e.getActionCommand();
+                case "Fem":
+                    sex = e.getActionCommand();
                     break;
                 default:
                     System.out.println("El event JRadioButton es: " + e.getActionCommand());
@@ -789,7 +785,7 @@ public class ctrData extends JPanel implements ActionListener {
                             word += cadena[i];
                         }
                         this.idEmergency = Integer.valueOf(word);
-                        emergency.setTitle("Emergencia #" + idEmergency);
+                        window.setTitle("Emergencia #" + idEmergency);
                         for (int m = lastPatient; m < patient.size(); m++) {
                             if (!tab.mObstetrico.getText().equals("Tipo de obstetrico")) {
                                 obstetrico = tab.mObstetrico.getText();
@@ -912,7 +908,7 @@ public class ctrData extends JPanel implements ActionListener {
                         Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     bSave.setText("Actualizar");
-//                emergency.dispose();
+//                window.dispose();
                     break;
                 
                 case "Actualizar":

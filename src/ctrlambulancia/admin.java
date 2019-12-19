@@ -65,21 +65,23 @@ public class admin extends JPanel implements ActionListener {
         JMenuItem iOption1 = new JMenuItem("Agregar");
         JMenuItem iOption2 = new JMenuItem("Editar");
         JMenuItem iOption3 = new JMenuItem("Eliminar");
-        JMenuItem iOper = new JMenuItem("Operador");
-        JMenuItem iParamedic = new JMenuItem("Paramedico");
-        JMenuItem iRadioOper = new JMenuItem("Radio Operador");
-        JMenuItem iAmbulance = new JMenuItem("Ambulancia");
-        JMenuItem iEmergency = new JMenuItem("Emergencia");
+        JMenuItem iTipeJob1 = new JMenuItem("Operador");
+        JMenuItem iTipeJob2 = new JMenuItem("Paramedico");
+        JMenuItem iTipeJob3 = new JMenuItem("Radio Operador");
+        JMenuItem iTipeJob4 = new JMenuItem("Ambulancia");
+        JMenuItem iTipeJob5 = new JMenuItem("Emergencia");
+        JMenuItem iTipeJob6 = new JMenuItem("Paciente");
         mOption.add(iOption1);
         mOption.add(iOption2);
         mOption.add(iOption3);
 //        mOption.add(iConsult);
         mBarOption.add(mOption);
-        mTipeJob.add(iOper);
-        mTipeJob.add(iParamedic);
-        mTipeJob.add(iRadioOper);
-        mTipeJob.add(iAmbulance);
-        mTipeJob.add(iEmergency);
+        mTipeJob.add(iTipeJob1);
+        mTipeJob.add(iTipeJob2);
+        mTipeJob.add(iTipeJob3);
+        mTipeJob.add(iTipeJob4);
+        mTipeJob.add(iTipeJob5);
+        mTipeJob.add(iTipeJob6);
         mBarTipeJob.add(mTipeJob);
         mTipeJob.setVisible(true);
         mOption.setVisible(true);
@@ -105,11 +107,12 @@ public class admin extends JPanel implements ActionListener {
         iOption2.addActionListener(this);
         iOption3.addActionListener(this);
 //        iConsult.addActionListener(this);
-        iOper.addActionListener(this);
-        iParamedic.addActionListener(this);
-        iRadioOper.addActionListener(this);
-        iAmbulance.addActionListener(this);
-        iEmergency.addActionListener(this);
+        iTipeJob1.addActionListener(this);
+        iTipeJob2.addActionListener(this);
+        iTipeJob3.addActionListener(this);
+        iTipeJob4.addActionListener(this);
+        iTipeJob5.addActionListener(this);
+        iTipeJob6.addActionListener(this);
         bInsert.addActionListener(this);
         bEdit.addActionListener(this);
         bDelete.addActionListener(this);
@@ -293,7 +296,7 @@ public class admin extends JPanel implements ActionListener {
                                 alert.setText("Deben ingresar el ID");
                                 alert.setBackground(Color.RED);
                             } else {
-                                JFrame emergency = new JFrame("Emergencia " + tId.getText());
+                                JFrame emergency = new JFrame("Emergencia #" + tId.getText());
                                 emergency.setSize(1600, 500);
                                 emergency.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - emergency.getWidth() / 2,
                                         (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - emergency.getHeight() / 2);
@@ -306,11 +309,28 @@ public class admin extends JPanel implements ActionListener {
                                 ctrTime cT = new ctrTime(time.format(calendario.getTime()));
                                 tabData tab = new tabData();
                                 EditEmergency eM = new EditEmergency(Toolkit.getDefaultToolkit().getScreenSize().width,
-                                        emergency, tab, db, Integer.valueOf(tId.getText()));
+                                        tab, db, Integer.valueOf(tId.getText()));
                                 emergency.setLayout(new BorderLayout());
                                 emergency.add(tab, BorderLayout.NORTH);
                                 emergency.add(eM, BorderLayout.CENTER);
                                 emergency.add(cT, BorderLayout.SOUTH);
+                            }
+                            break;
+                        case "Paciente":
+                            if (tId.getText().equals("")) {
+                                alert.setText("Deben ingresar el ID");
+                                alert.setBackground(Color.RED);
+                            } else {
+                                JFrame patient = new JFrame("Paciente #" + tId.getText());
+                                patient.setSize(470, 700);
+                                patient.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - patient.getWidth() / 2,
+                                        (Toolkit.getDefaultToolkit().getScreenSize().height / 2) - patient.getHeight() / 2);
+                                patient.setFocusable(true);
+                                patient.setVisible(true);
+                                patient.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
+                                EditPatient eP = new EditPatient(db, Integer.valueOf(tId.getText()));
+                                patient.setLayout(new BorderLayout());
+                                patient.add(eP, BorderLayout.CENTER);
                             }
                             break;
                     }
@@ -514,6 +534,7 @@ public class admin extends JPanel implements ActionListener {
                 case "Paramedico":
                 case "Radio Operador":
                 case "Emergencia":
+                case "Paciente":
                     mTipeJob.setText(e.getActionCommand());
                     mOption.setText("Opción");
                     sConsult.setVisible(true);
