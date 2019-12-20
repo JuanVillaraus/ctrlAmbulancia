@@ -1159,8 +1159,8 @@ public class ConxDB {
                 String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
                 String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
                 String folio = rs.getString("FOLIO_EMERGENCIA");
-                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
-                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
+                String transferFrom = "" + rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = "" + rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
 
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
@@ -1340,9 +1340,8 @@ public class ConxDB {
                 String tipeCallMain = rs.getString("LLAMADA_RECIBIDA_EMERGENCIA");
                 String callMain = rs.getString("NUMERO_LLAMADA_RECIBIDA_EMERGENCIA");
                 String folio = rs.getString("FOLIO_EMERGENCIA");
-                String transferFrom = rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
-                String transferTo = rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
-
+                String transferFrom = "" + rs.getString("TRASLADO_PAGADO_SALIDA_EMERGENCIA");
+                String transferTo = "" + rs.getString("TRASLADO_PAGADO_DESTINO_EMERGENCIA");
                 resp += format(idEmergency, dir, entre, ref, col, del, nameApplicant,
                         resultado, transfer, priorityTransfer, alive, deads, idParamedic,
                         idOper, idRadioOper, idAmbulance, kmTraveled, base, paramedicVoluntary,
@@ -2695,9 +2694,14 @@ public class ConxDB {
                 + "hora de la base: " + timeComeback + "\n"
                 + "Observaciones: " + note + "\n"
                 + "llamada recibida: " + tipeCallMain + " " + callMain + "\n");
-        if (!folio.equals("") && folio != null) {
-            info += "Folio: " + folio + "\t\tDesde: " + transferFrom + "\thasta: " + transferTo;
+        try {
+            if (!folio.equals("") && folio != null) {
+                info += "Folio: " + folio + "\t\tDesde: " + transferFrom + "\thasta: " + transferTo + "\n";
+            }
+        } catch (Exception e) {
+            System.err.println("ConxDB/format/if null$\t" + e.getClass().getName() + "\t" + e.getMessage());
         }
+        info += "\n\n";
         return info;
     }
 
@@ -4965,7 +4969,7 @@ public class ConxDB {
             String resultado, String transfer, int priorityTransfer, int alive, int deads, int idParamedic, int idOper,
             int idRadioOper, int idAmbulance, String base, String operVoluntary, String paramedicVoluntary, String timeCall,
             String timeDeparture, String timeArrival, String timeTransfer, String timeHospital, String timeComeback, String note,
-            String tipeCallmain, String callmain, int kmTraveled, String folio) {
+            String tipeCallmain, String callmain, int kmTraveled, String folio, String transferFrom, String transferTo) {
         String query = "UPDATE \"EMERGENCIA\" "
                 + "SET \"DIR_EMERGENCIA\" = ?, "
                 + " \"ENTRE_EMERGENCIA\" = ?, "
@@ -4995,7 +4999,9 @@ public class ConxDB {
                 + " \"LLAMADA_RECIBIDA_EMERGENCIA\" = ?, "
                 + " \"NUMERO_LLAMADA_RECIBIDA_EMERGENCIA\" = ?, "
                 + " \"KM_RECORRIDO_EMERGENCIA\" = ?, "
-                + " \"FOLIO_EMERGENCIA\" = ? "
+                + " \"FOLIO_EMERGENCIA\" = ?, "
+                + " \"TRASLADO_PAGADO_SALIDA_EMERGENCIA\" = ?, "
+                + " \"TRASLADO_PAGADO_DESTINO_EMERGENCIA\" = ? "
                 + "WHERE \"PK_ID_EMERGENCIA\" = ?";
         try (PreparedStatement pst = c.prepareStatement(query)) {
             pst.setString(1, dir);
@@ -5027,12 +5033,59 @@ public class ConxDB {
             pst.setString(27, callmain);
             pst.setInt(28, kmTraveled);
             pst.setString(29, folio);
-            pst.setInt(30, id);
+            pst.setString(30, transferFrom);
+            pst.setString(31, transferTo);
+            pst.setInt(32, id);
             pst.executeUpdate();
         } catch (SQLException ex) {
             return ex.getMessage();
         }
         return "done";
+    }
+
+    public String editPatient(int idPatient, String name, String lastName, String lastName2, int ageOld, String sex,
+            String status, String numFrap, int idEmergency, String trauma, String motivo, String padecimiento,
+            String medicamento, String eventoPrevio, String obstetricoTipe, int obstetricoMonthes) {
+        String query = "UPDATE \"PACIENTE\" "
+                + "SET \"NOMBRE_PACIENTE\" = ?, "
+                + " \"APELLIDO_PATERNO_PACIENTE\" = ?, "
+                + " \"APELLIDO_MATERNO_PACIENTE\" = ?, "
+                + " \"EDAD_PACIENTE\" = ?, "
+                + " \"SEXO_PACIENTE\" = ?, "
+                + " \"ESTADO_PACIENTE\" = ?, "
+                + " \"NUM_FRAP_PACIENTE\" = ?, "
+                + " \"ID_EMERGENCIA\" = ?, "
+                + " \"TRAUMA_TIPO_PACIENTE\" = ?, "
+                + " \"MOTIVO_ENFERMO_PACIENTE\" = ?, "
+                + " \"PADECIMIENTO_ENFERMO_PACIENTE\" = ?, "
+                + " \"MEDICAMENTO_ENFERMO_PACIENTE\" = ?, "
+                + " \"EVENTO_PREVIO_ENFERMO_PACIENTE\" = ?, "
+                + " \"TIPO_OBSTETRICO_PACIENTE\" = ?, "
+                + " \"MESES_OBSTETRICO_PACIENTE\" = ? "
+                + "WHERE \"PK_ID_PACIENTE\" = ?";
+        try (PreparedStatement pst = c.prepareStatement(query)) {
+            pst.setString(1, name);
+            pst.setString(2, lastName);
+            pst.setString(3, lastName2);
+            pst.setInt(4, ageOld);
+            pst.setString(5, sex);
+            pst.setString(6, status);
+            pst.setString(7, numFrap);
+            pst.setInt(8, idEmergency);
+            pst.setString(9, trauma);
+            pst.setString(10, motivo);
+            pst.setString(11, padecimiento);
+            pst.setString(12, medicamento);
+            pst.setString(13, eventoPrevio);
+            pst.setString(14, obstetricoTipe);
+            pst.setInt(15, obstetricoMonthes);
+            pst.setInt(16, idPatient);
+            pst.executeUpdate();
+            return "done";
+        } catch (SQLException ex) {
+            System.out.println("Error ConxDB/editPatient: " + ex);
+            return ex.getMessage();
+        }
     }
 
     public String deleteAmbulance(int id) {

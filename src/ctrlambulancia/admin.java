@@ -161,7 +161,6 @@ public class admin extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().getClass().getSimpleName().equals("JButton")) {
-            System.out.println("event: " + e.getActionCommand());
             switch (e.getActionCommand()) {
                 case "Agregar":
                     switch (mTipeJob.getText()) {
@@ -326,11 +325,12 @@ public class admin extends JPanel implements ActionListener {
                                 patient.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - patient.getWidth() / 2,
                                         (Toolkit.getDefaultToolkit().getScreenSize().height / 2) - patient.getHeight() / 2);
                                 patient.setFocusable(true);
-                                patient.setVisible(true);
                                 patient.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
-                                EditPatient eP = new EditPatient(db, Integer.valueOf(tId.getText()));
-                                patient.setLayout(new BorderLayout());
-                                patient.add(eP, BorderLayout.CENTER);
+                                patient.add(new EditPatient(patient, db, Integer.valueOf(tId.getText())));
+//                                patient.setLayout(new BorderLayout());
+//                                patient.add(eP);
+//                                patient.add(eP, BorderLayout.CENTER);
+                                patient.setVisible(true);
                             }
                             break;
                     }

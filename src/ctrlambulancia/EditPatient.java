@@ -5,7 +5,7 @@
  */
 package ctrlambulancia;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -16,19 +16,22 @@ import javax.swing.*;
  */
 public class EditPatient extends JPanel implements ActionListener {
 
+    JFrame window;
     ConxDB db;
+    int idPatient = 0;
     JTextField tAgeOld = new JTextField(20);
     JTextField tNumFrap = new JTextField(20);
     JTextField tIdEmergency = new JTextField(20);
-    JTextField tNamePatient = new JTextField(20);
-    JTextField tLastNamePatient = new JTextField(20);
-    JTextField tLastName2Patient = new JTextField(20);
+    JTextField tName = new JTextField(20);
+    JTextField tLastName = new JTextField(20);
+    JTextField tLastName2 = new JTextField(20);
     JTextField tMotivo = new JTextField(20);
     JTextField tPadecimiento = new JTextField(20);
     JTextField tMedicamento = new JTextField(20);
     JTextField tEventoPrevio = new JTextField(20);
     JTextField tObstetricoMonthes = new JTextField(8);
     JTextField tOther = new JTextField(10);
+    JTextField alert = new JTextField(10);
     JRadioButton sexM = new JRadioButton("Mas", false);
     JRadioButton sexF = new JRadioButton("Fem", false);
     JRadioButton rAlive = new JRadioButton("Vivo", false);
@@ -41,32 +44,39 @@ public class EditPatient extends JPanel implements ActionListener {
     JMenu mTrauma = new JMenu("Tipo de Trauma");
     JMenu mObstetrico = new JMenu("Tipo de obstetrico");
 
-    EditPatient(ConxDB db, int idPatient) {
+    EditPatient(JFrame window, ConxDB db, int idPatient) {
+        this.window = window;
         this.db = db;
+        this.idPatient = idPatient;
         String[] patient = db.consultEditPatient(idPatient);
-        tNamePatient.setText(patient[0]);
-        tLastNamePatient.setText(patient[1]);
-        tLastName2Patient.setText(patient[2]);
+        tName.setText(patient[0]);
+        tLastName.setText(patient[1]);
+        tLastName2.setText(patient[2]);
         tAgeOld.setText(patient[3]);
-        switch(patient[4]){
+        switch (patient[4]) {
             case "Mas":
                 sexM.setSelected(true);
                 break;
             case "Fem":
                 sexF.setSelected(true);
+                break;
         }
-        mTrauma.setText(patient[5]);
+        if (!patient[5].equals("") && patient[5] != null) {
+            mTrauma.setText(patient[5]);
+        }
         tMotivo.setText(patient[6]);
         tPadecimiento.setText(patient[7]);
         tMedicamento.setText(patient[8]);
         tEventoPrevio.setText(patient[9]);
-        mObstetrico.setText(patient[10]);
+        if (!patient[10].equals("") && patient[10] != null) {
+            mObstetrico.setText(patient[10]);
+        }
         tObstetricoMonthes.setText(patient[11]);
-        switch(patient[12]){
-            case "Mas":
+        switch (patient[12]) {
+            case "Vivo":
                 rAlive.setSelected(true);
                 break;
-            case "Fem":
+            case "Muerto":
                 rDeads.setSelected(true);
         }
         tNumFrap.setText(patient[13]);
@@ -123,7 +133,12 @@ public class EditPatient extends JPanel implements ActionListener {
         iTrauma16.addActionListener(this);
         iObstetrico1.addActionListener(this);
         iObstetrico2.addActionListener(this);
-        iObstetrico3.addActionListener(this);        
+        iObstetrico3.addActionListener(this);
+        sexM.addActionListener(this);
+        sexF.addActionListener(this);
+        rAlive.addActionListener(this);
+        rDeads.addActionListener(this);
+        bSave.addActionListener(this);
         groupSex.add(sexM);
         groupSex.add(sexF);
         groupStatus.add(rAlive);
@@ -185,16 +200,20 @@ public class EditPatient extends JPanel implements ActionListener {
         iObstetrico3.setPreferredSize(new Dimension(200, 20));
         lSex.setHorizontalAlignment(SwingConstants.CENTER);
         lStatus.setHorizontalAlignment(SwingConstants.CENTER);
+        alert.setHorizontalAlignment(JTextField.CENTER);
         tOther.setEnabled(false);
-        
+        alert.setEditable(false);
+        JPanel pAlert = new JPanel(new GridLayout(1, 1));
+        alert.setBackground(Color.CYAN);
+
         this.add(lNumFrap);
         this.add(tNumFrap);
         this.add(lNamePatient);
-        this.add(tNamePatient);
+        this.add(tName);
         this.add(lLastNamePatient);
-        this.add(tLastNamePatient);
+        this.add(tLastName);
         this.add(lLastName2Patient);
-        this.add(tLastName2Patient);
+        this.add(tLastName2);
         this.add(lAgeOld);
         this.add(tAgeOld);
         this.add(lSex);
@@ -219,11 +238,85 @@ public class EditPatient extends JPanel implements ActionListener {
         this.add(lIdEmergency);
         this.add(tIdEmergency);
         this.add(bSave);
+        pAlert.add(alert);
+        window.add(pAlert, BorderLayout.SOUTH);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        switch (e.getSource().getClass().getSimpleName()) {
+            case "JRadioButton":
+                switch (e.getActionCommand()) {
+                    case "Vivo":
+                        status = e.getActionCommand();
+                        break;
+                    case "Muerto":
+                        status = e.getActionCommand();
+                        break;
+                    case "Mas":
+                        sex = e.getActionCommand();
+                        break;
+                    case "Fem":
+                        sex = e.getActionCommand();
+                        break;
+                    default:
+                        System.out.println("El event JRadioButton es: " + e.getActionCommand());
+                        break;
+                }
+                break;
+            case "JMenuItem":
+                switch (e.getActionCommand()) {
+                    case "Embarazada":
+                    case "Aborto":
+                    case "Sangrando":
+                        mObstetrico.setText(e.getActionCommand());
+                        break;
+                    case "Otro":
+                        mTrauma.setText(e.getActionCommand());
+                        tOther.setEnabled(true);
+                        break;
+                    default:
+                        mTrauma.setText(e.getActionCommand());
+                        tOther.setEnabled(false);
+                        tOther.setText("");
+                        break;
+                }
+                break;
+            case "JButton":
+                String resultDB = "";
+                String obstetrico = "";
+                String trauma = "";
+                int obstetricoMonthes = 0;
+                if (!tObstetricoMonthes.getText().equals("") && tObstetricoMonthes.getText() != null) {
+                    obstetricoMonthes = Integer.valueOf(tObstetricoMonthes.getText());
+                }
+                if (!mObstetrico.getText().equals("Tipo de obstetrico")) {
+                    obstetrico = mObstetrico.getText();
+                }
+                if (!mTrauma.getText().equals("Tipo de Trauma")) {
+                    if (mTrauma.getText().equals("Otro")) {
+                        trauma = tOther.getText();
+                    } else {
+                        trauma = mTrauma.getText();
+                    }
+                }
+                resultDB = db.editPatient(idPatient, tName.getText(), tLastName.getText(), tLastName2.getText(),
+                        Integer.valueOf(tAgeOld.getText()), sex, status, tNumFrap.getText(), Integer.valueOf(tIdEmergency.getText()),
+                        trauma, tMotivo.getText(), tPadecimiento.getText(), tMedicamento.getText(), tEventoPrevio.getText(),
+                        obstetrico, obstetricoMonthes);
+                switch (resultDB) {
+                    case "done":
+                        alert.setText("El paciente a sido actualizado exitosamente");
+                        alert.setBackground(Color.GREEN);
+                        break;
+                    default:
+                        alert.setText(resultDB);
+                        alert.setBackground(Color.RED);
+                        break;
+                }
+                break;
+
+        }
     }
 
 }
