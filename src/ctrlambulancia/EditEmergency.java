@@ -38,8 +38,9 @@ public class EditEmergency extends JPanel implements ActionListener {
     JTextField tDel = new JTextField(20);
     JTextField tTransfer = new JTextField(8);
     JTextField tRadioOper = new JTextField(20);
-    JTextField tApplicant = new JTextField(20);
-//    JTextField tNumPatient = new JTextField(5);
+    JTextField tApplicant = new JTextField(15);
+    JTextField tCallmain = new JTextField(12);
+    JTextField tNumPatient = new JTextField(5);
     JTextField tAlive = new JTextField(5);
     JTextField tDeads = new JTextField(5);
     JTextField tAgeOld = new JTextField(5);
@@ -71,13 +72,14 @@ public class EditEmergency extends JPanel implements ActionListener {
     JButton bTime = new JButton("GUARDAR");
     JButton bSave = new JButton("Actualizar");
     JMenu mResultado = new JMenu("Resultado");
-    JMenu mPriorityTransfer = new JMenu("Prioridad del traslado");
-    JMenu mTransfer = new JMenu("Hospital a transferir");
+    JMenu mPriorityTransfer = new JMenu("Prioridad");
+    JMenu mTransfer = new JMenu("Hospital");
     JMenu mOper = new JMenu();
     JMenu mRadioOper = new JMenu();
     JMenu mParamedic = new JMenu();
     JMenu mAmbulance = new JMenu();
     JMenu mBase = new JMenu("Base de salida");
+    JMenu mCallmain = new JMenu("llamada recibida");
 //    ButtonGroup groupMult = new ButtonGroup();
     ButtonGroup groupSex = new ButtonGroup();
     ButtonGroup groupStatus = new ButtonGroup();
@@ -87,7 +89,6 @@ public class EditEmergency extends JPanel implements ActionListener {
     char[] cadena;
     ArrayList<String[]> patient = new ArrayList<String[]>();
     String tipeCallmain = "";
-    String callmain = "";
     String sTimeCall;
     String sex = "";
     String status = "";
@@ -154,7 +155,10 @@ public class EditEmergency extends JPanel implements ActionListener {
         this.tTimeComeback.setText(dataEmergency[24]);
         this.tNote.setText(dataEmergency[25]);
         this.tipeCallmain = dataEmergency[26];
-        this.callmain = dataEmergency[27];
+        if(!dataEmergency[26].equals("")&&dataEmergency[26]!=null){
+            mCallmain.setText(dataEmergency[26]);
+        }
+        tCallmain.setText(dataEmergency[27]);
         this.tFolio.setText(dataEmergency[28]);
         tab.tTransferFrom.setText(dataEmergency[29]);
         tab.tTransferTo.setText(dataEmergency[30]);
@@ -165,11 +169,11 @@ public class EditEmergency extends JPanel implements ActionListener {
         JPanel pTimeAmbulance = new JPanel(new GridLayout(1, 13));
         pTimeAmbulance.setBackground(Color.cyan);
 
-        JLabel lSpace0 = new JLabel("");
-        JLabel lSpace1 = new JLabel("");
-        JLabel lSpace2 = new JLabel("");
-        JLabel lSpace3 = new JLabel("");
-        JLabel lSpace9 = new JLabel("");
+//        JLabel lSpace0 = new JLabel("");
+//        JLabel lSpace1 = new JLabel("");
+//        JLabel lSpace2 = new JLabel("");
+//        JLabel lSpace3 = new JLabel("");
+//        JLabel lSpace9 = new JLabel("");
         JLabel lDir = new JLabel("Ubicación:");
         JLabel lEntre = new JLabel("Entre:");
         JLabel lRef = new JLabel("Referencia:");
@@ -193,6 +197,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         JLabel lLastNamePatient = new JLabel("Apellido paterno:");
         JLabel lLastName2Patient = new JLabel("Apellido materno:");
         JLabel lStatus = new JLabel("Estado:");
+        JLabel lNumPatient = new JLabel("Numero de paciente CRM:");
         JLabel lAmbulance = new JLabel("Ambulancia:");
         JLabel lKmDeparture = new JLabel("Km:");
         JLabel lFolio = new JLabel("Folio:");
@@ -210,6 +215,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         JMenuBar mBarParamedic = new JMenuBar();
         JMenuBar mBarAmbulance = new JMenuBar();
         JMenuBar mBarBase = new JMenuBar();
+        JMenuBar mBarCallmain = new JMenuBar();
         JMenuItem iResultado1 = new JMenuItem("22 Falsa alarma");
         JMenuItem iResultado2 = new JMenuItem("22B No encontrado");
         JMenuItem iResultado3 = new JMenuItem("10X3 Tranf por tercero");
@@ -233,6 +239,14 @@ public class EditEmergency extends JPanel implements ActionListener {
         JMenuItem iBase1 = new JMenuItem("Centro");
         JMenuItem iBase2 = new JMenuItem("Norte");
         JMenuItem iBase3 = new JMenuItem("Boca");
+        JMenuItem iCallmain1 = new JMenuItem("Tel particular");
+        JMenuItem iCallmain2 = new JMenuItem("Tel celular");
+        JMenuItem iCallmain3 = new JMenuItem("Presentado");
+        JMenuItem iCallmain4 = new JMenuItem("Quien hizo la llamada");
+        JMenuItem iCallmain5 = new JMenuItem("Casetar");
+        JMenuItem iCallmain6 = new JMenuItem("Radio");
+        JMenuItem iCallmain7 = new JMenuItem("Pre base");
+        JMenuItem iCallmain8 = new JMenuItem("otros");
         JButton bUpPatient = new JButton(" + ");
         JButton bEditPatient = new JButton("Editar Paciente");
         JScrollPane scroll = new JScrollPane();
@@ -268,6 +282,14 @@ public class EditEmergency extends JPanel implements ActionListener {
         bSave.addActionListener(this);
         bUpPatient.addActionListener(this);
         bEditPatient.addActionListener(this);
+        iCallmain1.addActionListener(this);
+        iCallmain2.addActionListener(this);
+        iCallmain3.addActionListener(this);
+        iCallmain4.addActionListener(this);
+        iCallmain5.addActionListener(this);
+        iCallmain6.addActionListener(this);
+        iCallmain7.addActionListener(this);
+        iCallmain8.addActionListener(this);
         mResultado.add(iResultado1);
         mResultado.add(iResultado2);
         mResultado.add(iResultado3);
@@ -295,6 +317,15 @@ public class EditEmergency extends JPanel implements ActionListener {
         mBase.add(iBase2);
         mBase.add(iBase3);
         mBarBase.add(mBase);
+        mCallmain.add(iCallmain1);
+        mCallmain.add(iCallmain2);
+        mCallmain.add(iCallmain3);
+        mCallmain.add(iCallmain4);
+        mCallmain.add(iCallmain5);
+        mCallmain.add(iCallmain6);
+        mCallmain.add(iCallmain7);
+        mCallmain.add(iCallmain8);
+        mBarCallmain.add(mCallmain);
         groupSex.add(sexM);
         groupSex.add(sexF);
         groupStatus.add(rAlive);
@@ -305,24 +336,23 @@ public class EditEmergency extends JPanel implements ActionListener {
         mBarParamedic.add(mParamedic);
         mBarAmbulance.add(mAmbulance);
         mOper.setPreferredSize(new Dimension(250, 20));
-        mRadioOper.setPreferredSize(new Dimension(250, 20));
+        mRadioOper.setPreferredSize(new Dimension(200, 20));
         mParamedic.setPreferredSize(new Dimension(250, 20));
         mAmbulance.setPreferredSize(new Dimension(150, 20));
         lDir.setPreferredSize(new Dimension(60, 50));
-        //lRadioOper.setPreferredSize(new Dimension(120, 50));
         lAlive.setPreferredSize(new Dimension(60, 50));
         lDeads.setPreferredSize(new Dimension(60, 50));
-        lSpace0.setPreferredSize(new Dimension(25, 50));
-        lSpace1.setPreferredSize(new Dimension(25, 50));
-        lSpace2.setPreferredSize(new Dimension(100, 50));
-        lSpace9.setPreferredSize(new Dimension(200, 50));
+//        lSpace0.setPreferredSize(new Dimension(25, 50));
+//        lSpace1.setPreferredSize(new Dimension(25, 50));
+//        lSpace2.setPreferredSize(new Dimension(50, 50));
+//        lSpace9.setPreferredSize(new Dimension(100, 50));
         lSex.setPreferredSize(new Dimension(50, 50));
         lAgeOld.setPreferredSize(new Dimension(50, 50));
         lNamePatient.setPreferredSize(new Dimension(65, 50));
         lLastNamePatient.setPreferredSize(new Dimension(115, 50));
         lLastName2Patient.setPreferredSize(new Dimension(115, 50));
         lStatus.setPreferredSize(new Dimension(65, 50));
-//        lNumPatient.setPreferredSize(new Dimension(170, 50));
+        lNumPatient.setPreferredSize(new Dimension(170, 50));
         lAmbulance.setPreferredSize(new Dimension(170, 50));
         lKmDeparture.setPreferredSize(new Dimension(70, 50));
         lOper.setPreferredSize(new Dimension(120, 50));
@@ -332,9 +362,26 @@ public class EditEmergency extends JPanel implements ActionListener {
         lNote.setPreferredSize(new Dimension(100, 50));
         bTime.setPreferredSize(new Dimension(windowX / 13, 30));
         mResultado.setPreferredSize(new Dimension(150, 30));
-        mPriorityTransfer.setPreferredSize(new Dimension(150, 30));
-        mTransfer.setPreferredSize(new Dimension(150, 30));
+        mPriorityTransfer.setPreferredSize(new Dimension(100, 30));
+        mCallmain.setPreferredSize(new Dimension(130, 30));
+        iPriority1.setPreferredSize(new Dimension(100, 20));
+        iPriority2.setPreferredSize(new Dimension(100, 20));
+        iPriority3.setPreferredSize(new Dimension(100, 20));
+        mTransfer.setPreferredSize(new Dimension(100, 30));
+        iTransfer1.setPreferredSize(new Dimension(100, 20));
+        iTransfer2.setPreferredSize(new Dimension(100, 20));
+        iTransfer3.setPreferredSize(new Dimension(100, 20));
+        iTransfer4.setPreferredSize(new Dimension(100, 20));
+        iTransfer5.setPreferredSize(new Dimension(100, 20));
+        iTransfer6.setPreferredSize(new Dimension(100, 20));
+        iTransfer7.setPreferredSize(new Dimension(100, 20));
+        iTransfer8.setPreferredSize(new Dimension(100, 20));
+        iTransfer9.setPreferredSize(new Dimension(100, 20));
+        iTransfer10.setPreferredSize(new Dimension(100, 20));
         mBase.setPreferredSize(new Dimension(150, 30));
+        iBase1.setPreferredSize(new Dimension(150, 20));
+        iBase2.setPreferredSize(new Dimension(150, 20));
+        iBase3.setPreferredSize(new Dimension(150, 20));
         lDir.setHorizontalAlignment(SwingConstants.RIGHT);
         lRadioOper.setHorizontalAlignment(SwingConstants.RIGHT);
         lAlive.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -345,6 +392,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         lSex.setHorizontalAlignment(SwingConstants.RIGHT);
         lAgeOld.setHorizontalAlignment(SwingConstants.RIGHT);
         lStatus.setHorizontalAlignment(SwingConstants.RIGHT);
+        lNumPatient.setHorizontalAlignment(SwingConstants.RIGHT);
         lAmbulance.setHorizontalAlignment(SwingConstants.RIGHT);
         lKmDeparture.setHorizontalAlignment(SwingConstants.RIGHT);
         lOper.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -360,7 +408,6 @@ public class EditEmergency extends JPanel implements ActionListener {
         tTimeComeback.setHorizontalAlignment(JTextField.CENTER);
         mResultado.setHorizontalAlignment(SwingConstants.CENTER);
         mResultado.setHorizontalTextPosition(JTextField.CENTER);
-        iResultado1.setHorizontalAlignment(JTextField.CENTER);
         lTimeCall.setHorizontalAlignment(JTextField.RIGHT);
         lTimeDeparture.setHorizontalAlignment(JTextField.RIGHT);
         lTimeArrival.setHorizontalAlignment(JTextField.RIGHT);
@@ -373,7 +420,7 @@ public class EditEmergency extends JPanel implements ActionListener {
 
         this.setLayout(new FlowLayout());
 
-        pDir.add(lDir);
+         pDir.add(lDir);
         pDir.add(tDir);
         pDir.add(lEntre);
         pDir.add(tEntre);
@@ -383,27 +430,23 @@ public class EditEmergency extends JPanel implements ActionListener {
         pDir.add(tCol);
         pDir.add(lDel);
         pDir.add(tDel);
-        //this.add(pDir, BorderLayout.LINE_START );
         this.add(pDir);
-
         pTransfer.add(lRadioOper);
         pTransfer.add(mBarRadioOper);
         pTransfer.add(lApplicant);
         pTransfer.add(tApplicant);
-        pTransfer.add(lSpace0);
+        pTransfer.add(mBarCallmain);
+        pTransfer.add(tCallmain);
         pTransfer.add(mBarResultado);
         pTransfer.add(mBarPriorityTransfer);
         pTransfer.add(mBarTransfer);
         pTransfer.add(tTransfer);
         this.add(pTransfer);
-//        this.add(lSpace1);
-
         this.add(lAlive);
         this.add(tAlive);
         this.add(lDeads);
         this.add(tDeads);
 //        this.add(lSpace2);
-
         this.add(lPatient);
         this.add(lStatus);
         this.add(rAlive);
@@ -422,12 +465,11 @@ public class EditEmergency extends JPanel implements ActionListener {
         this.add(lLastName2Patient);
         this.add(tLastName2Patient);
         this.add(bUpPatient);
-        this.add(lSpace3);
-
+//        this.add(lSpace3);
         this.add(lAmbulance);
         this.add(mBarAmbulance);
-        this.add(lKmUsed);
-        this.add(tKmUsed);
+        this.add(lKmDeparture);
+        this.add(tKmDeparture);
         this.add(mBarBase);
         this.add(lFolio);
         this.add(tFolio);
@@ -435,11 +477,13 @@ public class EditEmergency extends JPanel implements ActionListener {
         this.add(mBarOper);
         this.add(lParamedic);
         this.add(mBarParamedic);
-        this.add(lSpace9);
+//        this.add(lSpace9);
         this.add(lOperVoluntary);
         this.add(tOperVoluntary);
         this.add(lParamedicVoluntary);
         this.add(tParamedicVoluntary);
+        this.add(lKmUsed);
+        this.add(tKmUsed);
         this.add(lNote);
         this.add(scroll, BorderLayout.CENTER);
         this.add(bSave);
@@ -490,117 +534,141 @@ public class EditEmergency extends JPanel implements ActionListener {
                 }
                 break;
             case "JMenuItem":
-                if (e.getActionCommand().toCharArray()[0] == 'P' && e.getActionCommand().toCharArray()[1] == 'r') {
-                    mPriorityTransfer.setText(e.getActionCommand());
-                } else if (cadena[2] == '#') {
-                    String word;
-                    boolean isId = true;
-                    switch (command) {
-                        case "AB":
-                            mAmbulance.setText(e.getActionCommand());
-                            word = "";
-                            cadena = e.getActionCommand().toCharArray();
-                            if (cadena[0] == 'A' && cadena[1] == 'B') {
-                                for (int i = 3; i < cadena.length; i++) {
-                                    if (cadena[i] == ' ') {
-                                        if (isId) {
-                                            this.idAmbulance = Integer.valueOf(word);
-                                            word = "";
-                                            isId = false;
-                                        } else {
-                                            word += cadena[i];
+                switch (e.getActionCommand()) {
+                    case "22 Falsa alarma":
+                    case "22B No encontrado":
+                    case "10X3 Tranf por tercero":
+                    case "22A No necesita tranf":
+                    case "22C Se niega a tranf":
+                    case "14 Fallecido":
+                    case "10 Traslado":
+                        mResultado.setText(e.getActionCommand());
+                        break;
+                    case "Centro":
+                    case "Norte":
+                    case "Boca":
+                        mBase.setText(e.getActionCommand());
+                        break;
+                    case "Prioridad 1":
+                    case "Prioridad 2":
+                    case "Prioridad 3":
+                        mPriorityTransfer.setText(e.getActionCommand());
+                        break;
+                    case "CRUZ ROJA":
+                    case "SM DDF":
+                    case "ISSSTE":
+                    case "IMSS":
+                    case "SSA":
+                    case "PEMEX":
+                    case "MILITAR":
+                    case "NAVAL":
+                    case "PRIVADO":
+                    case "OTRO":
+                        mTransfer.setText(e.getActionCommand());
+                        break;
+                    case "Tel particular":
+                    case "Tel celular":
+                    case "Presentado":
+                    case "Quien hizo la llamada":
+                    case "Casetar":
+                    case "Radio":
+                    case "Pre base":
+                    case "otros":
+                        mCallmain.setText(e.getActionCommand());
+                        tipeCallmain = e.getActionCommand();
+                        break;
+                    default:
+                        if (cadena[2] == '#') {
+                            String word;
+                            boolean isId = true;
+                            switch (command) {
+                                case "AB":
+                                    mAmbulance.setText(e.getActionCommand());
+                                    word = "";
+                                    cadena = e.getActionCommand().toCharArray();
+                                    if (cadena[0] == 'A' && cadena[1] == 'B') {
+                                        for (int i = 3; i < cadena.length; i++) {
+                                            if (cadena[i] == ' ') {
+                                                if (isId) {
+                                                    this.idAmbulance = Integer.valueOf(word);
+                                                    word = "";
+                                                    isId = false;
+                                                } else {
+                                                    word += cadena[i];
+                                                }
+                                            } else {
+                                                word += cadena[i];
+                                            }
                                         }
-                                    } else {
-                                        word += cadena[i];
                                     }
-                                }
-                            }
-                            numAmbulance = word;
-                            tKmDeparture.setText(String.valueOf(db.consultAmbulanceKm(idAmbulance)));
-                            break;
-                        case "OP":
-                            mOper.setText(e.getActionCommand());
-                            word = "";
-                            cadena = e.getActionCommand().toCharArray();
-                            if (cadena[0] == 'O' && cadena[1] == 'P') {
-                                for (int i = 3; i < cadena.length; i++) {
-                                    if (cadena[i] == ' ') {
-                                        if (isId) {
-                                            this.idOper = Integer.valueOf(word);
-                                            word = "";
-                                            isId = false;
-                                        } else {
-                                            word += cadena[i];
+                                    numAmbulance = word;
+                                    tKmDeparture.setText(String.valueOf(db.consultAmbulanceKm(idAmbulance)));
+                                    break;
+                                case "OP":
+                                    mOper.setText(e.getActionCommand());
+                                    word = "";
+                                    cadena = e.getActionCommand().toCharArray();
+                                    if (cadena[0] == 'O' && cadena[1] == 'P') {
+                                        for (int i = 3; i < cadena.length; i++) {
+                                            if (cadena[i] == ' ') {
+                                                if (isId) {
+                                                    this.idOper = Integer.valueOf(word);
+                                                    word = "";
+                                                    isId = false;
+                                                } else {
+                                                    word += cadena[i];
+                                                }
+                                            } else {
+                                                word += cadena[i];
+                                            }
                                         }
-                                    } else {
-                                        word += cadena[i];
                                     }
-                                }
-                            }
-                            nameOper = word;
-                            break;
-                        case "RO":
-                            mRadioOper.setText(e.getActionCommand());
-                            word = "";
-                            cadena = e.getActionCommand().toCharArray();
-                            if (cadena[0] == 'R' && cadena[1] == 'O') {
-                                for (int i = 3; i < cadena.length; i++) {
-                                    if (cadena[i] == ' ') {
-                                        if (isId) {
-                                            this.idRadioOper = Integer.valueOf(word);
-                                            word = "";
-                                            isId = false;
-                                        } else {
-                                            word += cadena[i];
+                                    nameOper = word;
+                                    break;
+                                case "RO":
+                                    mRadioOper.setText(e.getActionCommand());
+                                    word = "";
+                                    cadena = e.getActionCommand().toCharArray();
+                                    if (cadena[0] == 'R' && cadena[1] == 'O') {
+                                        for (int i = 3; i < cadena.length; i++) {
+                                            if (cadena[i] == ' ') {
+                                                if (isId) {
+                                                    this.idRadioOper = Integer.valueOf(word);
+                                                    word = "";
+                                                    isId = false;
+                                                } else {
+                                                    word += cadena[i];
+                                                }
+                                            } else {
+                                                word += cadena[i];
+                                            }
                                         }
-                                    } else {
-                                        word += cadena[i];
                                     }
-                                }
-                            }
-                            nameRadioOper = word;
-                            break;
-                        case "PM":
-                            mParamedic.setText(e.getActionCommand());
-                            word = "";
-                            cadena = e.getActionCommand().toCharArray();
-                            if (cadena[0] == 'P' && cadena[1] == 'M') {
-                                for (int i = 3; i < cadena.length; i++) {
-                                    if (cadena[i] == ' ') {
-                                        if (isId) {
-                                            this.idParamedic = Integer.valueOf(word);
-                                            word = "";
-                                            isId = false;
-                                        } else {
-                                            word += cadena[i];
+                                    nameRadioOper = word;
+                                    break;
+                                case "PM":
+                                    mParamedic.setText(e.getActionCommand());
+                                    word = "";
+                                    cadena = e.getActionCommand().toCharArray();
+                                    if (cadena[0] == 'P' && cadena[1] == 'M') {
+                                        for (int i = 3; i < cadena.length; i++) {
+                                            if (cadena[i] == ' ') {
+                                                if (isId) {
+                                                    this.idParamedic = Integer.valueOf(word);
+                                                    word = "";
+                                                    isId = false;
+                                                } else {
+                                                    word += cadena[i];
+                                                }
+                                            } else {
+                                                word += cadena[i];
+                                            }
                                         }
-                                    } else {
-                                        word += cadena[i];
                                     }
-                                }
+                                    nameParamedic = word;
+                                    break;
                             }
-                            nameParamedic = word;
-                            break;
-                    }
-                } else {
-                    switch (e.getActionCommand()) {
-                        case "22 Falsa alarma":
-                        case "22B No encontrado":
-                        case "10X3 Tranf por tercero":
-                        case "22A No necesita tranf":
-                        case "22C Se niega a tranf":
-                        case "14 Fallecido":
-                        case "10 Traslado":
-                            mResultado.setText(e.getActionCommand());
-                            break;
-                        case "Centro":
-                        case "Norte":
-                        case "Boca":
-                            mBase.setText(e.getActionCommand());
-                            break;
-                        default:
-                            mTransfer.setText(e.getActionCommand());
-                    }
+                        }
                 }
                 break;
             case "JButton":
@@ -693,7 +761,7 @@ public class EditEmergency extends JPanel implements ActionListener {
                                 idRadioOper, idAmbulance, mBase.getText(), tOperVoluntary.getText(), tParamedicVoluntary.getText(),
                                 tTimeCall.getText(), tTimeDeparture.getText(), tTimeArrival.getText(),
                                 tTimeTransfer.getText(), tTimeHospital.getText(), tTimeComeback.getText(),
-                                tNote.getText(), tipeCallmain, callmain, Integer.valueOf(tKmUsed.getText()), tFolio.getText(),
+                                tNote.getText(), tipeCallmain, tCallmain.getText(), Integer.valueOf(tKmUsed.getText()), tFolio.getText(),
                                 tab.tTransferFrom.getText(), tab.tTransferTo.getText());
                         System.out.println("insert= " + em);
                         if (em.equals("done")) {
@@ -759,7 +827,7 @@ public class EditEmergency extends JPanel implements ActionListener {
                         data[3][1] = tEntre.getText();
                         data[4][1] = tCol.getText();
                         data[5][1] = tDel.getText();
-                        data[6][1] = tipeCallmain + " " + callmain;
+                        data[6][1] = tipeCallmain + " " + tCallmain.getText();
                         switch (tab.mTrauma.getText()) {
                             case "Tipo de Trauma":
                                 data[7][1] = "";
@@ -830,6 +898,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         for (int i = 0; i < employees.length(); i++) {
             if (cadena[i] == '\n') {
                 JMenuItem iEmployees = new JMenuItem(word);
+                iEmployees.setPreferredSize(new Dimension(250, 20));
                 mOper.add(iEmployees);
                 iEmployees.addActionListener(this);
                 word = "";
@@ -843,6 +912,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         for (int i = 0; i < employees.length(); i++) {
             if (cadena[i] == '\n') {
                 JMenuItem iEmployees = new JMenuItem(word);
+                iEmployees.setPreferredSize(new Dimension(200, 20));
                 mRadioOper.add(iEmployees);
                 iEmployees.addActionListener(this);
                 word = "";
@@ -856,6 +926,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         for (int i = 0; i < employees.length(); i++) {
             if (cadena[i] == '\n') {
                 JMenuItem iEmployees = new JMenuItem(word);
+                iEmployees.setPreferredSize(new Dimension(250, 20));
                 mParamedic.add(iEmployees);
                 iEmployees.addActionListener(this);
                 word = "";
@@ -869,6 +940,7 @@ public class EditEmergency extends JPanel implements ActionListener {
         for (int i = 0; i < employees.length(); i++) {
             if (cadena[i] == '\n') {
                 JMenuItem iEmployees = new JMenuItem(word);
+                iEmployees.setPreferredSize(new Dimension(150, 20));
                 mAmbulance.add(iEmployees);
                 iEmployees.addActionListener(this);
                 word = "";

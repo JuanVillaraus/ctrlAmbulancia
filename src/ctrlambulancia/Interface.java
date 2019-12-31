@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.*;
 
-
 /**
  *
  * @author Sistemas
@@ -47,7 +46,7 @@ public class Interface extends JFrame implements ActionListener {
         this.setSize(400, 560);
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-        this.setTitle("Sist. Control de Ambulancias Beta2.11.1");
+        this.setTitle("Sist. Control de Ambulancias Beta3.0.1");
 
         RealTime rt = new RealTime();
         rt.settTime(tTime);
@@ -172,8 +171,8 @@ public class Interface extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Emergencia":
-                if (mAmbulance.getText().equals("Elegir opción")) {
-                    JOptionPane.showMessageDialog(null, "Debe elegir una ambulancia", "ERROR", JOptionPane.WARNING_MESSAGE);
+                if (mAmbulance.getText().equals("Elegir opción") || mRadioOper.getText().equals("Elegir opción")) {
+                    JOptionPane.showMessageDialog(null, "Debe elegir una ambulancia y radio operador", "ERROR", JOptionPane.WARNING_MESSAGE);
                 } else {
                     emergency = new JFrame("Emergencia " + mAmbulance.getText());
                     emergency.setSize(1600, 500);
@@ -219,13 +218,13 @@ public class Interface extends JFrame implements ActionListener {
 //                pPass.add(tPass);
 //                if (0 == JOptionPane.showConfirmDialog(null, pPass, "login", JOptionPane.DEFAULT_OPTION)) {
 //                    if (String.valueOf(tUser.getText()).equals(db.consultAdmin(String.valueOf(tPass.getPassword())))) {
-                        admin = new JFrame("Administrador");
-                        admin.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
-                        admin.setSize(400, 500);
-                        admin.setVisible(true);
-                        admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
-                                (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
-                        admin.add(new admin(admin, db, this));
+                admin = new JFrame("Administrador");
+                admin.setIconImage(Toolkit.getDefaultToolkit().getImage("resource/cruzroja.png"));
+                admin.setSize(400, 500);
+                admin.setVisible(true);
+                admin.setLocation(((Toolkit.getDefaultToolkit().getScreenSize().width / 2) - this.getWidth() / 2) + this.getWidth(),
+                        (Toolkit.getDefaultToolkit().getScreenSize().height / 3) - this.getHeight() / 2);
+                admin.add(new admin(admin, db, this));
 //                    } else {
 //                        JOptionPane.showMessageDialog(null, "El user o pass son incorrectos", "ERROR", JOptionPane.WARNING_MESSAGE);
 //                    }

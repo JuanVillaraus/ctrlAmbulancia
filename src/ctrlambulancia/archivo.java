@@ -22,6 +22,11 @@ import org.apache.poi.xwpf.usermodel.*;
 public class archivo {
 
     String info = "";
+    MonitorActivity ma;
+    
+    public void setMa(MonitorActivity ma){
+        this.ma = ma;
+    }
 
     public String leerTxtLine(String dir) {                                     //lee lo que haya en un archivo txt, recibe como parametros la direccion tipo String y devuelve el String del contenido en una sola linea
         try {
@@ -143,7 +148,7 @@ public class archivo {
             System.err.println("SOY SAVE: No se encontro el archivo " + dir);
         }
     }
-    
+
     public void writeExcelData(String dir, String nameSheet, String[][] data) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet worksheet = workbook.createSheet(nameSheet);
@@ -165,6 +170,13 @@ public class archivo {
                 } else {//para el contenido
                     XSSFCell cell = row.createCell(j);//se crea las celdas para la contenido, junto con la posición
                     cell.setCellValue(data[i][j]); //se añade el contenido
+                }
+                if (j == 0) {
+                    System.out.println("Excel :EM#" + data[i][0] + " " + data[i][1] + " " + data[i][3]);
+                    ma.messenger.setText("Excel :EM#" + data[i][0] + " " + data[i][1] + " " + data[i][3]);
+                    ma.repaint();
+                }
+                if ((i + 1) == data.length) {
                     worksheet.autoSizeColumn(j);
                 }
             }

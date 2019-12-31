@@ -5,12 +5,16 @@
  */
 package ctrlambulancia;
 
+//import java.io.FileInputStream;
+//import java.io.IOException;
+//import java.io.InputStream;
 import java.sql.*;
 import static java.sql.Types.NULL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import java.io.*;
 
 /**
  *
@@ -19,25 +23,35 @@ import javax.swing.JFrame;
 public class ConxDB {
 
     Connection c = null;
-
-    public ConxDB(JFrame frameInsert) {
-        try {
-            Class.forName("org.postgresql.Driver");
-//            this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/pruebaCA", "admincrm", "CRM*1975*dvb");//DB para hacer pruebas
-            this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/CtrlAmbDB", "admincrm", "CRM*1975*dvb");
-            System.out.println("Opened database successfully");
-        } catch (ClassNotFoundException | SQLException e) {
-            //e.printStackTrace();
-            System.err.println("ConxDB/ConxDB$\t" + e.getClass().getName() + "\t" + e.getMessage());
-            frameInsert.dispose();
-        }
-    }
+    InputStream input = null;
+    Properties prop = new Properties();
+    MonitorActivity ma;
 
     public ConxDB() {
+        String dbAddress = null;
+        String dbPort = null;
+        String dbName = null;
+        try {
+            input = new FileInputStream("config.properties");
+            prop.load(input);
+            dbAddress = prop.getProperty("DBAddress");
+            dbPort = prop.getProperty("DBPort");
+            dbName = prop.getProperty("DBName");
+            System.out.println("Try open database: " + dbAddress + ":" + dbPort + "/" + dbName);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    System.err.println("ConxDB/config.properties- Error al leer modelo del archivo config: " + e.getMessage());
+                }
+            }
+        }
         try {
             Class.forName("org.postgresql.Driver");
-//            this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/pruebaCA", "admincrm", "CRM*1975*dvb");//DB para hacer pruebas
-            this.c = DriverManager.getConnection("jdbc:postgresql://192.168.1.101:5432/CtrlAmbDB", "admincrm", "CRM*1975*dvb");
+            this.c = DriverManager.getConnection("jdbc:postgresql://" + dbAddress + ":" + dbPort + "/" + dbName, "admincrm", "CRM*1975*dvb");
             System.out.println("Opened database successfully");
         } catch (ClassNotFoundException | SQLException e) {
             //e.printStackTrace();
@@ -53,6 +67,10 @@ public class ConxDB {
         } catch (SQLException ex) {
             Logger.getLogger("ConxDB/Close$\t" + ConxDB.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void setMa(MonitorActivity ma){
+        this.ma = ma;
     }
 
     public String insertAdmin(String user, String pass) {
@@ -1127,7 +1145,7 @@ public class ConxDB {
             ResultSet rs = st.executeQuery(""
                     + "SELECT * "
                     + "FROM \"EMERGENCIA\" "
-                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
+                    + "ORDER BY \"HORA_LLAMADA_EMERGENCIA\" ASC;");
             while (rs.next()) {
                 int idEmergency = rs.getInt("PK_ID_EMERGENCIA");
                 String dir = rs.getString("DIR_EMERGENCIA");
@@ -1308,7 +1326,8 @@ public class ConxDB {
             ResultSet rs = st.executeQuery(""
                     + "SELECT * "
                     + "FROM \"EMERGENCIA\" "
-                    + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' ");
+                    + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' "
+                    + "ORDER BY \"HORA_LLAMADA_EMERGENCIA\" ASC;");
             while (rs.next()) {
                 int idEmergency = rs.getInt("PK_ID_EMERGENCIA");
                 String dir = rs.getString("DIR_EMERGENCIA");
@@ -2607,6 +2626,37 @@ public class ConxDB {
         }
     }
 
+    public String consultFoliosDiario(String dateOpen, String dateClose) {
+        String resp = "";
+        int numFolio = 0;
+        int numEmergency = 0;
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(""
+                    + "SELECT \"PK_ID_EMERGENCIA\", \"HORA_LLAMADA_EMERGENCIA\", \"FOLIO_EMERGENCIA\", \"OBSERVACION_EMERGENCIA\" "
+                    + "FROM \"EMERGENCIA\" "
+                    + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' ");
+            while (rs.next()) {
+                numEmergency++;
+                int idEmergency = rs.getInt("PK_ID_EMERGENCIA");
+                String timeCall = rs.getString("HORA_LLAMADA_EMERGENCIA");
+                String note = rs.getString("OBSERVACION_EMERGENCIA");
+                String folio = rs.getString("FOLIO_EMERGENCIA");
+                if (!folio.equals("") && folio != null) {
+                    numFolio++;
+                    resp += "EM#" + idEmergency + "\t" + timeCall + "\t\t" + numFolio + "\t" + folio + "\t" + note + "\n";
+                }
+            }
+            resp += "\n\tEmergencias totales: " + (numEmergency - numFolio);
+            rs.close();
+            st.close();
+            return resp;
+        } catch (Exception e) {
+            System.err.println("ConxDB/ConsultaEmergency$\t" + e.getClass().getName() + "\t" + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
     public String consultEmergencyParamedicVoluntary(String paramedicVoluntary, String dateOpen, String dateClose) {
         String resp = "";
         try {
@@ -2986,7 +3036,7 @@ public class ConxDB {
                     + "SELECT * "
                     + "FROM \"EMERGENCIA\" "
                     + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
-                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
+                    + "ORDER BY \"HORA_LLAMADA_EMERGENCIA\" ASC;");
             while (rs.next()) {
                 row = new String[21];
                 id = rs.getInt("PK_ID_EMERGENCIA") + "";
@@ -3012,6 +3062,8 @@ public class ConxDB {
                 row[19] = rs.getString("NOMBRE_PACIENTE") + " " + rs.getString("APELLIDO_PATERNO_PACIENTE") + " " + rs.getString("APELLIDO_MATERNO_PACIENTE");
                 row[20] = rs.getString("OBSERVACION_EMERGENCIA");
                 list.add(row);
+                System.out.println("ConxDB:EM#"+id);
+                ma.messenger.setText("ConxDB:EM#"+id);
             }
             rs.close();
             st.close();
@@ -3136,7 +3188,7 @@ public class ConxDB {
                     + "FROM \"EMERGENCIA\" "
                     + "INNER JOIN \"PACIENTE\" ON \"ID_EMERGENCIA\" = \"PK_ID_EMERGENCIA\" "
                     + "WHERE \"HORA_LLAMADA_EMERGENCIA\" BETWEEN '%" + dateOpen + "%' AND '%" + dateClose + "%' "
-                    + "ORDER BY \"PK_ID_EMERGENCIA\" ASC;");
+                    + "ORDER BY \"HORA_LLAMADA_EMERGENCIA\" ASC;");
             while (rs.next()) {
                 row = new String[21];
                 id = rs.getInt("PK_ID_EMERGENCIA") + "";
@@ -3162,6 +3214,7 @@ public class ConxDB {
                 row[19] = rs.getString("NOMBRE_PACIENTE") + " " + rs.getString("APELLIDO_PATERNO_PACIENTE") + " " + rs.getString("APELLIDO_MATERNO_PACIENTE");
                 row[20] = rs.getString("OBSERVACION_EMERGENCIA");
                 list.add(row);
+                System.out.println("ConxDB:EM#"+id);
             }
             rs.close();
             st.close();

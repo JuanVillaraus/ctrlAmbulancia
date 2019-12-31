@@ -26,7 +26,9 @@ public class Consulta extends JPanel implements ActionListener {
 
     ConxDB db;
     archivo a = new archivo();
+    MonitorActivity ma = new MonitorActivity();
     SimpleDateFormat month = new SimpleDateFormat("yyyy-MM");
+    SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
     Calendar calendario = new GregorianCalendar();
     JMenu mOption = new JMenu("Opción");
     JMenu mOptionSearch = new JMenu("Opción para Buscar");
@@ -36,7 +38,7 @@ public class Consulta extends JPanel implements ActionListener {
     JTextField tFrap = new JTextField(8);
     JTextField tName = new JTextField(20);
     JTextField tPatient = new JTextField(30);
-    JTextArea eMain = new JTextArea(40, 140);
+    JTextArea eMain = new JTextArea(46, 140);
 //    JEditorPane eMain = new JEditorPane();
     JLabel lDateOpen = new JLabel("Fecha de:");
     JLabel lDateClose = new JLabel("hasta:");
@@ -53,6 +55,8 @@ public class Consulta extends JPanel implements ActionListener {
 
     public Consulta(JFrame window, ConxDB db) {
         this.db = db;
+        this.db.setMa(ma);
+        this.a.setMa(ma);
         JButton bSearch = new JButton("Buscar");
         JButton bReportAll = new JButton("Reporte Historial");
         JButton bReport = new JButton("Reporte Mensual");
@@ -75,6 +79,7 @@ public class Consulta extends JPanel implements ActionListener {
         JMenuItem iOptionSearch12 = new JMenuItem("Ambulancia");
         JMenuItem iOptionSearch13 = new JMenuItem("Paciente X Nombre");
         JMenuItem iOptionSearch14 = new JMenuItem("Paciente X Fecha");
+        JMenuItem iOptionSearch15 = new JMenuItem("Folios diarios");
 
         JMenuBar mBarResultado = new JMenuBar();
         JMenuBar mBarPriorityTransfer = new JMenuBar();
@@ -170,6 +175,7 @@ public class Consulta extends JPanel implements ActionListener {
         iOptionSearch12.addActionListener(this);
         iOptionSearch13.addActionListener(this);
         iOptionSearch14.addActionListener(this);
+        iOptionSearch15.addActionListener(this);
         bSearch.addActionListener(this);
         bReport.addActionListener(this);
         bReportAll.addActionListener(this);
@@ -190,6 +196,7 @@ public class Consulta extends JPanel implements ActionListener {
         mOptionSearch.add(iOptionSearch12);
         mOptionSearch.add(iOptionSearch13);
         mOptionSearch.add(iOptionSearch14);
+        mOptionSearch.add(iOptionSearch15);
         mBarOption.add(mOption);
         mBarOptionSearch.add(mOptionSearch);
         mOption.setPreferredSize(new Dimension(150, 30));
@@ -248,6 +255,7 @@ public class Consulta extends JPanel implements ActionListener {
         top.add(bReportAll);
         this.add(top, BorderLayout.NORTH);
         this.add(scroll, BorderLayout.CENTER);
+//        this.add(ma, BorderLayout.SOUTH);
     }
 
     @Override
@@ -269,15 +277,52 @@ public class Consulta extends JPanel implements ActionListener {
                     }
                     break;
                 case "Reporte Mensual":
-                    try {
-                        a.writeExcelData("C:/CtrlAmb/reporte mensual.xlsx",
-                                "hoja1", db.reportEmergency(month.format(calendario.getTime()) + "-01 00:00:00",
-                                        month.format(calendario.getTime()) + "-31 23:59:59"));
-                        Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" mensual\".xlsx");
-                    } catch (IOException ex) {
-                        Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
-                        System.out.println("ERROR: " + ex);
-                        eMain.setText("error: " + ex);
+                    if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                        try {
+                            a.writeExcelData("C:/CtrlAmb/reporte mensual.xlsx",
+                                    "hoja1", db.reportEmergency(month.format(calendario.getTime()) + "-01 00:00:00",
+                                            month.format(calendario.getTime()) + "-31 23:59:59"));
+                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" mensual\".xlsx");
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.println("ERROR: " + ex);
+                            eMain.setText("error: " + ex);
+                        }
+                    } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                        if (tDateOpen.getText().equals("")) {
+                            try {
+                                a.writeExcelData("C:/CtrlAmb/reporte mensual.xlsx",
+                                        "hoja1", db.reportEmergency(tDateClose.getText()
+                                                + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+                                Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" mensual\".xlsx");
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                System.out.println("ERROR: " + ex);
+                                eMain.setText("error: " + ex);
+                            }
+                        } else {
+                            try {
+                                a.writeExcelData("C:/CtrlAmb/reporte mensual.xlsx",
+                                        "hoja1", db.reportEmergency(tDateOpen.getText()
+                                                + " 00:00:00", tDateOpen.getText() + " 23:59:59"));
+                                Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" mensual\".xlsx");
+                            } catch (IOException ex) {
+                                Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                                System.out.println("ERROR: " + ex);
+                                eMain.setText("error: " + ex);
+                            }
+                        }
+                    } else {
+                        try {
+                            a.writeExcelData("C:/CtrlAmb/reporte mensual.xlsx",
+                                    "hoja1", db.reportEmergency(tDateOpen.getText()
+                                            + " 00:00:00", tDateClose.getText() + " 23:59:59"));
+                            Runtime.getRuntime().exec("cmd /c start C:\\CtrlAmb\\reporte\" mensual\".xlsx");
+                        } catch (IOException ex) {
+                            Logger.getLogger(Consulta.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.println("ERROR: " + ex);
+                            eMain.setText("error: " + ex);
+                        }
                     }
                     break;
                 default:
@@ -662,6 +707,29 @@ public class Consulta extends JPanel implements ActionListener {
                                 eMain.setText(sEmergency);
                             }
                             break;
+                        case "Folios diarios":
+                            if (tDateOpen.getText().equals("") && tDateClose.getText().equals("")) {
+                                System.out.println(date.format(calendario.getTime()) + " 00:00:00"
+                                        + date.format(calendario.getTime()) + " 23:59:59");
+                                sEmergency = db.consultFoliosDiario(date.format(calendario.getTime()) + " 00:00:00",
+                                        date.format(calendario.getTime()) + " 23:59:59");
+                                eMain.setText(sEmergency);
+                            } else if (tDateOpen.getText().equals("") || tDateClose.getText().equals("")) {
+                                if (tDateOpen.getText().equals("")) {
+                                    sEmergency = db.consultFoliosDiario(tDateClose.getText()
+                                            + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                    eMain.setText(sEmergency);
+                                } else {
+                                    sEmergency = db.consultFoliosDiario(tDateOpen.getText()
+                                            + " 00:00:00", tDateOpen.getText() + " 23:59:59");
+                                    eMain.setText(sEmergency);
+                                }
+                            } else {
+                                sEmergency = db.consultFoliosDiario(tDateOpen.getText()
+                                        + " 00:00:00", tDateClose.getText() + " 23:59:59");
+                                eMain.setText(sEmergency);
+                            }
+                            break;
 
 //                    sEmergency = db.consultPatientAll();
 //                            String[][] sPatient = db.reportPatient();
@@ -968,6 +1036,26 @@ public class Consulta extends JPanel implements ActionListener {
                     tDateClose.setVisible(false);
                     break;
                 case "Paciente X Fecha":
+                    mOptionSearch.setText(e.getActionCommand());
+                    lFrap.setVisible(false);
+                    tFrap.setVisible(false);
+                    tName.setVisible(false);
+                    tPatient.setVisible(false);
+                    lDir.setVisible(false);
+                    tDir.setVisible(false);
+                    mResultado.setVisible(false);
+                    mPriorityTransfer.setVisible(false);
+                    mTransfer.setVisible(false);
+                    mOper.setVisible(false);
+                    mRadioOper.setVisible(false);
+                    mParamedic.setVisible(false);
+                    mAmbulance.setVisible(false);
+                    lDateOpen.setVisible(true);
+                    tDateOpen.setVisible(true);
+                    lDateClose.setVisible(true);
+                    tDateClose.setVisible(true);
+                    break;
+                case "Folios diarios":
                     mOptionSearch.setText(e.getActionCommand());
                     lFrap.setVisible(false);
                     tFrap.setVisible(false);
